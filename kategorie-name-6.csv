@@ -1,0 +1,7 @@
+﻿Kategorie,Name,Nutzen,Error‑Typ,Raum
+Achse 1,Y‑Achse,Links,Datei fehlt,ME
+Achse 2,Z‑Achse,Rechts,Pfad falsch,OUR
+Achse 3,X‑Achse,Höhe,Struktur unklar,ORT
+Gold 1,Circle‑Error,Kreis,Wiederholung,Orbit
+Gold 2,Cylinder‑Error,Zylinder,Schichtung,Tiefe
+Gold 3,Golden‑Error,Goldener Schnitt,Proportion,Ursprung

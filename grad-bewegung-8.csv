@@ -1,0 +1,9 @@
+﻿Grad,Bewegung,Achse,Pointer
+0°,Ursprung,O,Orbit‑Pointer
+45°,Umlauf,O,Orbit‑Pointer
+90°,Halbkreis,X,Air‑Pointer
+120°,Schichtung,X/T,Air‑Pointer
+180°,Halbkreis,H,Orbit‑Pointer
+240°,Kern‑Orbit,H,Orbit‑Pointer
+300°,Diamant‑Orbit,H,Orbit‑Pointer
+360°,Vollkreis,O/H,Orbit‑Pointer

@@ -1,0 +1,12 @@
+﻿Status,Farbe,Straße,Achse,Form,Datei,Meta‑Modul
+OK,Grün,HIGHWAY,X,Punkt,alpha.md,GEO‑POINT ALPHA
+READY,Blau,HIGHWAY,Y,Achse,pyr.md,WRAIGHT‑Impuls
+COMPATIBLE,Hellgrün,HIGHWAY,X,Pyramide,pyramide.md,Ghost‑Orbit
+FIXED,Lila,Nebenstraße,Y,Cube,cube.md,Shade‑Layer
+DONE,Weiß,Nebenstraße,Z,Zyklus,cycle.md,Help‑Heatmap
+HELP,Gelb,STAU,Y,Meta‑Hilfe,HELP.html,Coder‑Gefühle
+UNCLEAR,Braun,STAU,Z,Unklar,404.html,UT‑System
+ERROR,Rot,BAUSTELLE,X,Error‑Ebene,error.html,ERROR‑CORE
+QI‑ERROR,Orange,SONDERSPUR,Z,Ehrlich,build.html,QI‑Ebene
+FC‑ERROR,Magenta,SONDERSPUR,Y,Edel,boost.html,Berry‑Core
+ERROR‑CORE,Schwarz,KERNZONE,Z,Diamant,diamant.md,Diamant‑Kern

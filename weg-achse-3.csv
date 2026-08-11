@@ -1,0 +1,4 @@
+﻿Weg,Achse,Pointer,Grad,Funktion
+Boden,Y/Z,GROUND EDIT POINTER,0°–120°,Pfad/Ordner
+Luft,X,AIR EDIT POINTER,120°–240°,Layer/Höhe
+Orbit,O/H,ORBIT EDIT POINTER,240°–360°,Ursprung/Kern
