@@ -1,167 +1,144 @@
 <!DOCTYPE html>
 <html lang="de">
-<!-- © iki1uc wieimmer -->
-<!--
-  <!--
-   INDEX‑SCHABLONE
-
-   Diese Seite ist der HOME‑Punkt (◆)
-   - Fehler in ME → Startpunkt falsch
-   - Fehler in OUR → Verbindung fehlt
-   - Fehler in ORT → Ebene falsch
-   - Fehler in T → Tiefe falsch
--->
-
-   IKEA‑FEHLER‑SCHABLONE • NAVI‑DREIECK
-
-   ACHSEN:
-   Y = LINKS
-   Z = RECHTS
-   X = HÖHE
-   T = TIEFE
-   O = URSPRUNG
-
-   META‑DREIECK:
-   ME   = innerer Punkt (Selbst)
-   OUR  = gemeinsame Achse (Team)
-   ORT  = Position / Ebene
-   HOME = Kern / Stabilität
-
-   FEHLER‑WEGE:
-   - Wenn Datei fehlt → Y‑Achse (links prüfen)
-   - Wenn Pfad falsch → Z‑Achse (rechts korrigieren)
-   - Wenn Ebene falsch → ORT‑Achse (△)
-   - Wenn Tiefe falsch → T‑Achse (Layer)
-   - Wenn Kern bricht → HOME‑Achse (◆)
-   - Wenn Orbit unsichtbar → GHOST‑ORBIT prüfen
--->
- <head>
+<head>
 <meta charset="UTF-8">
-<title>GEO‑POINT ALPHA</title>
+<title>STORY · 360° · 100%</title>
+
 <style>
-body { background:#000; color:#0f0; font-family:Consolas; padding:20px; }
-h1 { color:#0f0; }
-pre { background:#111; padding:20px; border-left:4px solid #0f0; }
-.section { margin-bottom:40px; }
-.title { color:#0f0; font-size:22px; margin-bottom:10px; }
-.block { background:#111; padding:15px; border-left:3px solid #0f0; margin-bottom:20px; }
+  body { background:#000; color:#0f0; font-family:Consolas, monospace; padding:40px; }
+  h1 { color:#6cf; text-align:center; margin-bottom:30px; }
+  .box { background:#111; border:1px solid #333; padding:20px; margin-bottom:25px; }
+  pre { background:#000; padding:12px; border-left:3px solid #6cf; }
 </style>
 </head>
 
 <body>
 
-<h1>GEO‑POINT ALPHA</h1>
-<pre>© iki1uc wieimmer</pre>
+<h1>STORY · 360° · 100%</h1>
 
-<!-- DIAMANT‑AXIOME -->
-<div class="section">
-<div class="title">DIAMANT‑AXIOME</div>
-<div class="block">
-◉ geo.md — Punkt‑Axiom  
-◎ pyr.md — Achsen‑Axiom  
-△ pyramide.md — Pyramiden‑Axiom  
-▣ cube.md — Cube‑Axiom  
-↺ cycle.md — Zyklus‑Axiom  
-◆ diamant.md — Diamant‑Axiom  
+<div class="box">
+  <h2>UNI‑Module (I U R X Y Z)</h2>
+  <pre id="uni"></pre>
 </div>
 
-<div class="block">
-        ◉
-      /   \
-     ◎     ◎
-    /  \ /  \
-   △    △    △
-    \  / \  /
-      ▣   ▣
-        ↺
-</div>
+<div class="box">
+  <h2>CSV‑Abbildung → % und °</h2>
+  <pre id="csv"></pre>
 </div>
 
-<!-- META‑MODULE -->
-<div class="section">
-<div class="title">META‑MODULE</div>
-
-<div class="block">
-<strong>BERRY‑CORE</strong><br>
-ORT: META<br>
-LAGE: FEHLER → ENERGIE<br>
-BEAM‑POINT: ooOO‑IMPULS<br>
-FORMEL: berry = error × humor × orbit<br>
-Datei: boost.html
+<div class="box">
+  <h2>360°‑Kreis</h2>
+  <pre id="deg"></pre>
 </div>
 
-<div class="block">
-<strong>WRAIGHT‑IMPULS</strong><br>
-ORT: META<br>
-LAGE: VERSTÄRKER<br>
-BEAM‑POINT: 1.33 × BASIS<br>
-FORMEL: wraight = beam × 1.33 × orbit<br>
-Datei: HELP.html
+<div class="box">
+  <h2>100%‑Werte</h2>
+  <pre id="pct"></pre>
 </div>
 
-<div class="block">
-<strong>CODER‑GEFÜHLE</strong><br>
-OK → 🟢 stabil<br>
-SOFTOK → 🟩 leicht<br>
-HELP → 🟡 braucht Hilfe<br>
-GHOST → 👻 imaginär<br>
-SHADE → ⚫ blockiert<br>
-ERROR → 🔴 hamm / berry<br>
-UNCLEAR → ⚪ unklar<br>
-Datei: build.html
-</div>
+<script type="module">
 
-<div class="block">
-<strong>GHOST‑ORBIT</strong><br>
-ORT: ORDNERNAME<br>
-LAGE: UNSICHTBAR<br>
-BEAM‑POINT: sin(t) × 0.83<br>
-FORMEL: ghostOrbit = ort × sin(t) × 0.83<br>
-Datei: error.html
-</div>
+  /* --- UNI MODULE --- */
+  import { I } from "./i.js";
+  import { U } from "./u.js";
+  import { R } from "./r.js";
+  import { X } from "./x.js";
+  import { Y } from "./y.js";
+  import { Z } from "./z.js";
 
-<div class="block">
-<strong>SHADE‑LAYER</strong><br>
-ORT: SYSTEM<br>
-LAGE: BLOCKIERT<br>
-BEAM‑POINT: tiefe<br>
-FORMEL: shade = depth × cos(t)<br>
-Datei: re.html
-</div>
+  const UNI = [I, U, R, X, Y, Z];
 
-<div class="block">
-<strong>HELP‑HEATMAP</strong><br>
-ORT: REPO<br>
-LAGE: KLEIN / MITTEL<br>
-BEAM‑POINT: size / 1000<br>
-FORMEL: helpHeat = size × beam<br>
-Datei: sub.html
-</div>
-</div>
- 
-function diagnosePage(status, page) {
+  /* --- CSV LOADER --- */
+  async function loadCSV(path){
+    const res = await fetch(path);
+    const text = await res.text();
+    const rows = text.trim().split("\n");
+    const header = rows[0].split(",");
 
-    // IKEA‑NAVI‑DREIECK
-    const navi = {
-        Y: "links prüfen",
-        Z: "rechts korrigieren",
-        X: "Höhe / Struktur prüfen",
-        T: "Tiefe / Layer prüfen",
-        O: "Ursprung / Startpunkt prüfen"
-    };
+    return rows.slice(1).map(line => {
+      const values = line.split(",");
+      const obj = {};
+      header.forEach((h,i)=>obj[h.trim()] = values[i].trim());
+      return obj;
+    });
+  }
 
-    // Fehler‑Richtungslogik
-    const direction =
-        status === "MISSING" ? navi.Y :
-        status === "ERROR"   ? navi.T :
-        status === "UNCLEAR" ? navi.X :
-        status === "HELP"    ? navi.Z :
-        navi.O;
+  /* --- CSV → % und ° --- */
+  function convertToPercent(raw){
+    const keys = Object.keys(raw);
+    const values = keys.map(k => raw[k].length);
+    const sum = values.reduce((a,b)=>a+b,0);
+    return values.map(v => Math.round((v/sum)*100));
+  }
 
-    return {
-        page,
-        status,
-        direction
-    };
-}
+  function convertToDegrees(raw){
+    const keys = Object.keys(raw);
+    const values = keys.map(k => raw[k].length);
+    const sum = values.reduce((a,b)=>a+b,0);
+    return values.map(v => Math.round((v/sum)*360));
+  }
 
+  /* --- MAIN --- */
+  async function run(){
+
+    /* UNI MODULE */
+    document.getElementById("uni").textContent =
+      JSON.stringify(UNI, null, 2);
+
+    /* CSV LIST */
+    const csvFiles = [
+      "ebene-achse-3.csv",
+      "grad-bewegung-8.csv",
+      "grad-evo-8.csv",
+      "kategorie-name-6.csv",
+      "modul-zeichen-6.csv",
+      "nc-parameter-kreis-bedeutung-3.csv",
+      "status-farbe-11.csv",
+      "technologie-boden-evo-8.csv",
+      "verkehr-achse-3.csv",
+      "weg-achse-3.csv"
+    ];
+
+    const csvResults = [];
+
+    for(const file of csvFiles){
+      const raw = await loadCSV("./" + file);
+      const pct = convertToPercent(raw[0]);
+      const deg = convertToDegrees(raw[0]);
+
+      csvResults.push({
+        file,
+        raw: raw[0],
+        percent: pct,
+        degrees: deg
+      });
+    }
+
+    document.getElementById("csv").textContent =
+      JSON.stringify(csvResults, null, 2);
+
+    /* 360° */
+    const degAll = csvResults.map(r => ({
+      file: r.file,
+      deg: r.degrees
+    }));
+
+    document.getElementById("deg").textContent =
+      JSON.stringify(degAll, null, 2);
+
+    /* 100% */
+    const pctAll = csvResults.map(r => ({
+      file: r.file,
+      pct: r.percent
+    }));
+
+    document.getElementById("pct").textContent =
+      JSON.stringify(pctAll, null, 2);
+  }
+
+  run();
+
+</script>
+
+</body>
+</html>
