@@ -32,7 +32,28 @@
 </div>
 
 <script type="module">
+window.onerror = (msg, url, line, col, error) => {
+  const box = document.createElement("pre");
+  box.style.color = "red";
+  box.style.background = "#200";
+  box.style.padding = "12px";
+  box.style.borderLeft = "3px solid #f00";
+  box.textContent = `JS-ERROR: ${msg}\nFILE: ${url}\nLINE: ${line}`;
+  document.body.appendChild(box);
+};
 
+window.addEventListener("unhandledrejection", event => {
+  const box = document.createElement("pre");
+  box.style.color = "orange";
+  box.style.background = "#220";
+  box.style.padding = "12px";
+  box.style.borderLeft = "3px solid #fa0";
+  box.textContent = `PROMISE-ERROR: ${event.reason}`;
+  document.body.appendChild(box);
+});
+
+ 
+  
   /* --- JS MODULE --- */
   import { I } from "./i.js";
   import { U } from "./u.js";
