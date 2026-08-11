@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>STORY · JS ONLY · 360° · 100%</title>
+<title>STORY · STATUS · 360° · 100%</title>
 
 <style>
   body { background:#000; color:#0f0; font-family:Consolas, monospace; padding:40px; }
@@ -14,7 +14,7 @@
 
 <body>
 
-<h1>STORY · JS ONLY · 360° · 100%</h1>
+<h1>STORY · STATUS · 360° · 100%</h1>
 
 <div class="box">
   <h2>JS‑Module (I U R X Y Z)</h2>
@@ -22,17 +22,12 @@
 </div>
 
 <div class="box">
-  <h2>360°‑Werte</h2>
-  <pre id="deg"></pre>
+  <h2>CSV‑Daten → % und °</h2>
+  <pre id="csv"></pre>
 </div>
 
 <div class="box">
-  <h2>100%‑Werte</h2>
-  <pre id="pct"></pre>
-</div>
-
-<div class="box">
-  <h2>Status‑Checker (OK / DONE)</h2>
+  <h2>Status‑Checker (OK / MISSING)</h2>
   <pre id="status"></pre>
 </div>
 
@@ -46,50 +41,98 @@
   import { Y } from "./y.js";
   import { Z } from "./z.js";
 
-  const MODULES = [I, U, R, X, Y, Z];
+  const JS_MODULES = { I, U, R, X, Y, Z };
 
-  /* --- 360° + 100% --- */
-  function toPercent(mod){
-    return Math.round((mod.uni.charCodeAt(0) % 100));
+  /* --- CSV LOADER (mit Bereinigung) --- */
+  async function loadCSV(path){
+    try {
+      const res = await fetch(path);
+      const text = await res.text();
+
+      const rows = text.trim().split("\n").filter(r => r.trim() !== "");
+      const header = rows[0].split(",");
+
+      return rows.slice(1).map(line => {
+        const values = line.split(",");
+        const obj = {};
+        header.forEach((h,i)=>obj[h.trim()] = values[i].trim());
+        return obj;
+      });
+    } catch(e){
+      return null;
+    }
   }
 
-  function toDegrees(mod){
-    return Math.round((mod.uni.charCodeAt(0) % 360));
+  /* --- CSV → % und ° --- */
+  function convertToPercent(raw){
+    const keys = Object.keys(raw);
+    const values = keys.map(k => raw[k].length);
+    const sum = values.reduce((a,b)=>a+b,0);
+    return values.map(v => Math.round((v/sum)*100));
   }
 
-  /* --- STATUS --- */
-  function status(mod){
-    if(mod.uni && mod.raw) return { uni: mod.uni, status:"OK" };
-    return { uni: mod.uni, status:"FAIL" };
+  function convertToDegrees(raw){
+    const keys = Object.keys(raw);
+    const values = keys.map(k => raw[k].length);
+    const sum = values.reduce((a,b)=>a+b,0);
+    return values.map(v => Math.round((v/sum)*360));
+  }
+
+  /* --- STATUS CHECKER --- */
+  function checkStatus(file, raw){
+    if(!raw || raw.length === 0) return { file, status:"MISSING" };
+    return { file, status:"OK" };
   }
 
   /* --- MAIN --- */
-  function run(){
+  async function run(){
 
     /* JS MODULE */
     document.getElementById("js").textContent =
-      JSON.stringify(MODULES, null, 2);
+      JSON.stringify(JS_MODULES, null, 2);
 
-    /* 360° */
-    const deg = MODULES.map(m => ({
-      uni: m.uni,
-      deg: toDegrees(m)
-    }));
-    document.getElementById("deg").textContent =
-      JSON.stringify(deg, null, 2);
+    /* CSV LIST */
+    const csvFiles = [
+      "ebene-achse-3.csv",
+      "fr-her-jetzt-5.csv",
+      "grad-bewegung-8.csv",
+      "grad-evo-8.csv",
+      "kategorie-name-6.csv",
+      "modul-zeichen-6.csv",
+      "nc-parameter-kreis-bedeutung-3.csv",
+      "status-farbe-11.csv",
+      "technologie-boden-evo-8.csv",
+      "verkehr-achse-3.csv",
+      "weg-achse-3.csv"
+    ];
 
-    /* 100% */
-    const pct = MODULES.map(m => ({
-      uni: m.uni,
-      pct: toPercent(m)
-    }));
-    document.getElementById("pct").textContent =
-      JSON.stringify(pct, null, 2);
+    const csvResults = [];
+    const statusList = [];
 
-    /* STATUS */
-    const stat = MODULES.map(m => status(m));
+    for(const file of csvFiles){
+      const raw = await loadCSV("./" + file);
+
+      const status = checkStatus(file, raw);
+      statusList.push(status);
+
+      if(raw && raw.length > 0){
+        const pct = convertToPercent(raw[0]);
+        const deg = convertToDegrees(raw[0]);
+
+        csvResults.push({
+          file,
+          raw: raw[0],
+          percent: pct,
+          degrees: deg
+        });
+      }
+    }
+
+    document.getElementById("csv").textContent =
+      JSON.stringify(csvResults, null, 2);
+
     document.getElementById("status").textContent =
-      JSON.stringify(stat, null, 2);
+      JSON.stringify(statusList, null, 2);
   }
 
   run();
