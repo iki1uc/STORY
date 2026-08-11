@@ -2,43 +2,40 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>STORY · 360° · 100%</title>
+<title>STORY · STATUS · 360° · 100%</title>
 
 <style>
   body { background:#000; color:#0f0; font-family:Consolas, monospace; padding:40px; }
   h1 { color:#6cf; text-align:center; margin-bottom:30px; }
   .box { background:#111; border:1px solid #333; padding:20px; margin-bottom:25px; }
+  .ok { color:#0f0; }
+  .fail { color:#f00; }
   pre { background:#000; padding:12px; border-left:3px solid #6cf; }
 </style>
 </head>
 
 <body>
 
-<h1>STORY · 360° · 100%</h1>
+<h1>STORY · STATUS · 360° · 100%</h1>
 
 <div class="box">
-  <h2>UNI‑Module (I U R X Y Z)</h2>
-  <pre id="uni"></pre>
+  <h2>JS‑Module (I U R X Y Z)</h2>
+  <pre id="js"></pre>
 </div>
 
 <div class="box">
-  <h2>CSV‑Abbildung → % und °</h2>
+  <h2>CSV‑Daten → % und °</h2>
   <pre id="csv"></pre>
 </div>
 
 <div class="box">
-  <h2>360°‑Kreis</h2>
-  <pre id="deg"></pre>
-</div>
-
-<div class="box">
-  <h2>100%‑Werte</h2>
-  <pre id="pct"></pre>
+  <h2>Status‑Checker (OK / READY / COMPATIBLE / DONE)</h2>
+  <pre id="status"></pre>
 </div>
 
 <script type="module">
 
-  /* --- UNI MODULE --- */
+  /* --- JS MODULE --- */
   import { I } from "./i.js";
   import { U } from "./u.js";
   import { R } from "./r.js";
@@ -46,21 +43,25 @@
   import { Y } from "./y.js";
   import { Z } from "./z.js";
 
-  const UNI = [I, U, R, X, Y, Z];
+  const JS_MODULES = { I, U, R, X, Y, Z };
 
   /* --- CSV LOADER --- */
   async function loadCSV(path){
-    const res = await fetch(path);
-    const text = await res.text();
-    const rows = text.trim().split("\n");
-    const header = rows[0].split(",");
+    try {
+      const res = await fetch(path);
+      const text = await res.text();
+      const rows = text.trim().split("\n");
+      const header = rows[0].split(",");
 
-    return rows.slice(1).map(line => {
-      const values = line.split(",");
-      const obj = {};
-      header.forEach((h,i)=>obj[h.trim()] = values[i].trim());
-      return obj;
-    });
+      return rows.slice(1).map(line => {
+        const values = line.split(",");
+        const obj = {};
+        header.forEach((h,i)=>obj[h.trim()] = values[i].trim());
+        return obj;
+      });
+    } catch(e){
+      return null;
+    }
   }
 
   /* --- CSV → % und ° --- */
@@ -78,12 +79,18 @@
     return values.map(v => Math.round((v/sum)*360));
   }
 
+  /* --- STATUS CHECKER --- */
+  function checkStatus(file, raw){
+    if(!raw) return { file, status:"MISSING", color:"fail" };
+    return { file, status:"OK", color:"ok" };
+  }
+
   /* --- MAIN --- */
   async function run(){
 
-    /* UNI MODULE */
-    document.getElementById("uni").textContent =
-      JSON.stringify(UNI, null, 2);
+    /* JS MODULE */
+    document.getElementById("js").textContent =
+      JSON.stringify(JS_MODULES, null, 2);
 
     /* CSV LIST */
     const csvFiles = [
@@ -100,40 +107,32 @@
     ];
 
     const csvResults = [];
+    const statusList = [];
 
     for(const file of csvFiles){
       const raw = await loadCSV("./" + file);
-      const pct = convertToPercent(raw[0]);
-      const deg = convertToDegrees(raw[0]);
 
-      csvResults.push({
-        file,
-        raw: raw[0],
-        percent: pct,
-        degrees: deg
-      });
+      const status = checkStatus(file, raw);
+      statusList.push(status);
+
+      if(raw){
+        const pct = convertToPercent(raw[0]);
+        const deg = convertToDegrees(raw[0]);
+
+        csvResults.push({
+          file,
+          raw: raw[0],
+          percent: pct,
+          degrees: deg
+        });
+      }
     }
 
     document.getElementById("csv").textContent =
       JSON.stringify(csvResults, null, 2);
 
-    /* 360° */
-    const degAll = csvResults.map(r => ({
-      file: r.file,
-      deg: r.degrees
-    }));
-
-    document.getElementById("deg").textContent =
-      JSON.stringify(degAll, null, 2);
-
-    /* 100% */
-    const pctAll = csvResults.map(r => ({
-      file: r.file,
-      pct: r.percent
-    }));
-
-    document.getElementById("pct").textContent =
-      JSON.stringify(pctAll, null, 2);
+    document.getElementById("status").textContent =
+      JSON.stringify(statusList, null, 2);
   }
 
   run();
