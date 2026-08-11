@@ -1,8 +1,8 @@
-// r.js — UNI‑Modul (IHR → R)
+// r.js — Datenmodul (bereinigt, EIN ZEICHEN + RAW)
 
 export const R = {
   uni: "R",                     // EIN ZEICHEN (UNI‑gültig)
-  raw: "RAW:IHR-RESONANZ"       // RAW‑Deutung (Narrativität / 4D)
+  raw: "RAW:DATA-SET-3"         // RAW‑Deutung (bereinigter Datensatz)
 };
 
 // Autonomes Modul
