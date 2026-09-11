@@ -3,1214 +3,852 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🗾 iki1uc · 道 · MANGA · ANIME · verKlicK't</title>
+<title>🛣️ UNI · HIGHWAY · TOOR · iki1uc</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  :root{
-    --ink:#08070a;
-    --ink2:#141018;
-    --paper:#1a1418;
-    --shu:#e04a3a;         /* 朱 — Vermillion */
-    --shu2:#ff7058;
-    --kin:#d4a850;         /* 金 — Gold */
-    --kin2:#f4e0a0;
-    --sakura:#ffb0c8;
-    --sumi:#1a1418;
-    --hai:#8a8098;         /* 灰 — Ash */
-    --shiro:#f0e8e0;       /* 白 — Paper white */
-    --line:rgba(224,74,58,0.15);
-  } 
-  html,body{height:100%;}
-  body{
-    background:
-      radial-gradient(ellipse at 50% 40%, #1a0e14 0%, #0c080e 55%, #050308 100%);
-    color:var(--shiro);
-    font-family:'Consolas','Courier New',monospace;
-    height:100vh; overflow:hidden;
-    display:flex; flex-direction:column;
-  }
-
-  /* HEADER */
-  header{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:9px 20px;
-    border-bottom:1px solid var(--line);
-    background:rgba(8,7,10,0.9);
-    backdrop-filter:blur(12px);
-    flex-wrap:wrap; gap:10px; z-index:10;
-  }
-  header h1{
-    font-size:15px; font-weight:400; letter-spacing:4px;
-    color:var(--shiro);
+  html,body{height:100%;overflow:hidden;
+    background:#050308;color:#f0e8e0;
     font-family:'Yu Mincho','Hiragino Mincho ProN','Times New Roman',serif;
+    user-select:none;cursor:crosshair;
   }
-  header h1 small{
-    font-size:9px; color:#6a5a70;
-    letter-spacing:2px; margin-left:10px;
-    font-family:'Consolas',monospace;
-  }
-  header h1 .tag{
-    font-size:8px; letter-spacing:3px;
-    color:var(--shu2);
-    border:1px solid rgba(224,74,58,0.5);
-    padding:1px 7px; border-radius:3px;
-    margin-left:8px;
-    font-family:'Consolas',monospace;
-  }
-  header h1 .gold{
-    color:var(--kin2);
-    border-color:rgba(212,168,80,0.5);
-  }
-  .stats{
-    display:flex; gap:14px; font-size:9.5px;
-    color:#8a7a90; align-items:center; flex-wrap:wrap;
-  }
-  .stats b{font-weight:bold;}
-  .v-shu{color:var(--shu2);}
-  .v-kin{color:var(--kin2);}
-  .v-sakura{color:var(--sakura);}
-  .v-shio{color:var(--shiro);}
+  canvas{display:block;width:100vw;height:100vh;}
 
-  /* MAIN */
-  #stage{
-    flex:1; position:relative; overflow:hidden;
-    display:flex; align-items:center; justify-content:center;
-  }
-  #doCanvas{
-    display:block; width:100%; height:100%;
-    cursor:crosshair;
-  }
-
-  /* KOAN — Way of Life (oben links) */
-  #koan{
-    position:absolute;
-    top:14px; left:14px;
-    max-width:280px;
-    padding:10px 14px;
-    background:rgba(8,7,10,0.82);
-    border-left:2px solid var(--shu);
-    border-radius:2px;
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-size:12px;
-    line-height:1.6;
-    color:var(--shio);
-    z-index:8;
-    pointer-events:none;
-    font-style:italic;
-  }
-  #koan .kanji{
-    display:block;
-    font-size:22px;
-    color:var(--kin2);
-    letter-spacing:6px;
-    margin-bottom:4px;
-    text-shadow:0 0 20px rgba(212,168,80,0.4);
-  }
-  #koan .author{
-    display:block;
-    margin-top:6px;
-    font-size:9px;
-    letter-spacing:3px;
-    color:var(--shu2);
-    font-family:'Consolas',monospace;
-    font-style:normal;
-    text-transform:uppercase;
-  }
-
-  /* MAß — Fortschritt (oben rechts) */
-  #massBox{
-    position:absolute;
-    top:14px; right:14px;
-    padding:10px 16px;
-    background:rgba(8,7,10,0.82);
-    border:1px solid rgba(224,74,58,0.35);
-    border-radius:6px;
-    font-family:'Consolas',monospace;
-    font-size:10px;
-    z-index:8;
-    min-width:180px;
-    pointer-events:none;
-  }
-  #massBox .title{
-    color:var(--shu2);
-    font-size:10px;
-    letter-spacing:3px;
-    border-bottom:1px solid rgba(224,74,58,0.2);
-    padding-bottom:5px; margin-bottom:6px;
-    display:flex; justify-content:space-between;
-    text-transform:uppercase;
-  }
-  #massBox .title .gold{ color:var(--kin2); }
-  #massBox .row{
-    display:flex; justify-content:space-between;
-    padding:2px 0;
-    font-size:9.5px;
-    color:#8a7a90;
-  }
-  #massBox .val{
-    color:var(--kin2);
-    font-weight:bold;
-  }
-  #massBox .val.shu{ color:var(--shu2); }
-  #massBar{
-    height:4px;
-    background:rgba(20,15,20,0.8);
-    border-radius:2px;
-    overflow:hidden;
-    margin-top:6px;
-  }
-  #massBar .fill{
-    height:100%;
-    background:linear-gradient(90deg,var(--shu),var(--kin));
-    border-radius:2px;
-    transition:width .3s;
-  }
-
-  /* ZA·M Siegel */
-  #zamSeal{
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%) scale(0.5);
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-size:120px;
-    color:var(--kin2);
-    text-shadow:
-      0 0 60px rgba(212,168,80,0.9),
-      0 0 120px rgba(224,74,58,0.6);
-    opacity:0;
-    transition:opacity .5s, transform .6s cubic-bezier(.3,1.6,.4,1);
-    pointer-events:none;
-    z-index:12;
-  }
-  #zamSeal.show{
-    opacity:1;
-    transform:translate(-50%,-50%) scale(1);
-  }
-
-  /* MANGA-PANEL (unten links — Erzählung) */
-  #mangaPanel{
-    position:absolute;
-    bottom:14px; left:14px;
-    max-width:340px; max-height:130px;
-    padding:10px 14px;
-    background:rgba(8,7,10,0.85);
-    border:1px solid rgba(224,74,58,0.2);
-    border-left:3px solid var(--shu);
-    border-radius:3px;
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-size:12px;
-    line-height:1.5;
-    color:var(--shio);
-    overflow-y:auto;
-    z-index:8;
-    font-style:italic;
-  }
-  #mangaPanel .speech{
-    color:var(--shio);
-  }
-  #mangaPanel .think{
-    color:#8a7a90;
-  }
-  #mangaPanel .action{
-    color:var(--shu2);
-    font-style:normal;
-    font-family:'Consolas',monospace;
-    font-size:10px;
+  #hud{
+    position:fixed;top:18px;left:18px;
+    background:rgba(8,6,10,0.72);
+    border-left:3px solid #e04a3a;
+    padding:12px 18px;
+    font-size:13px;line-height:1.75;
     letter-spacing:1px;
+    backdrop-filter:blur(6px);
+    pointer-events:none;
+    z-index:10;
   }
-  #mangaPanel .wave{
-    color:var(--sakura);
-  }
+  #hud .v{color:#f4e0a0;font-weight:bold;}
+  #hud .s{color:#e04a3a;}
+  #hud .k{font-size:10px;letter-spacing:3px;color:#8a8098;text-transform:uppercase;}
 
-  /* CONTROLS */
-  #controls{
-    display:flex; gap:7px; align-items:center;
-    padding:10px 20px;
-    border-top:1px solid var(--line);
-    background:rgba(8,7,10,0.92);
-    backdrop-filter:blur(12px);
-    flex-wrap:wrap;
-    font-size:10px; z-index:10;
-  }
-  #controls button{
-    background:rgba(20,15,22,0.85);
+  #speed{
+    position:fixed;bottom:20px;right:20px;
+    background:rgba(8,6,10,0.72);
     border:1px solid rgba(224,74,58,0.3);
-    color:var(--shu2);
-    padding:7px 16px;
-    border-radius:3px;
-    font-family:inherit; font-size:10px;
+    border-radius:6px;
+    padding:10px 16px;
+    font-family:'Consolas',monospace;
+    font-size:11px;
     letter-spacing:2px;
-    cursor:pointer; transition:.18s;
+    z-index:10;
+    pointer-events:none;
+  }
+  #speed .bar{
+    margin-top:6px;
+    width:180px;height:5px;
+    background:rgba(20,15,20,0.85);
+    border-radius:2px;overflow:hidden;
+  }
+  #speed .fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,#e04a3a,#f4e0a0);
+    transition:width .25s;
+    border-radius:2px;
+  }
+  #speed .lbl{color:#8a8098;}
+  #speed .num{color:#f4e0a0;font-weight:bold;}
+
+  #quote{
+    position:fixed;bottom:20px;left:20px;
+    font-size:15px;font-style:italic;
+    color:rgba(240,232,224,0.65);
+    max-width:60vw;
+    pointer-events:none;
+    z-index:10;
+    transition:opacity .6s;
+  }
+  #quote .kanji{
+    display:block;font-size:11px;
+    letter-spacing:6px;color:#e04a3a;
+    font-style:normal;margin-bottom:4px;
     text-transform:uppercase;
   }
-  #controls button:hover{
-    background:rgba(224,74,58,0.12);
-    border-color:var(--shu);
-    color:#fff;
-    box-shadow:0 0 14px rgba(224,74,58,0.4);
-  }
-  #controls button.active{
-    background:rgba(224,74,58,0.2);
-    color:#fff;
-    border-color:var(--shu);
-    box-shadow:0 0 18px rgba(224,74,58,0.5);
-  }
-  #controls button.kin{
-    border-color:rgba(212,168,80,0.35);
-    color:var(--kin2);
-  }
-  #controls button.kin:hover,
-  #controls button.kin.active{
-    background:rgba(212,168,80,0.15);
-    border-color:var(--kin);
-    color:#fff;
-    box-shadow:0 0 14px rgba(212,168,80,0.5);
-  }
-  #controls .sep{
-    width:1px; height:22px;
-    background:var(--line); margin:0 4px;
-  }
-  #controls .lbl{
-    color:#6a5a70; letter-spacing:2px; font-size:9px;
-  }
-  #controls input[type=range]{
-    -webkit-appearance:none; appearance:none;
-    width:80px; height:3px;
-    background:linear-gradient(90deg,var(--shu),var(--kin));
-    border-radius:2px; outline:none;
-  }
-  #controls input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:14px; height:14px; border-radius:50%;
-    background:#fff;
-    border:2px solid var(--shu);
-    box-shadow:0 0 8px rgba(224,74,58,0.8);
-    cursor:pointer;
-  }
 
-  @media (max-width:820px){
-    header h1{font-size:12px;letter-spacing:2px;}
-    .stats{gap:8px;font-size:8.5px;}
-    #controls{padding:7px 12px; gap:4px;}
-    #controls button{padding:5px 10px; font-size:9px; letter-spacing:1px;}
-    #koan{max-width:190px;font-size:10.5px;padding:8px 11px;}
-    #koan .kanji{font-size:17px;}
-    #massBox{padding:8px 12px;font-size:9px;min-width:140px;}
-    #mangaPanel{max-width:200px;font-size:10.5px;padding:8px 11px;max-height:100px;}
-    #zamSeal{font-size:80px;}
+  #seal{
+    position:fixed;top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0.4);
+    font-size:180px;
+    color:#f4e0a0;
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    text-shadow:0 0 80px rgba(224,74,58,0.95), 0 0 180px rgba(244,224,160,0.7);
+    opacity:0;pointer-events:none;z-index:20;
+    transition:opacity .35s, transform .6s cubic-bezier(.3,1.6,.4,1);
+  }
+  #seal.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+
+  @media(max-width:640px){
+    #hud{padding:9px 12px;font-size:11px;}
+    #quote{font-size:12px;max-width:50vw;}
+    #speed{padding:7px 10px;font-size:9px;}
+    #speed .bar{width:110px;}
+    #seal{font-size:110px;}
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>iki1uc · 道
-    <small>MANGA · ANIME · WA</small>
-    <span class="tag">verKlicK't</span>
-    <span class="tag gold">ZaM</span>
-  </h1>
-  <div class="stats">
-    <span>KlicK <b class="v-shu" id="sKlick">0</b></span>
-    <span>道 · 集中 <b class="v-kin" id="sHits">0</b></span>
-    <span>ZaM <b class="v-kin" id="sZam">0</b></span>
-    <span>Sakura <b class="v-sakura" id="sSakura">0</b></span>
-    <span id="sClock" style="color:#4a3a50;">⏱️ --:--</span>
-  </div>
-</header>
+<canvas id="uni"></canvas>
 
-<div id="stage">
-  <canvas id="doCanvas"></canvas>
-
-  <!-- KOAN — Way of Life -->
-  <div id="koan">
-    <span class="kanji" id="koanKanji">道</span>
-    <span id="koanText">„Der Weg ist das Ziel."</span>
-    <span class="author" id="koanAuthor">— Bus hidō</span>
-  </div>
-
-  <!-- MAß -->
-  <div id="massBox">
-    <div class="title">
-      <span>道 · MAß</span>
-      <span class="gold" id="massZam">0</span>
-    </div>
-    <div class="row"><span>Treffer</span><span class="val shu" id="massHit">0/100</span></div>
-    <div class="row"><span>Übung</span><span class="val" id="massPractice">Anfänger</span></div>
-    <div id="massBar"><div class="fill" id="massFill" style="width:0%"></div></div>
-  </div>
-
-  <!-- ZA·M SIEGEL -->
-  <div id="zamSeal">門</div>
-
-  <!-- MANGA-PANEL — Erzählung -->
-  <div id="mangaPanel">
-    <span class="speech">Der Weg beginnt mit einem einzigen Tropfen Tinte …</span>
-  </div>
+<div id="hud">
+  <div><span class="k">seite</span> <span class="v" id="hPage">1/81</span></div>
+  <div><span class="k">kapitel</span> <span class="v" id="hChap">1/9</span></div>
+  <div><span class="k">klick</span> <span class="s" id="hClick">0</span></div>
+  <div><span class="k">zam</span> <span class="v" id="hZam">0</span></div>
+  <div><span class="k">ready</span> <span class="v" id="hReady">…</span></div>
 </div>
 
-<div id="controls">
-  <button id="btnKlick">🖌 TINTE</button>
-  <button id="btnAuto" class="active">⏸ AUTO</button>
-  <button id="btnZaM" class="kin">門 ZaM</button>
-  <button id="btnSakura">🌸 SAKURA</button>
-  <span class="sep"></span>
-  <span class="lbl">GESCHW.</span>
-  <input type="range" id="speed" min="1" max="10" value="4">
-  <span class="sep"></span>
-  <button id="btnReset">⟲ NEU</button>
+<div id="quote">
+  <span class="kanji" id="qKanji">道</span>
+  <span id="qText">「水は形を選ばない。」</span>
 </div>
+
+<div id="speed">
+  <span class="lbl">HIGHWAY</span>
+  <span class="num" id="sMode">OFF</span>
+  <div class="bar"><div class="fill" id="sFill"></div></div>
+</div>
+
+<div id="seal">門</div>
 
 <script>
 "use strict";
 // ═══════════════════════════════════════════════════════════════════
-// 🗾 iki1uc · 道 · MANGA · ANIME · verKlicK't
-// Manga · Anime · Japan · Undertone · Way of Life
-// KlicK wird Tinte, Tinte findet das Maß, das Maß trifft ZaM.
+// 🛣️ UNI · HIGHWAY · TOOR · iki1uc
+// Einbahnstraße wird Highway. Klick → Tinte. Tinte → Seite. Seite → ZaM.
 // ═══════════════════════════════════════════════════════════════════
 
-// ─── KOMPAT-LAYER ─────────────────────────────────────────────
-const MASTER_KEY='iki1uc-master-respo';
-const BC_NAME='iki1uc-orbit';
-let masterChannel=null, isMasterConnected=false;
+// ─── CONST ─────────────────────────────────────────────────────────
+// Die Story-Struktur: 9 Kapitel (Ordner 1–9) × 9 Seiten (WEBP)
+// Ordner haben unterschiedliche Bildnamen — wir liefern alle und
+// lassen den Loader alles versuchen, fehlende werden prozedural gezeichnet.
 
-const localMaster={
-  stations:{}, klick:0, zack:0, zam:'idle', zoll:'offen',
-  me2:{allow:true,boost:false,slow:false,override:false},
-  score:0, lastUpdate:Date.now()
+const STORY = {
+  chapters: [
+    { id:'1', title:'生 · Leben',   kanji:'生', pages:['th (45).webp','th (46).webp','th (47).webp','th (48).webp','th (49).webp','th (50).webp','th (51).webp','th (52).webp','th (53).webp'] },
+    { id:'2', title:'弟 · Schüler', kanji:'弟', pages:['th (35).webp','th (36).webp','th (37).webp','th (38).webp','th (39).webp','th (40).webp','th (41).webp','th (42).webp','th (43).webp'] },
+    { id:'3', title:'旅 · Wanderer',kanji:'旅', pages:['th (26).webp','th (27).webp','th (28).webp','th (29).webp','th (30).webp','th (31).webp','th (32).webp','th (33).webp','th (34).webp'] },
+    { id:'4', title:'侍 · Samurai', kanji:'侍', pages:['th (21).webp','th (22).webp','th (23).webp','th (24).webp','th (25).webp','th - 2026-09-09T064707.874.webp','th - 2026-09-09T064712.878.webp','th - 2026-09-09T064716.836.webp','th - 2026-09-09T064730.939.webp'] },
+    { id:'5', title:'師 · Meister', kanji:'師', pages:['th - 2026-09-09T090013.989.webp','th - 2026-09-09T090018.602.webp','th - 2026-09-09T090022.981.webp','th - 2026-09-09T090027.704.webp','th - 2026-09-09T090036.955.webp','th - 2026-09-09T090043.533.webp','th - 2026-09-09T090052.763.webp','th - 2026-09-09T090055.915.webp','th - 2026-09-09T090059.462.webp'] },
+    { id:'6', title:'賢 · Weiser',  kanji:'賢', pages:['th (69).webp','th (70).webp','th (71).webp','th (72).webp','th (73).webp','th - 2026-09-09T090059.462.webp','th - 2026-09-09T090104.571.webp','th - 2026-09-09T094926.529.webp','th - 2026-09-09T094929.785.webp'] },
+    { id:'7', title:'悟 · Erleuchtet',kanji:'悟',pages:['th (74).webp','th (75).webp','th (76).webp','th (77).webp','th (78).webp','th (79).webp','th (80).webp','th (81).webp','th (82).webp'] },
+    { id:'8', title:'無 · Leer',     kanji:'無', pages:['th (83).webp','th (84).webp','th (85).webp','th (86).webp','th (87).webp','th (88).webp','th (89).webp','th (90).webp','th (91).webp'] },
+    { id:'9', title:'∞ · Ende→Anfang',kanji:'∞',pages:['th (92).webp','th (93).webp','th (94).webp','th (95).webp','th (96).webp','th (97).webp','th (98).webp','th (99).webp','th (100).webp'] },
+  ],
+  // Mögliche Ordner-Pfade (versucht der Loader in Reihenfolge)
+  paths: ['', './', '1/', '2/', '3/', '4/', '5/', '6/', '7/', '8/', '9/', 'manga/', 'story/', 'STORY/'],
+  totalPages: 81,
 };
-try{
-  const s=localStorage.getItem(MASTER_KEY);
-  if(s) Object.assign(localMaster,JSON.parse(s));
-}catch(_){}
-try{
-  masterChannel=new BroadcastChannel(BC_NAME);
-  masterChannel.onmessage=(ev)=>{
-    const d=ev.data; if(!d||!d.type) return;
-    if(d.type==='master:state'&&d.payload){Object.assign(localMaster,d.payload);isMasterConnected=true;updateStats();}
-    if(d.type==='mainboard:done'&&d.payload){
-      log(`📊 MAINBOARD · Kompat ${d.payload.compat?.toFixed?.(0)??'?'}%`,'shu');
-    }
-  };
-}catch(_){}
-function persistMaster(){try{localStorage.setItem(MASTER_KEY,JSON.stringify(localMaster));}catch(_){}}
-function sendToMaster(type,payload){
-  localMaster.lastUpdate=Date.now(); persistMaster();
-  if(masterChannel){try{masterChannel.postMessage({type,from:'DO',payload,ts:Date.now()});}catch(_){}}
-}
 
-// ─── 道 · WAY OF LIFE — Koan-Pool ─────────────────────────────
+// Koans — Way of Life
 const KOANS=[
-  {kanji:'道',  text:'„Der Weg ist das Ziel."',                  author:'Bushidō'},
-  {kanji:'和',  text:'„Harmonie ist stärker als Kraft."',         author:'Wa · 和'},
-  {kanji:'忍',  text:'„Ertragen ist nicht Schwäche — es ist Tiefe."', author:'Ninjutsu'},
-  {kanji:'誠',  text:'„Wahrheit ist die Klinge, die nicht rostet."', author:'Bushidō'},
-  {kanji:'義',  text:'„Rechtes Handeln kennt keine Belohnung."',  author:'Bushidō'},
-  {kanji:'礼',  text:'„Respekt ist die Form der Liebe."',         author:'Bushidō'},
-  {kanji:'勇',  text:'„Mut ist nicht Abwesenheit der Furcht."',   author:'Bushidō'},
-  {kanji:'名',  text:'„Ehre ist ein Schatten, den nur du siehst."', author:'Bushidō'},
-  {kanji:'忠',  text:'„Treue kommt vom Herzen, nicht vom Befehl."', author:'Bushidō'},
-  {kanji:'静',  text:'„Stille ist die Sprache der Götter."',      author:'Zen · 禅'},
-  {kanji:'空',  text:'„Leere ist nicht Nichts — sie ist Alles."', author:'Zen · 禅'},
-  {kanji:'今',  text:'„Nur jetzt. Nur hier. Nur dieser Atem."',   author:'Zen · 禅'},
-  {kanji:'花',  text:'„Wie die Blüte fallen — ohne Klage."',      author:'Mono no aware'},
-  {kanji:'月',  text:'„Der Mond spiegelt sich im kleinsten Tropfen."', author:'Wabi-sabi'},
-  {kanji:'音',  text:'„Ein Klang endet — aber er hinterlässt Stille."', author:'Yūgen'},
-  {kanji:'水',  text:'„Wasser fließt, weil es keinen Grund braucht."', author:'Mizu no kokoro'},
+  {k:'道',q:'「水は形を選ばない。」',  d:'Wasser wählt keine Form.'},
+  {k:'和',q:'「和をもって尊しとなす。」', d:'Harmonie ist das Höchste.'},
+  {k:'今',q:'「今、ここ、この息。」',     d:'Jetzt. Hier. Dieser Atem.'},
+  {k:'空',q:'「空即是色。」',           d:'Leere ist Form.'},
+  {k:'静',q:'「静けさは神の言葉。」',    d:'Stille ist Sprache der Götter.'},
+  {k:'花',q:'「花は黙って散る。」',      d:'Blüten fallen schweigend.'},
+  {k:'月',q:'「月は一滴に映る。」',      d:'Der Mond spiegelt sich im Tropfen.'},
+  {k:'忍',q:'「忍は深さなり。」',        d:'Ertragen ist Tiefe.'},
+  {k:'誠',q:'「誠は錆びない刃。」',      d:'Wahrheit rostet nicht.'},
+  {k:'勇',q:'「勇は恐れの不在に非ず。」',d:'Mut ist nicht Abwesenheit der Furcht.'},
 ];
 
-// ─── MANGA-ERZÄHLUNGEN ────────────────────────────────────────
-const ACTIONS=[
-  'Ein Tropfen fällt.',
-  'Ein Blütenblatt dreht sich.',
-  'Eine Linie wird gezogen.',
-  'Eine Welle bricht.',
-  'Der Wind ruht.',
-  'Stille — dann ein Atem.',
-  'Tinte findet den Weg.',
-  'Ein Zeichen erscheint.',
-  'Ein Augenblick hält.',
-  'Das Tor wartet.',
-];
-
-const SPEECHES=[
-  '„Ich lerne jeden Tag neu, was es heißt, zu gehen."',
-  '„Das Maß ist nicht, wie weit ich komme. Wie tief ich falle."',
-  '„Jeder Klick ist ein Versprechen an mich selbst."',
-  '„Ein Weg ohne Anfang kennt kein Ende."',
-  '„Ich schneide die Luft, nicht den Feind."',
-  '„Meister bin ich erst, wenn ich vergesse, dass ich bin."',
-  '„Der Lehrer kommt, wenn der Schüler bereit ist."',
-  '„Schweigen ist die stärkste Antwort."',
-];
-
-const THOUGHTS=[
-  '(Ich trage das Tor in mir.)',
-  '(Tinte ist mein Atem.)',
-  '(Das Maß ist Geduld.)',
-  '(Ich bin der Tropfen — und der Ozean.)',
-  '(ZaM wartet nicht. ZaM reift.)',
-];
-
-// ─── 道 · PRÜFUNGS-STUFEN ──────────────────────────────────────
-const STUFEN=[
-  {hits:0,  name:'Anfänger',      kanji:'生'},
-  {hits:10, name:'Schüler',       kanji:'弟'},
-  {hits:30, name:'Wanderer',      kanji:'旅'},
-  {hits:50, name:'Samurai',       kanji:'侍'},
-  {hits:70, name:'Meister',       kanji:'師'},
-  {hits:90, name:'Weiser',        kanji:'賢'},
-  {hits:100,name:'Erleuchteter',  kanji:'悟'},
-];
-
-// ─── STATE ─────────────────────────────────────────────────────
-const S={
-  // Währung
-  klick:0,           // jeder Klick (Tinte)
-  hits:0,            // Treffer im Maß (0..100 → dann ZaM)
-  zam:0,             // ZaM-Pakte
-  sakuraCount:0,
+// ═══════════════════════════════════════════════════════════════════
+// UNI — Konstante State (kein veränderliches Random hier)
+// ═══════════════════════════════════════════════════════════════════
+const UNI = {
+  // Progression
+  page: 0,             // 0..80 (81 Seiten)
+  chapterIdx: 0,       // 0..8
+  pageInChapter: 0,    // 0..8
+  // Zähler
+  klick: 0,
+  zam: 0,
+  // Ladezustand
+  imagesLoaded: 0,
+  imagesFailed: 0,
+  ready: false,
+  // Highway-Modus
+  highway: false,
+  highwaySpeed: 0,     // 0..1
+  highwayTarget: 0,
   // Visual
-  tick:0,
-  auto:true,
-  speed:4,
-  lastAuto:0,
-  // Tinte — Partikel die zum Maß fliegen
-  drops:[],
-  // Sakura-Petals
-  petals:[],
-  // Kira / Funken
-  sparks:[],
-  // ZaM-Effekt
-  zamActive:false,
-  zamTimer:0,
-  // Bildschirm-Flash
-  flash:0,
-  shake:0,
+  tick: 0,
+  // Tinte
+  drops: [],
+  // Funken
+  sparks: [],
+  // Sakura
+  petals: [],
+  // Flash & Shake
+  flash: 0,
+  shake: 0,
+  // Übergang
+  transition: 0,       // 0..1 bei Page-Turn
+  // Sitzung
+  startTime: Date.now(),
+  // Koan
+  koanIdx: 0,
+  // Cache geladener Bilder
+  img: {},             // key -> HTMLImageElement | null
 };
 
-// ─── CANVAS ────────────────────────────────────────────────────
-const cv=document.getElementById('doCanvas');
-const ctx=cv.getContext('2d');
-let W,H,CX,CY,RMIN,DPR;
+// ═══════════════════════════════════════════════════════════════════
+// CANVAS — die Leinwand
+// ═══════════════════════════════════════════════════════════════════
+const cv = document.getElementById('uni');
+const ctx = cv.getContext('2d');
+let W, H, CX, CY, R, DPR;
 
 function resize(){
-  const r=cv.parentElement.getBoundingClientRect();
-  DPR=window.devicePixelRatio||1;
-  W=r.width; H=r.height;
-  cv.width=W*DPR; cv.height=H*DPR;
-  cv.style.width=W+'px'; cv.style.height=H+'px';
+  DPR = window.devicePixelRatio || 1;
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  cv.style.width = W + 'px'; cv.style.height = H + 'px';
   ctx.setTransform(DPR,0,0,DPR,0,0);
-  CX=W/2; CY=H/2;
-  RMIN=Math.min(W,H);
+  CX = W/2; CY = H/2; R = Math.min(W,H)*0.36;
   initPetals();
 }
-window.addEventListener('resize',resize);
-if(window.ResizeObserver) new ResizeObserver(resize).observe(cv.parentElement);
+window.addEventListener('resize', resize);
 
-// ─── SAKURA ────────────────────────────────────────────────────
-function initPetals(){
-  S.petals.length=0;
-  const n=18;
-  for(let i=0;i<n;i++){
-    S.petals.push({
-      x:Math.random()*W,
-      y:Math.random()*H,
-      vx:(Math.random()-0.5)*0.4,
-      vy:0.2+Math.random()*0.5,
-      rot:Math.random()*Math.PI*2,
-      vrot:(Math.random()-0.5)*0.03,
-      size:3+Math.random()*3,
-      phase:Math.random()*Math.PI*2,
-      alpha:0.35+Math.random()*0.4,
+// ═══════════════════════════════════════════════════════════════════
+// READY — Lade alle Bilder (async, Fallback erlaubt)
+// ═══════════════════════════════════════════════════════════════════
+function preloadImages(){
+  const all = [];
+  STORY.chapters.forEach((ch,ci)=>{
+    ch.pages.forEach((p,pi)=>{
+      all.push({key:`${ci}_${pi}`, file:p, chapter:ci, page:pi});
     });
-  }
-}
-
-function spawnSakuraBurst(n){
-  for(let i=0;i<n;i++){
-    S.petals.push({
-      x:CX+(Math.random()-0.5)*RMIN*0.3,
-      y:CY+(Math.random()-0.5)*RMIN*0.3,
-      vx:(Math.random()-0.5)*3,
-      vy:-1-Math.random()*2,
-      rot:Math.random()*Math.PI*2,
-      vrot:(Math.random()-0.5)*0.15,
-      size:3+Math.random()*4,
-      phase:Math.random()*Math.PI*2,
-      alpha:0.6+Math.random()*0.4,
-      burst:true,
-    });
-  }
-}
-
-// ─── TINTE-TROPFEN (KlicK) ────────────────────────────────────
-function spawnDrop(){
-  const a=Math.random()*Math.PI*2;
-  const r=RMIN*0.45+Math.random()*RMIN*0.15;
-  S.drops.push({
-    a,
-    r,
-    va:(Math.random()<0.5?-1:1)*(0.008+Math.random()*0.006),
-    vr:-0.9-Math.random()*1.4,
-    life:0,
-    maxLife:500,
-    size:2.5+Math.random()*2,
-    trail:[],
-    hue:0+Math.random()*15, // rot/orange für Shu
+  });
+  let remaining = all.length;
+  const done = ()=>{
+    remaining--;
+    UNI.imagesLoaded = all.length - remaining;
+    document.getElementById('hReady').textContent = `${UNI.imagesLoaded}/${all.length}`;
+    if(remaining <= 0){
+      UNI.ready = true;
+      console.log(`🛣️ READY · ${UNI.imagesLoaded} Bilder geladen, ${UNI.imagesFailed} Fallback`);
+    }
+  };
+  all.forEach(item=>{
+    const img = new Image();
+    let tried = 0;
+    const tryNext = ()=>{
+      if(tried >= STORY.paths.length){
+        UNI.img[item.key] = null;  // Fallback
+        UNI.imagesFailed++;
+        done();
+        return;
+      }
+      img.onload = ()=>{ UNI.img[item.key] = img; done(); };
+      img.onerror = ()=>{ tried++; tryNext(); };
+      img.src = STORY.paths[tried] + item.file;
+      tried++;
+    };
+    tryNext();
   });
 }
 
-// ─── FUNKEN (Kira) ────────────────────────────────────────────
-function spawnSpark(x,y,color,count){
-  count=count||8;
-  for(let i=0;i<count;i++){
-    const a=Math.random()*Math.PI*2;
-    const sp=1+Math.random()*3;
-    S.sparks.push({
-      x,y,
-      vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
-      life:0, maxLife:30+Math.random()*40,
-      color:color||'#f4e0a0',
-      size:0.8+Math.random()*1.6,
-    });
-  }
-}
-
-// ─── TREFFER PRÜFEN ───────────────────────────────────────────
-function checkHit(x,y){
-  // Torii-Maß: das Tor hat einen Innenbereich
-  const toriiW=RMIN*0.18;
-  const toriiH=RMIN*0.22;
-  const dy=y-CY;
-  // Öffnung liegt zwischen Balken und Boden
-  if(Math.abs(x-CX)<toriiW*0.55 && dy> -toriiH*0.15 && dy<toriiH*0.95){
-    return true;
-  }
-  return false;
-}
-
-// ─── KLICK ────────────────────────────────────────────────────
-function addKlick(fromAuto){
-  if(!localMaster.me2.allow && !fromAuto){
-    log('⛔ KlicK blockiert — Zoll','shu');
-    return;
-  }
-  S.klick++;
-  spawnDrop();
-  localMaster.klick=S.klick;
-  persistMaster();
-  // Sound
-  if(!fromAuto) beep(620+Math.random()*100, 0.04, 'sine');
-
-  updateStats();
-  sendToMaster('klick:step',{klick:S.klick});
-}
-
-// ─── HIT (Treffer im Maß) ─────────────────────────────────────
-function addHit(x,y){
-  S.hits++;
-  spawnSpark(x,y,'#f4e0a0',12);
-  spawnSpark(x,y,'#e04a3a',6);
-  beep(880+Math.random()*180, 0.12, 'sine');
-  S.flash=Math.max(S.flash,0.15);
-
-  // Manga-Erzählung: ein Satz
-  appendManga();
-
-  // Stufen-Check
-  const stufe = STUFEN.slice().reverse().find(s=>S.hits>=s.hits);
-  if(stufe){
-    const el=document.getElementById('massPractice');
-    if(el.textContent!==stufe.name){
-      el.textContent=stufe.name;
-      log(`道 · ${stufe.name} ${stufe.kanji}`,'kin');
-      // Koan wechseln bei jedem Stufen-Aufstieg
-      cycleKoan();
-    }
-  }
-
-  // 100 Treffer → ZaM
-  if(S.hits>=100){
-    triggerZaM();
-  }
-  updateStats();
-  sendToMaster('klick:zack',{zack:S.hits});
-}
-
-// ─── ZA·M (Pakt) ──────────────────────────────────────────────
-function triggerZaM(){
-  S.zam++;
-  S.hits=0;
-  S.zamActive=true;
-  S.zamTimer=0;
-  S.flash=1;
-  S.shake=10;
-
-  // Torii öffnet — das 門 erscheint
-  const seal=document.getElementById('zamSeal');
-  seal.classList.add('show');
-  beep(440, 0.5, 'sine');
-  setTimeout(()=>beep(660, 0.4, 'sine'), 120);
-  setTimeout(()=>beep(880, 0.5, 'sine'), 240);
-
-  // Sakura-Burst
-  spawnSakuraBurst(40);
-  S.sakuraCount += 40;
-
-  // Viele Funken
-  for(let i=0;i<60;i++){
-    const a=Math.random()*Math.PI*2;
-    spawnSpark(
-      CX+Math.cos(a)*RMIN*0.15,
-      CY+Math.sin(a)*RMIN*0.1,
-      Math.random()<0.5?'#f4e0a0':'#e04a3a',
-      3
-    );
-  }
-
-  // Manga-Satz
-  appendPanel('<span class="action">門 · DAS TOR ÖFFNET SICH</span>');
-  appendPanel('<span class="speech">„Du hast das Maß gefunden. ZaM nimmt dich an."</span>');
-
-  log(`門 · ZA·M PAKT · ${S.zam} vollendet`,'kin');
-
-  setTimeout(()=>{
-    seal.classList.remove('show');
-    S.zamActive=false;
-  }, 2400);
-
-  sendToMaster('zam:pact',{zam:S.zam,ts:Date.now()});
-  updateStats();
-}
-
-// ─── KOAN CYCLE ───────────────────────────────────────────────
-function cycleKoan(){
-  const k=pick(KOANS);
-  document.getElementById('koanKanji').textContent=k.kanji;
-  document.getElementById('koanText').textContent=k.text;
-  document.getElementById('koanAuthor').textContent='— '+k.author;
-}
-
-function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
-
-// ─── MANGA PANEL ──────────────────────────────────────────────
-let mangaCounter=0;
-function appendManga(){
-  mangaCounter++;
-  const type=Math.random();
-  let html='';
-  if(type<0.4){
-    html=`<span class="action">${pick(ACTIONS)}</span>`;
-  } else if(type<0.75){
-    html=`<span class="speech">${pick(SPEECHES)}</span>`;
-  } else {
-    html=`<span class="think">${pick(THOUGHTS)}</span>`;
-  }
-  appendPanel(html);
-}
-
-function appendPanel(html){
-  const el=document.getElementById('mangaPanel');
-  const p=document.createElement('div');
-  p.style.marginBottom='4px';
-  p.innerHTML=html;
-  el.appendChild(p);
-  el.scrollTop=el.scrollHeight;
-  while(el.children.length>8) el.removeChild(el.firstChild);
-}
-
-// ─── UPDATE ────────────────────────────────────────────────────
-function updateDrops(dt){
-  const toriiY=CY;
-  for(let i=S.drops.length-1;i>=0;i--){
-    const d=S.drops[i];
-    // Spiral zur Mitte
-    const orbitSpeed = 0.015/Math.max(0.25, d.r/RMIN);
-    d.a += (d.va*0.5 + orbitSpeed)*(dt/16)*(d.va>0?1:-1);
-    d.r += d.vr*(dt/16);
-    d.life++;
-    d.trail.push({a:d.a, r:d.r});
-    if(d.trail.length>6) d.trail.shift();
-
-    // Position
-    const x=CX+Math.cos(d.a)*d.r;
-    const y=CY+Math.sin(d.a)*d.r*0.9;
-
-    // Treffer-Check (nur wenn nah am Maß)
-    if(d.r < RMIN*0.14){
-      if(checkHit(x,y)){
-        addHit(x,y);
-      }
-      // Tinte verschwindet — landet im Maß
-      S.drops.splice(i,1);
-      continue;
-    }
-    if(d.r < RMIN*0.05 || d.life>d.maxLife){
-      S.drops.splice(i,1);
-    }
-  }
-}
-
-function updatePetals(dt){
-  for(let i=S.petals.length-1;i>=0;i--){
-    const p=S.petals[i];
-    p.x += p.vx*(dt/16) + Math.sin(S.tick*0.02 + p.phase)*0.4;
-    p.y += p.vy*(dt/16);
-    p.rot += p.vrot*(dt/16);
-    if(p.burst){
-      p.vx*=0.98; p.vy+=0.05*(dt/16);
-    }
-    // Wrap-around für nicht-burst
-    if(!p.burst){
-      if(p.y>H+20){ p.y=-20; p.x=Math.random()*W; }
-      if(p.x<-20) p.x=W+20;
-      if(p.x>W+20) p.x=-20;
-    } else if(p.y>H+40 || p.life>300){
-      S.petals.splice(i,1);
-    }
-    p.life=(p.life||0)+1;
-  }
-}
-
-function updateSparks(dt){
-  for(let i=S.sparks.length-1;i>=0;i--){
-    const s=S.sparks[i];
-    s.x += s.vx*(dt/16);
-    s.y += s.vy*(dt/16);
-    s.vx*=0.94; s.vy*=0.94;
-    s.life++;
-    if(s.life>s.maxLife) S.sparks.splice(i,1);
-  }
-}
-
-function updateFX(dt){
-  S.flash *= 0.88;
-  if(S.flash<0.02) S.flash=0;
-  S.shake *= 0.88;
-  if(S.shake<0.3) S.shake=0;
-}
-
-// ─── ZEICHNEN ──────────────────────────────────────────────────
-function draw(){
-  const sx=(Math.random()-0.5)*S.shake;
-  const sy=(Math.random()-0.5)*S.shake;
-  ctx.save();
-  ctx.translate(sx,sy);
-
-  // Hintergrund — Tinte
-  const bg=ctx.createRadialGradient(CX,CY,0,CX,CY,Math.max(W,H)*0.8);
-  bg.addColorStop(0,'#1a0e14');
-  bg.addColorStop(0.55,'#0c080e');
-  bg.addColorStop(1,'#050308');
-  ctx.fillStyle=bg;
-  ctx.fillRect(-20,-20,W+40,H+40);
-
-  // Seigaiha-Wellenmuster (hinten)
-  drawSeigaiha(0.04);
-
-  // Sonnenkreis (Hinomaru) schwach
-  drawHinomaru();
-
-  // Sakura-Petals (hinten)
-  drawPetals(true);
-
-  // Torii + Tinte + Funken
-  drawTorii();
-  drawDrops();
-  drawSparks();
-
-  // Sakura-Petals (vorne)
-  drawPetals(false);
-
-  // 道-Kanji im Hintergrund (sehr subtil)
-  ctx.save();
-  ctx.globalAlpha=0.04;
-  ctx.fillStyle='#d4a850';
-  ctx.font=`bold ${RMIN*0.55}px "Yu Mincho","Hiragino Mincho ProN",serif`;
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('道', CX, CY+10);
-  ctx.restore();
-
-  ctx.restore();
-
-  // Flash
-  if(S.flash>0.01){
-    ctx.fillStyle=`rgba(244,224,160,${S.flash*0.35})`;
-    ctx.fillRect(0,0,W,H);
-  }
-}
-
-// ─── HINOMARU (Sonne) ─────────────────────────────────────────
-function drawHinomaru(){
-  const r=RMIN*0.32;
-  const g=ctx.createRadialGradient(CX,CY,0,CX,CY,r);
-  g.addColorStop(0,'rgba(224,74,58,0.08)');
-  g.addColorStop(0.6,'rgba(224,74,58,0.03)');
-  g.addColorStop(1,'rgba(224,74,58,0)');
-  ctx.fillStyle=g;
-  ctx.beginPath(); ctx.arc(CX,CY,r,0,Math.PI*2); ctx.fill();
-}
-
-// ─── SEIGAIHA (Wellenmuster) ──────────────────────────────────
-function drawSeigaiha(alpha){
-  const size=48;
-  const rows=Math.ceil(H/size)+2;
-  const cols=Math.ceil(W/size)+2;
-  ctx.save();
-  ctx.strokeStyle=`rgba(212,168,80,${alpha})`;
-  ctx.lineWidth=0.8;
-  for(let r=0;r<rows;r++){
-    for(let c=0;c<cols;c++){
-      const x=c*size + (r%2)*size/2;
-      const y=r*size*0.8;
-      // 3 halbkreise übereinander
-      for(let k=0;k<3;k++){
-        const rad=size*0.42*(1-k*0.22);
-        ctx.beginPath();
-        ctx.arc(x, y, rad, Math.PI, 0);
-        ctx.stroke();
-      }
-    }
-  }
-  ctx.restore();
-}
-
-// ─── TORII ────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// TOOR — Torii-Gate als Zentrum
+// ═══════════════════════════════════════════════════════════════════
 function drawTorii(){
-  const toriiW=RMIN*0.18;
-  const toriiH=RMIN*0.22;
-  const postW=6;
-  const topBarH=8;
-  const x0=CX-toriiW/2;
-  const x1=CX+toriiW/2;
-  const yTop=CY-toriiH*0.15;
-  const yBottom=CY+toriiH*0.95;
+  const tw = R * 0.55;
+  const th = R * 0.62;
+  const x0 = CX - tw/2;
+  const x1 = CX + tw/2;
+  const yTop = CY - th*0.55;
+  const yBot = CY + th*0.95;
+  const postW = Math.max(5, R*0.022);
+  const topH = Math.max(8, R*0.032);
 
-  // Puls (ZaM aktiv)
-  const pulse=S.zamActive ? 1+0.15*Math.sin(S.zamTimer*0.2) : 1;
+  const pulse = UNI.zam > 0 ? (1 + 0.08*Math.sin(UNI.tick*0.15)) : 1;
 
   ctx.save();
-  ctx.shadowColor='#e04a3a';
-  ctx.shadowBlur=S.zamActive?36:18;
-  ctx.fillStyle='#e04a3a';
+  ctx.shadowColor = '#e04a3a';
+  ctx.shadowBlur = UNI.zam > 0 ? 36 : 18;
+  ctx.fillStyle = '#e04a3a';
 
-  // Oberer Balken (kasagi)
-  ctx.fillRect(
-    x0-toriiW*0.12, yTop*1.0 - topBarH, 
-    toriiW*1.24, topBarH
-  );
+  // Kasagi (oberer Bogen)
+  ctx.fillRect(x0 - tw*0.08, yTop, tw*1.16, topH);
 
-  // Zweiter Balken (nuki)
-  ctx.fillRect(
-    x0-toriiW*0.05, yTop + topBarH*0.6,
-    toriiW*1.10, topBarH*0.55
-  );
+  // Nuki (zweiter Balken)
+  ctx.fillRect(x0 - tw*0.03, yTop + topH*1.7, tw*1.06, topH*0.55);
 
-  // Zwei Pfosten
-  ctx.fillRect(x0 - postW/2, yTop, postW, yBottom-yTop);
-  ctx.fillRect(x1 - postW/2, yTop, postW, yBottom-yTop);
+  // Pfosten
+  ctx.fillRect(x0, yTop, postW*pulse, yBot - yTop);
+  ctx.fillRect(x1 - postW*pulse, yTop, postW*pulse, yBot - yTop);
 
-  ctx.shadowBlur=0;
-
-  // Mittellinie (sanft)
-  ctx.strokeStyle='rgba(244,224,160,0.35)';
-  ctx.lineWidth=1;
-  ctx.beginPath();
-  ctx.moveTo(CX, yTop+topBarH*1.2);
-  ctx.lineTo(CX, yBottom);
-  ctx.stroke();
-
-  // Glow-Aura
-  const g=ctx.createRadialGradient(CX,CY-toriiH*0.15,0,CX,CY-toriiH*0.15,toriiW);
-  g.addColorStop(0,'rgba(224,74,58,0.15)');
-  g.addColorStop(1,'rgba(224,74,58,0)');
-  ctx.fillStyle=g;
-  ctx.beginPath(); ctx.arc(CX,CY-toriiH*0.15,toriiW,0,Math.PI*2); ctx.fill();
-
+  ctx.shadowBlur = 0;
   ctx.restore();
 
-  // Maß-Kreis (Andeutung)
+  // Öffnung (das Maß) — feiner Kreis
   ctx.beginPath();
-  ctx.ellipse(CX, CY+toriiH*0.4, toriiW*0.5, toriiH*0.55, 0, 0, Math.PI*2);
-  ctx.strokeStyle='rgba(244,224,160,0.2)';
-  ctx.setLineDash([3,6]);
-  ctx.lineWidth=1;
+  ctx.ellipse(CX, CY + th*0.1, tw*0.42, th*0.52, 0, 0, Math.PI*2);
+  ctx.strokeStyle = `rgba(244,224,160,${0.14 + 0.06*Math.sin(UNI.tick*0.05)})`;
+  ctx.setLineDash([3, 8]);
+  ctx.lineWidth = 1;
   ctx.stroke();
   ctx.setLineDash([]);
 }
 
-// ─── TINTE-TROPFEN ZEICHNEN ────────────────────────────────────
-function drawDrops(){
-  for(const d of S.drops){
-    const x=CX+Math.cos(d.a)*d.r;
-    const y=CY+Math.sin(d.a)*d.r*0.9;
-    const fade=Math.min(1, d.r/(RMIN*0.2));
-
-    // Trail
-    d.trail.forEach((t,i)=>{
-      const tx=CX+Math.cos(t.a)*t.r;
-      const ty=CY+Math.sin(t.a)*t.r*0.9;
-      const a=(i/d.trail.length)*0.4*fade;
-      ctx.beginPath();
-      ctx.arc(tx,ty,d.size*(i/d.trail.length)*0.7,0,Math.PI*2);
-      ctx.fillStyle=`hsla(${d.hue},80%,60%,${a})`;
-      ctx.fill();
+// ═══════════════════════════════════════════════════════════════════
+// SAKURA — Petals
+// ═══════════════════════════════════════════════════════════════════
+function initPetals(){
+  UNI.petals.length = 0;
+  const n = 24;
+  for(let i=0;i<n;i++){
+    UNI.petals.push({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.25, vy: 0.15 + Math.random()*0.4,
+      rot: Math.random()*Math.PI*2, vrot: (Math.random()-0.5)*0.02,
+      size: 2.5 + Math.random()*2.5,
+      phase: Math.random()*Math.PI*2,
+      alpha: 0.3 + Math.random()*0.4,
     });
-
-    // Glow
-    const g=ctx.createRadialGradient(x,y,0,x,y,d.size*5);
-    g.addColorStop(0,`hsla(${d.hue},90%,75%,0.9)`);
-    g.addColorStop(0.5,`hsla(${d.hue},80%,55%,0.3)`);
-    g.addColorStop(1,`hsla(${d.hue},80%,55%,0)`);
-    ctx.fillStyle=g;
-    ctx.beginPath(); ctx.arc(x,y,d.size*5,0,Math.PI*2); ctx.fill();
-
-    // Körper
-    ctx.beginPath();
-    ctx.arc(x,y,d.size,0,Math.PI*2);
-    ctx.fillStyle=`hsl(${d.hue},90%,70%)`;
-    ctx.shadowColor=`hsl(${d.hue},90%,55%)`;
-    ctx.shadowBlur=12;
-    ctx.fill();
-    ctx.shadowBlur=0;
   }
 }
 
-// ─── FUNKEN ────────────────────────────────────────────────────
-function drawSparks(){
-  for(const s of S.sparks){
-    const a=1-s.life/s.maxLife;
-    ctx.globalAlpha=a;
-    ctx.fillStyle=s.color;
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.size*(0.4+a*0.6),0,Math.PI*2);
-    ctx.fill();
-    ctx.globalAlpha=1;
+// ═══════════════════════════════════════════════════════════════════
+// TINTE — Drops
+// ═══════════════════════════════════════════════════════════════════
+function spawnDrop(x, y){
+  const dx = CX - x, dy = CY - y;
+  const dist = Math.hypot(dx, dy);
+  if(dist < 20) return;
+  const a = Math.atan2(dy, dx);
+  UNI.drops.push({
+    x, y, a,
+    r: dist,
+    vr: -Math.max(2.5, dist*0.038),
+    va: 0.004,
+    life: 0,
+    maxLife: 220,
+    size: 2 + Math.random()*1.5,
+    trail: [],
+  });
+}
+
+function spawnSparks(x, y, color, n){
+  n = n || 8;
+  for(let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2;
+    const sp = 0.8 + Math.random()*2.5;
+    UNI.sparks.push({
+      x, y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp,
+      life: 0, maxLife: 25 + Math.random()*35,
+      color: color || '#f4e0a0',
+      size: 0.8 + Math.random()*1.4,
+    });
   }
 }
 
-// ─── SAKURA-PETALS ────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// HIT-CHECK — trifft der Drop das Torii-Maß?
+// ═══════════════════════════════════════════════════════════════════
+function isHit(x, y){
+  const tw = R * 0.55;
+  const th = R * 0.62;
+  const dy = y - CY;
+  return Math.abs(x - CX) < tw*0.48 && dy > -th*0.15 && dy < th*0.85;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PAGE-WECHSEL — Einbahnstraße
+// ═══════════════════════════════════════════════════════════════════
+function nextPage(){
+  if(UNI.transition > 0) return;
+  UNI.page++;
+  UNI.pageInChapter++;
+  if(UNI.pageInChapter >= 9){
+    UNI.pageInChapter = 0;
+    UNI.chapterIdx++;
+    if(UNI.chapterIdx >= 9) UNI.chapterIdx = 0;
+    cycleKoan();
+  }
+  if(UNI.page >= 81){
+    // Ende → Anfang (Ewigkeit)
+    UNI.page = 0;
+    UNI.chapterIdx = 0;
+    UNI.pageInChapter = 0;
+    UNI.zam++;
+    showSeal('∞');
+    updateHUD();
+  }
+  UNI.transition = 1;
+  updateHUD();
+}
+
+function showSeal(kanji){
+  const s = document.getElementById('seal');
+  s.textContent = kanji || '門';
+  s.classList.add('show');
+  setTimeout(()=>s.classList.remove('show'), 1600);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// KLICK — Tinte + Progress
+// ═══════════════════════════════════════════════════════════════════
+function click(x, y){
+  UNI.klick++;
+  spawnDrop(x, y);
+
+  // Sound
+  beep(520 + Math.random()*80, 0.03);
+
+  // Jeder 9. Klick → Seite weiter (Einbahnstraße)
+  if(UNI.klick % 9 === 0){
+    nextPage();
+    beep(880, 0.15);
+  }
+  // Alle 100 → ZaM
+  if(UNI.klick % 100 === 0 && UNI.klick > 0){
+    UNI.zam++;
+    showSeal('門');
+    spawnSparks(CX, CY, '#f4e0a0', 50);
+    spawnSparks(CX, CY, '#e04a3a', 30);
+    UNI.flash = 0.9;
+    UNI.shake = 10;
+    beep(440, 0.4);
+    setTimeout(()=>beep(660, 0.35), 130);
+    setTimeout(()=>beep(880, 0.5), 260);
+    updateHUD();
+  }
+  updateHUD();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// HIGHWAY — Beschleunigung: alle Seiten rauschen durch
+// ═══════════════════════════════════════════════════════════════════
+function toggleHighway(){
+  UNI.highway = !UNI.highway;
+  UNI.highwayTarget = UNI.highway ? 1 : 0;
+  const el = document.getElementById('sMode');
+  el.textContent = UNI.highway ? 'ON' : 'OFF';
+  el.style.color = UNI.highway ? '#f4e0a0' : '';
+  if(UNI.highway) beep(990, 0.2);
+  else beep(330, 0.2);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// KOAN — Way of Life
+// ═══════════════════════════════════════════════════════════════════
+function cycleKoan(){
+  UNI.koanIdx = (UNI.koanIdx + 1) % KOANS.length;
+  const k = KOANS[UNI.koanIdx];
+  document.getElementById('qKanji').textContent = k.k;
+  document.getElementById('qText').textContent = k.q;
+}
+setInterval(cycleKoan, 11000);
+
+// ═══════════════════════════════════════════════════════════════════
+// HUD
+// ═══════════════════════════════════════════════════════════════════
+function updateHUD(){
+  document.getElementById('hPage').textContent = `${UNI.page + 1}/${STORY.totalPages}`;
+  document.getElementById('hChap').textContent = `${UNI.chapterIdx + 1}/9`;
+  document.getElementById('hClick').textContent = UNI.klick;
+  document.getElementById('hZam').textContent = UNI.zam;
+  const fill = document.getElementById('sFill');
+  fill.style.width = (UNI.highwaySpeed*100).toFixed(0) + '%';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SOUND
+// ═══════════════════════════════════════════════════════════════════
+let audioCtx = null;
+function beep(freq, dur){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    g.gain.value = 0.035;
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + dur);
+  }catch(_){}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DRAW — der Rahmen + prozedurale Story-Seite
+// ═══════════════════════════════════════════════════════════════════
+function drawStoryPage(ci, pi){
+  const key = `${ci}_${pi}`;
+  const img = UNI.img[key];
+
+  // Bereich für Bild (Manga-Panel innen)
+  const pw = R*1.8;
+  const ph = R*1.2;
+  const px = CX - pw/2;
+  const py = CY - ph/2;
+
+  // Panel-Rahmen (weiß schmal, innen schwarz)
+  ctx.fillStyle = 'rgba(8,6,10,0.92)';
+  ctx.fillRect(px, py, pw, ph);
+  ctx.strokeStyle = 'rgba(240,232,224,0.35)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(px, py, pw, ph);
+  ctx.strokeStyle = 'rgba(240,232,224,0.12)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(px+4, py+4, pw-8, ph-8);
+
+  if(img){
+    // Bild zeichnen, in Panel einpassen
+    const iw = img.width, ih = img.height;
+    const scale = Math.min(pw/iw, ph/ih);
+    const dw = iw*scale, dh = ih*scale;
+    const dx = px + (pw-dw)/2, dy = py + (ph-dh)/2;
+    ctx.globalAlpha = 0.92;
+    ctx.drawImage(img, dx, dy, dw, dh);
+    ctx.globalAlpha = 1;
+  } else {
+    // Prozeduraler Fallback — Manga-Panel
+    drawProceduralPanel(px, py, pw, ph, ci, pi);
+  }
+
+  // Seitenzahl im Panel
+  ctx.fillStyle = 'rgba(240,232,224,0.55)';
+  ctx.font = '10px Consolas';
+  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  ctx.fillText(`${UNI.page+1}/${STORY.totalPages}`, px + pw - 8, py + ph - 8);
+
+  // Kapitel-Kanji links oben
+  const ch = STORY.chapters[ci];
+  if(ch){
+    ctx.fillStyle = 'rgba(244,224,160,0.75)';
+    ctx.font = '22px "Yu Mincho","Hiragino Mincho ProN",serif';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillText(ch.kanji, px + 10, py + 8);
+  }
+}
+
+function drawProceduralPanel(px, py, pw, ph, ci, pi){
+  // Seed für deterministische Panels
+  const seed = ci*9 + pi + 1;
+
+  // Hintergrund
+  const g = ctx.createLinearGradient(px, py, px, py+ph);
+  g.addColorStop(0, `hsl(${(seed*11)%60}, 30%, 8%)`);
+  g.addColorStop(1, `hsl(${(seed*17)%60}, 25%, 4%)`);
+  ctx.fillStyle = g;
+  ctx.fillRect(px, py, pw, ph);
+
+  // Manga-Linien (Schraffur)
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(px, py, pw, ph);
+  ctx.clip();
+  ctx.strokeStyle = 'rgba(240,232,224,0.05)';
+  ctx.lineWidth = 0.8;
+  for(let i=0; i<40; i++){
+    const x = px + (i*23 + seed*7) % pw;
+    ctx.beginPath();
+    ctx.moveTo(x, py);
+    ctx.lineTo(x - 30, py + ph);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // Ein Kanji groß
+  const kanjis = ['道','和','静','空','今','花','月','忍','誠','勇','無','∞'];
+  const k = kanjis[seed % kanjis.length];
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  ctx.fillStyle = '#f4e0a0';
+  ctx.font = `bold ${Math.min(pw,ph)*0.55}px "Yu Mincho","Hiragino Mincho ProN",serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(k, px + pw/2, py + ph/2);
+  ctx.restore();
+
+  // Kleines Sonnen-Symbol
+  ctx.beginPath();
+  ctx.arc(px + pw*0.85, py + ph*0.18, 14, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(224,74,58,0.35)';
+  ctx.fill();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DRAW — Gesamtbild
+// ═══════════════════════════════════════════════════════════════════
+function draw(){
+  const sx = (Math.random()-0.5) * UNI.shake;
+  const sy = (Math.random()-0.5) * UNI.shake;
+  ctx.save();
+  ctx.translate(sx, sy);
+
+  // Hintergrund
+  ctx.fillStyle = '#050308';
+  ctx.fillRect(-20, -20, W+40, H+40);
+
+  // Aura
+  const bg = ctx.createRadialGradient(CX, CY, 0, CX, CY, Math.max(W,H)*0.75);
+  bg.addColorStop(0, 'rgba(224,74,58,0.06)');
+  bg.addColorStop(0.5, 'rgba(224,74,58,0.02)');
+  bg.addColorStop(1, 'rgba(224,74,58,0)');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // 道 im Hintergrund
+  ctx.save();
+  ctx.globalAlpha = 0.03;
+  ctx.fillStyle = '#f4e0a0';
+  ctx.font = `bold ${R*1.4}px "Yu Mincho","Hiragino Mincho ProN",serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('道', CX, CY + R*0.1);
+  ctx.restore();
+
+  // Sakura hinten
+  drawPetals(true);
+
+  // Torii
+  drawTorii();
+
+  // Story-Seite (Manga-Panel)
+  drawStoryPage(UNI.chapterIdx, UNI.pageInChapter);
+
+  // Tinte
+  drawDrops();
+
+  // Funken
+  drawSparks();
+
+  // Sakura vorne
+  drawPetals(false);
+
+  ctx.restore();
+
+  // Flash
+  if(UNI.flash > 0.01){
+    ctx.fillStyle = `rgba(244,224,160,${UNI.flash * 0.35})`;
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
 function drawPetals(behind){
-  for(const p of S.petals){
-    const isBehind = p.y < CY || p.burst;
+  for(const p of UNI.petals){
+    const isBehind = p.y < CY;
     if(isBehind !== behind) continue;
-
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(p.rot);
-    ctx.globalAlpha=p.alpha;
-
-    // Petal-Form (5-eckig — Kirschblüte)
-    ctx.fillStyle='#ffb0c8';
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = '#ffb0c8';
     ctx.beginPath();
     for(let i=0;i<5;i++){
-      const a=(i/5)*Math.PI*2;
-      const px=Math.cos(a)*p.size;
-      const py=Math.sin(a)*p.size;
-      if(i===0) ctx.moveTo(px,py);
-      else ctx.lineTo(px,py);
-      // innere Kerbe
-      const a2=a+Math.PI/5;
+      const a = (i/5)*Math.PI*2;
+      const a2 = a + Math.PI/5;
+      const px = Math.cos(a)*p.size;
+      const py = Math.sin(a)*p.size;
+      if(i===0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
       ctx.lineTo(Math.cos(a2)*p.size*0.4, Math.sin(a2)*p.size*0.4);
     }
     ctx.closePath();
     ctx.fill();
-
-    // Innen-Highlight
-    ctx.fillStyle='rgba(255,220,235,0.6)';
     ctx.beginPath();
-    ctx.arc(0,0,p.size*0.3,0,Math.PI*2);
+    ctx.arc(0, 0, p.size*0.25, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,220,235,0.7)';
     ctx.fill();
-
     ctx.restore();
   }
 }
 
-// ─── LOOP ──────────────────────────────────────────────────────
-let lastT=0;
-function loop(now){
-  const dt=Math.min(48, now-lastT||16);
-  lastT=now;
-  S.tick++;
+function drawDrops(){
+  for(const d of UNI.drops){
+    d.trail.forEach((t, i)=>{
+      const a = (i/d.trail.length) * 0.35;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, d.size*(i/d.trail.length)*0.65, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(224,74,58,${a})`;
+      ctx.fill();
+    });
+    const x = CX + Math.cos(d.a) * d.r;
+    const y = CY + Math.sin(d.a) * d.r * 0.9;
 
-  if(S.zamActive) S.zamTimer++;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, d.size*4);
+    g.addColorStop(0, 'rgba(244,224,160,0.9)');
+    g.addColorStop(0.4, 'rgba(224,74,58,0.4)');
+    g.addColorStop(1, 'rgba(224,74,58,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, d.size*4, 0, Math.PI*2); ctx.fill();
 
-  // Auto-KlicK
-  if(S.auto && localMaster.me2.allow){
-    const interval=Math.max(140, 900 - S.speed*70);
-    if(now - S.lastAuto > interval){
-      S.lastAuto=now;
-      addKlick(true);
+    ctx.beginPath();
+    ctx.arc(x, y, d.size, 0, Math.PI*2);
+    ctx.fillStyle = '#f4e0a0';
+    ctx.shadowColor = '#e04a3a';
+    ctx.shadowBlur = 10;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+}
+
+function drawSparks(){
+  for(const s of UNI.sparks){
+    const a = 1 - s.life/s.maxLife;
+    ctx.globalAlpha = a;
+    ctx.fillStyle = s.color;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size*(0.5+a*0.5), 0, Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// UPDATE
+// ═══════════════════════════════════════════════════════════════════
+function updateDrops(dt){
+  for(let i = UNI.drops.length - 1; i >= 0; i--){
+    const d = UNI.drops[i];
+    d.r += d.vr * (dt/16);
+    d.life++;
+    const t = 1 - d.r/(R*2);
+    d.a += d.va * (dt/16) * (0.5 + t);
+    const x = CX + Math.cos(d.a)*d.r;
+    const y = CY + Math.sin(d.a)*d.r*0.9;
+    d.trail.push({x, y});
+    if(d.trail.length > 8) d.trail.shift();
+    if(d.r < R*0.14){
+      if(isHit(x, y)){
+        spawnSparks(x, y, '#f4e0a0', 10);
+        spawnSparks(x, y, '#e04a3a', 4);
+        beep(880 + Math.random()*120, 0.08);
+        UNI.flash = Math.min(0.25, UNI.flash + 0.1);
+      } else {
+        spawnSparks(x, y, '#8a8098', 3);
+      }
+      UNI.drops.splice(i, 1);
+      continue;
+    }
+    if(d.life > d.maxLife) UNI.drops.splice(i, 1);
+  }
+}
+
+function updatePetals(dt){
+  for(const p of UNI.petals){
+    p.x += p.vx*(dt/16) + Math.sin(UNI.tick*0.02 + p.phase)*0.35;
+    p.y += p.vy*(dt/16);
+    p.rot += p.vrot*(dt/16);
+    if(p.y > H + 20){ p.y = -20; p.x = Math.random()*W; }
+    if(p.x < -20) p.x = W+20;
+    if(p.x > W+20) p.x = -20;
+  }
+}
+
+function updateSparks(dt){
+  for(let i = UNI.sparks.length - 1; i >= 0; i--){
+    const s = UNI.sparks[i];
+    s.x += s.vx*(dt/16); s.y += s.vy*(dt/16);
+    s.vx *= 0.94; s.vy *= 0.94;
+    s.life++;
+    if(s.life > s.maxLife) UNI.sparks.splice(i, 1);
+  }
+}
+
+function updateHighway(dt){
+  // Sanft zum Zielwert
+  UNI.highwaySpeed += (UNI.highwayTarget - UNI.highwaySpeed) * 0.06;
+  if(UNI.highway && UNI.highwaySpeed > 0.3){
+    // Alle ~180ms eine Seite weiter, abhängig von Geschwindigkeit
+    const interval = 180 / Math.max(0.5, UNI.highwaySpeed);
+    if(UNI.tick % Math.max(4, Math.round(interval/16)) === 0){
+      if(UNI.klick % 9 === 0) nextPage();
+      UNI.klick++;
+      if(UNI.klick % 100 === 0){
+        UNI.zam++;
+        showSeal('門');
+        spawnSparks(CX, CY, '#f4e0a0', 40);
+        UNI.flash = 0.8;
+        beep(660, 0.3);
+        updateHUD();
+      }
     }
   }
+  document.getElementById('sFill').style.width = (UNI.highwaySpeed*100).toFixed(0) + '%';
+}
 
-  // Zufällige Sakura
-  if(Math.random()<0.006){
-    const p=S.petals[Math.floor(Math.random()*S.petals.length)];
-    if(p) p.phase=Math.random()*Math.PI*2;
-  }
+function updateFX(){
+  UNI.flash *= 0.88; if(UNI.flash < 0.02) UNI.flash = 0;
+  UNI.shake *= 0.88; if(UNI.shake < 0.3) UNI.shake = 0;
+  if(UNI.transition > 0) UNI.transition = Math.max(0, UNI.transition - 0.05);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// LOOP
+// ═══════════════════════════════════════════════════════════════════
+let lastT = 0;
+function loop(now){
+  const dt = Math.min(48, now - lastT || 16);
+  lastT = now;
+  UNI.tick++;
 
   updateDrops(dt);
   updatePetals(dt);
   updateSparks(dt);
-  updateFX(dt);
+  updateHighway(dt);
+  updateFX();
+
   draw();
   requestAnimationFrame(loop);
 }
 
-// ─── STATS ─────────────────────────────────────────────────────
-function updateStats(){
-  document.getElementById('sKlick').textContent=S.klick;
-  document.getElementById('sHits').textContent=S.hits;
-  document.getElementById('sZam').textContent=S.zam;
-  document.getElementById('sSakura').textContent=S.sakuraCount;
-  document.getElementById('massHit').textContent=`${S.hits}/100`;
-  document.getElementById('massZam').textContent=S.zam;
-  document.getElementById('massFill').style.width=S.hits+'%';
-}
-
-// ─── LOG ──────────────────────────────────────────────────────
-function log(msg,cls){
-  console.log(`[道] ${msg}`);
-  // kurzer Hinweis im Manga-Panel
-  if(cls==='kin'){
-    appendPanel(`<span class="action">${msg}</span>`);
-  }
-}
-
-// ─── SOUND (WebAudio) ─────────────────────────────────────────
-let audioCtx=null;
-function beep(freq,dur,type){
-  try{
-    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type=type||'sine';
-    o.frequency.value=freq;
-    g.gain.value=0.04;
-    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+dur);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start();
-    o.stop(audioCtx.currentTime+dur);
-  }catch(_){}
-}
-
-// ─── BUTTONS ──────────────────────────────────────────────────
-document.getElementById('btnKlick').addEventListener('click',()=>addKlick(false));
-document.getElementById('btnAuto').addEventListener('click',(e)=>{
-  S.auto=!S.auto;
-  e.currentTarget.classList.toggle('active',S.auto);
-  e.currentTarget.textContent=S.auto?'⏸ AUTO':'▶ AUTO';
+// ═══════════════════════════════════════════════════════════════════
+// INPUT
+// ═══════════════════════════════════════════════════════════════════
+cv.addEventListener('click', (e)=>{
+  click(e.clientX, e.clientY);
 });
-document.getElementById('btnZaM').addEventListener('click',()=>{
-  // Manueller ZaM-Trigger (nur wenn genug Hits)
-  if(S.hits>=10){
-    triggerZaM();
-  } else {
-    log('道 · zu früh — sammle mehr Treffer','shu');
-    appendPanel('<span class="action">門 · NOCH NICHT — DAS MAß IST NICHT ERFÜLLT</span>');
-  }
-});
-document.getElementById('btnSakura').addEventListener('click',()=>{
-  spawnSakuraBurst(25);
-  S.sakuraCount += 25;
-  updateStats();
-  appendPanel('<span class="wave">🌸 · Ein Windhauch — Kirschblüten fallen.</span>');
-});
-document.getElementById('btnReset').addEventListener('click',()=>{
-  S.hits=0; S.klick=0; S.zam=0; S.sakuraCount=0;
-  S.drops=[]; S.sparks=[];
-  updateStats();
-  document.getElementById('mangaPanel').innerHTML=
-    '<span class="speech">Der Weg beginnt mit einem einzigen Tropfen Tinte …</span>';
-  cycleKoan();
+cv.addEventListener('touchstart', (e)=>{
+  const t = e.touches[0];
+  if(t) click(t.clientX, t.clientY);
+  e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === ' '){ e.preventDefault(); click(CX + (Math.random()-0.5)*R*0.6, CY + (Math.random()-0.5)*R*0.5); }
+  if(e.key === 'h' || e.key === 'H') toggleHighway();
+  if(e.key === 'n' || e.key === 'N') nextPage();
+  if(e.key === 'k' || e.key === 'K') cycleKoan();
 });
 
-document.getElementById('speed').addEventListener('input',(e)=>{
-  S.speed=parseInt(e.target.value,10);
-});
-
-// ─── CANVAS KLICK ─────────────────────────────────────────────
-cv.addEventListener('click',(e)=>{
-  const r=cv.getBoundingClientRect();
-  const x=e.clientX-r.left, y=e.clientY-r.top;
-
-  // Wenn Klick im Torii-Maß → direkter Treffer-Bonus
-  if(checkHit(x,y)){
-    addKlick(false);
-    // Sofort-Treffer
-    setTimeout(()=>{
-      // Drop spawnen der schnell reinfliegt
-      S.drops.push({
-        a:Math.atan2(y-CY, x-CX),
-        r:Math.sqrt((x-CX)**2+(y-CY)**2)/0.9,
-        va:0, vr:-4.5,
-        life:0, maxLife:60,
-        size:3,
-        trail:[],
-        hue:0,
-      });
-    }, 40);
-    spawnSpark(x,y,'#f4e0a0',10);
-  } else {
-    addKlick(false);
-    spawnSpark(x,y,'#e04a3a',4);
-  }
-});
-
-// ─── KEYBOARD ─────────────────────────────────────────────────
-document.addEventListener('keydown',(e)=>{
-  if(e.target.tagName==='INPUT') return;
-  if(e.key===' '){e.preventDefault(); addKlick(false);}
-  if(e.key==='z'||e.key==='Z') document.getElementById('btnZaM').click();
-  if(e.key==='s'||e.key==='S') document.getElementById('btnSakura').click();
-  if(e.key==='p'||e.key==='P') document.getElementById('btnAuto').click();
-  if(e.key==='r'||e.key==='R') document.getElementById('btnReset').click();
-});
-
-// ─── CLOCK ────────────────────────────────────────────────────
-function clock(){
-  document.getElementById('sClock').textContent='⏱️ '+new Date().toLocaleTimeString('de-DE');
-}
-setInterval(clock,1000); clock();
-
-// ─── KOAN ROTATION (alle 12 s) ────────────────────────────────
-setInterval(cycleKoan, 12000);
-
-// ─── API ──────────────────────────────────────────────────────
-window.DO={
-  klick:(n=1)=>{ for(let i=0;i<n;i++) addKlick(false); },
-  zam:triggerZaM,
-  sakura:()=>document.getElementById('btnSakura').click(),
-  reset:()=>document.getElementById('btnReset').click(),
-  koan:cycleKoan,
-  state:()=>({
-    klick:S.klick, hits:S.hits, zam:S.zam,
-    sakura:S.sakuraCount,
-    stufe:STUFEN.slice().reverse().find(s=>S.hits>=s.hits)?.name||'—',
-    drops:S.drops.length,
-    petals:S.petals.length,
+// ═══════════════════════════════════════════════════════════════════
+// API
+// ═══════════════════════════════════════════════════════════════════
+window.UNI = {
+  click: (n=1)=>{ for(let i=0;i<n;i++) click(CX, CY); },
+  next: nextPage,
+  highway: toggleHighway,
+  koan: cycleKoan,
+  state: ()=>({
+    page: UNI.page, chapter: UNI.chapterIdx, pageInChapter: UNI.pageInChapter,
+    klick: UNI.klick, zam: UNI.zam,
+    ready: UNI.ready, loaded: UNI.imagesLoaded, failed: UNI.imagesFailed,
+    highway: UNI.highway, speed: UNI.highwaySpeed,
   }),
-  master:{
-    connected:()=>isMasterConnected,
-    state:()=>({...localMaster}),
-  },
+  story: STORY,
+  images: UNI.img,
 };
 
-// ─── INIT ─────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
 resize();
-updateStats();
+preloadImages();
+updateHUD();
 
-// Erste 12 Tropfen einfliegen lassen
-for(let i=0;i<12;i++){
-  setTimeout(spawnDrop, i*140);
-}
-
-log('🗾 iki1uc · 道 · MANGA · ANIME · verKlicK\'t','kin');
-log('   KlicK ist Tinte · das Tor ist das Maß · ZaM ist der Pakt','shu');
-log('   Space = Tinte · Z = ZaM · S = Sakura · P = Auto · R = Reset','kin');
-
-console.log('%c🗾 iki1uc · 道 · verKlicK\'t','color:#e04a3a;font-weight:bold;font-size:14px;');
-console.log('→ window.DO.klick() · .zam() · .sakura() · .state()');
+console.log('%c🛣️ UNI · HIGHWAY · TOOR · iki1uc','color:#e04a3a;font-weight:bold;font-size:14px;');
+console.log('Klick = Tinte · Tinte = Seite · 9 Seiten = Kapitel · 100 Klick = ZaM');
+console.log('H = HIGHWAY · N = next · K = Koan · Leertaste = Klick');
+console.log('Die Einbahnstraße läuft.');
 
 requestAnimationFrame(loop);
 </script>
