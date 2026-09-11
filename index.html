@@ -3,28 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>📖 iki1uc · STORY · never ending</title>
+<title>🗾 iki1uc · 道 · MANGA · ANIME · verKlicK't</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
-    --void:#020308;
-    --bg:#0a0812;
-    --paper:#1a1420;
-    --parch:#e8dcc4;
-    --gold:#e0b856;
-    --gold2:#ffe9a0;
-    --violet:#b388ff;
-    --cyan:#7fdcff;
-    --green:#8cf0d0;
-    --red:#ff6688;
-    --line:rgba(224,184,86,0.15);
+    --ink:#08070a;
+    --ink2:#141018;
+    --paper:#1a1418;
+    --shu:#e04a3a;         /* 朱 — Vermillion */
+    --shu2:#ff7058;
+    --kin:#d4a850;         /* 金 — Gold */
+    --kin2:#f4e0a0;
+    --sakura:#ffb0c8;
+    --sumi:#1a1418;
+    --hai:#8a8098;         /* 灰 — Ash */
+    --shiro:#f0e8e0;       /* 白 — Paper white */
+    --line:rgba(224,74,58,0.15);
   }
   html,body{height:100%;}
   body{
     background:
-      radial-gradient(ellipse at 50% 30%, #1a0f24 0%, #0a0812 55%, #020308 100%);
-    color:#d8c8a8;
-    font-family:'EB Garamond','Georgia','Times New Roman',serif;
+      radial-gradient(ellipse at 50% 40%, #1a0e14 0%, #0c080e 55%, #050308 100%);
+    color:var(--shiro);
+    font-family:'Consolas','Courier New',monospace;
     height:100vh; overflow:hidden;
     display:flex; flex-direction:column;
   }
@@ -32,660 +33,339 @@
   /* HEADER */
   header{
     display:flex; justify-content:space-between; align-items:center;
-    padding:10px 20px;
+    padding:9px 20px;
     border-bottom:1px solid var(--line);
-    background:rgba(5,3,10,0.85);
-    backdrop-filter:blur(10px);
+    background:rgba(8,7,10,0.9);
+    backdrop-filter:blur(12px);
     flex-wrap:wrap; gap:10px; z-index:10;
   }
   header h1{
-    font-size:16px; font-weight:400; letter-spacing:5px;
-    background:linear-gradient(135deg,#ffe9a0,#e0b856,#b388ff);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    font-family:'EB Garamond',serif;
-    font-style:italic;
+    font-size:15px; font-weight:400; letter-spacing:4px;
+    color:var(--shiro);
+    font-family:'Yu Mincho','Hiragino Mincho ProN','Times New Roman',serif;
   }
   header h1 small{
-    font-size:10px; color:#6a5a7a;
-    -webkit-text-fill-color:#6a5a7a;
+    font-size:9px; color:#6a5a70;
     letter-spacing:2px; margin-left:10px;
     font-family:'Consolas',monospace;
-    font-style:normal;
   }
   header h1 .tag{
-    font-size:9px; letter-spacing:3px;
-    -webkit-text-fill-color:#e0b856;
-    border:1px solid rgba(224,184,86,0.4);
-    padding:1px 8px; border-radius:3px; margin-left:8px;
+    font-size:8px; letter-spacing:3px;
+    color:var(--shu2);
+    border:1px solid rgba(224,74,58,0.5);
+    padding:1px 7px; border-radius:3px;
+    margin-left:8px;
     font-family:'Consolas',monospace;
-    font-style:normal;
+  }
+  header h1 .gold{
+    color:var(--kin2);
+    border-color:rgba(212,168,80,0.5);
   }
   .stats{
-    display:flex; gap:14px; font-size:10px;
-    color:#8a7a9a; align-items:center; flex-wrap:wrap;
-    font-family:'Consolas',monospace;
+    display:flex; gap:14px; font-size:9.5px;
+    color:#8a7a90; align-items:center; flex-wrap:wrap;
   }
   .stats b{font-weight:bold;}
-  .v-gold{color:#e0b856;}
-  .v-violet{color:#b388ff;}
-  .v-cyan{color:#7fdcff;}
-  .v-green{color:#8cf0d0;}
-  .v-red{color:#ff6688;}
+  .v-shu{color:var(--shu2);}
+  .v-kin{color:var(--kin2);}
+  .v-sakura{color:var(--sakura);}
+  .v-shio{color:var(--shiro);}
 
   /* MAIN */
-  #main{
-    flex:1; display:grid;
-    grid-template-columns:220px 1fr 240px;
-    overflow:hidden;
+  #stage{
+    flex:1; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
   }
-  @media (max-width:900px){
-    #main{grid-template-columns:1fr;}
-    #main .col{display:none;}
-    #main[data-tab="chapters"] #left{display:block;}
-    #main[data-tab="story"] #center{display:flex;}
-    #main[data-tab="stats"] #right{display:block;}
+  #doCanvas{
+    display:block; width:100%; height:100%;
+    cursor:crosshair;
   }
 
-  .col{
-    padding:16px;
-    overflow-y:auto;
-    background:rgba(10,8,18,0.55);
+  /* KOAN — Way of Life (oben links) */
+  #koan{
+    position:absolute;
+    top:14px; left:14px;
+    max-width:280px;
+    padding:10px 14px;
+    background:rgba(8,7,10,0.82);
+    border-left:2px solid var(--shu);
+    border-radius:2px;
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    font-size:12px;
+    line-height:1.6;
+    color:var(--shio);
+    z-index:8;
+    pointer-events:none;
+    font-style:italic;
   }
-  #left  { border-right:1px solid var(--line); }
-  #right { border-left:1px solid var(--line); }
-
-  .panel-title{
-    font-size:10px; color:#e0b856; letter-spacing:3px;
-    border-bottom:1px solid rgba(224,184,86,0.12);
-    padding-bottom:6px; margin-bottom:10px;
-    display:flex; justify-content:space-between; align-items:center;
+  #koan .kanji{
+    display:block;
+    font-size:22px;
+    color:var(--kin2);
+    letter-spacing:6px;
+    margin-bottom:4px;
+    text-shadow:0 0 20px rgba(212,168,80,0.4);
+  }
+  #koan .author{
+    display:block;
+    margin-top:6px;
+    font-size:9px;
+    letter-spacing:3px;
+    color:var(--shu2);
     font-family:'Consolas',monospace;
+    font-style:normal;
     text-transform:uppercase;
   }
-  .panel-title .badge{
-    font-size:9px; color:#6a5a7a;
-    letter-spacing:1px;
-  }
 
-  /* CHAPTER LIST */
-  .chap-item{
-    display:flex; align-items:center; gap:8px;
-    padding:6px 8px; border-radius:4px;
-    font-size:12px; color:#a898b8;
-    cursor:pointer; transition:.15s;
-    margin-bottom:2px;
-    border-left:2px solid transparent;
-    font-family:'EB Garamond',serif;
-  }
-  .chap-item:hover{
-    background:rgba(224,184,86,0.05);
-    color:#e8dcc4;
-  }
-  .chap-item.active{
-    background:rgba(224,184,86,0.08);
-    border-left-color:var(--gold);
-    color:#ffe9a0;
-  }
-  .chap-item.past{
-    color:#6a5a7a;
-    font-style:italic;
-  }
-  .chap-item .num{
-    color:var(--gold);
-    font-family:'Consolas',monospace;
-    font-size:10px;
-    font-weight:bold;
-    min-width:24px;
-  }
-  .chap-item.past .num{ color:#4a3a5a; }
-  .chap-item .title{ flex:1; }
-  .chap-item .pages{
-    font-size:9px;
-    color:#5a4a6a;
-    font-family:'Consolas',monospace;
-  }
-
-  /* CENTER — STORY */
-  #center{
-    display:flex; flex-direction:column; padding:24px 32px;
-    overflow:hidden;
-    position:relative;
-  }
-  #center::before{
-    content:'';
-    position:absolute; inset:16px;
-    border:1px solid rgba(224,184,86,0.10);
-    pointer-events:none;
-    border-radius:2px;
-  }
-  #center::after{
-    content:'';
-    position:absolute; inset:20px;
-    border:1px solid rgba(224,184,86,0.05);
-    pointer-events:none;
-    border-radius:2px;
-  }
-
-  #storyHeader{
-    text-align:center;
-    margin-bottom:20px;
-    position:relative; z-index:2;
-  }
-  #storyHeader .band{
-    font-size:10px;
-    letter-spacing:6px;
-    color:#6a5a7a;
-    font-family:'Consolas',monospace;
-    margin-bottom:6px;
-  }
-  #storyHeader .chapter{
-    font-size:22px;
-    letter-spacing:4px;
-    color:#e0b856;
-    font-style:italic;
-    font-family:'EB Garamond',serif;
-    text-shadow:0 0 30px rgba(224,184,86,0.3);
-  }
-  #storyHeader .chapter-kanji{
-    display:block;
-    font-size:36px;
-    color:rgba(224,184,86,0.25);
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    margin-top:4px;
-    letter-spacing:8px;
-  }
-
-  #storyText{
-    flex:1;
-    overflow-y:auto;
-    padding:0 8px;
-    position:relative; z-index:2;
-    font-size:17px;
-    line-height:1.85;
-    color:#d8c8a8;
-    font-family:'EB Garamond',serif;
-    scroll-behavior:smooth;
-  }
-  #storyText::-webkit-scrollbar{ width:4px; }
-  #storyText::-webkit-scrollbar-track{ background:transparent; }
-  #storyText::-webkit-scrollbar-thumb{
-    background:rgba(224,184,86,0.2); border-radius:2px;
-  }
-
-  #storyText .paragraph{
-    margin-bottom:14px;
-    opacity:0;
-    animation:fadeIn .8s ease forwards;
-    text-indent:1.5em;
-  }
-  #storyText .paragraph.first{
-    text-indent:0;
-  }
-  #storyText .paragraph.first::first-letter{
-    font-size:3.2em;
-    float:left;
-    line-height:0.9;
-    margin:6px 8px 0 0;
-    color:var(--gold);
-    font-family:'EB Garamond',serif;
-    text-shadow:0 0 20px rgba(224,184,86,0.4);
-  }
-  @keyframes fadeIn{
-    from{opacity:0;transform:translateY(8px);}
-    to{opacity:1;transform:translateY(0);}
-  }
-  #storyText .dialogue{
-    color:#ffe9a0;
-    font-style:italic;
-  }
-  #storyText .kanji{
-    color:var(--violet);
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-weight:bold;
-    font-style:normal;
-  }
-  #storyText .whisper{
-    color:#8a7a9a;
-    font-style:italic;
-  }
-  #storyText .mark{
-    color:var(--cyan);
-    font-weight:bold;
-  }
-  #storyText .djinn{
-    color:var(--violet);
-    font-style:italic;
-    text-shadow:0 0 12px rgba(179,136,255,0.4);
-  }
-  #storyText .cursor{
-    display:inline-block;
-    width:2px; height:1em;
-    background:var(--gold);
-    vertical-align:text-bottom;
-    animation:blink 1s steps(2) infinite;
-    margin-left:2px;
-  }
-  @keyframes blink{
-    0%,50%{opacity:1;} 51%,100%{opacity:0;}
-  }
-
-  /* PAGE INDICATOR */
-  #pageBar{
-    margin-top:16px;
-    display:flex;
-    gap:3px;
-    justify-content:center;
-    position:relative; z-index:2;
-  }
-  #pageBar .dot{
-    width:8px; height:8px;
-    border-radius:50%;
-    background:rgba(224,184,86,0.15);
-    border:1px solid rgba(224,184,86,0.2);
-    transition:.3s;
-  }
-  #pageBar .dot.done{
-    background:var(--gold);
-    box-shadow:0 0 8px var(--gold);
-  }
-  #pageBar .dot.active{
-    background:var(--gold2);
-    box-shadow:0 0 12px var(--gold2);
-    transform:scale(1.3);
-  }
-
-  /* CHAPTER PROGRESS */
-  #chapBar{
-    display:flex;
-    justify-content:center;
-    gap:2px;
-    margin-top:6px;
-    position:relative; z-index:2;
-  }
-  #chapBar .seg{
-    width:20px; height:2px;
-    background:rgba(224,184,86,0.12);
-    transition:.3s;
-  }
-  #chapBar .seg.done{ background:var(--gold); }
-  #chapBar .seg.active{
-    background:var(--gold2);
-    box-shadow:0 0 8px var(--gold2);
-  }
-
-  /* RIGHT — NC WAAGE + DJINN + ZAM */
-  .waage-panel{
-    background:rgba(0,0,0,0.25);
-    border:1px solid rgba(179,136,255,0.10);
+  /* MAß — Fortschritt (oben rechts) */
+  #massBox{
+    position:absolute;
+    top:14px; right:14px;
+    padding:10px 16px;
+    background:rgba(8,7,10,0.82);
+    border:1px solid rgba(224,74,58,0.35);
     border-radius:6px;
-    padding:10px 12px;
-    margin-bottom:10px;
-    font-size:11px;
     font-family:'Consolas',monospace;
-  }
-  .waage-panel .head{
-    color:#b388ff;
     font-size:10px;
-    letter-spacing:2px;
-    border-bottom:1px solid rgba(179,136,255,0.10);
-    padding-bottom:4px; margin-bottom:6px;
+    z-index:8;
+    min-width:180px;
+    pointer-events:none;
+  }
+  #massBox .title{
+    color:var(--shu2);
+    font-size:10px;
+    letter-spacing:3px;
+    border-bottom:1px solid rgba(224,74,58,0.2);
+    padding-bottom:5px; margin-bottom:6px;
     display:flex; justify-content:space-between;
     text-transform:uppercase;
   }
-  .metric-row{
+  #massBox .title .gold{ color:var(--kin2); }
+  #massBox .row{
     display:flex; justify-content:space-between;
     padding:2px 0;
-    font-size:10px;
-    color:#a898b8;
+    font-size:9.5px;
+    color:#8a7a90;
   }
-  .metric-row .val{
-    color:#d8c8a8;
+  #massBox .val{
+    color:var(--kin2);
     font-weight:bold;
   }
-  .metric-row .val.gold{ color:var(--gold); }
-  .metric-row .val.violet{ color:var(--violet); }
-  .metric-row .val.cyan{ color:var(--cyan); }
-  .metric-row .val.green{ color:var(--green); }
-  .metric-row .val.red{ color:var(--red); }
-
-  .prog-bar{
-    width:100%; height:4px;
-    background:rgba(20,18,28,0.7);
+  #massBox .val.shu{ color:var(--shu2); }
+  #massBar{
+    height:4px;
+    background:rgba(20,15,20,0.8);
     border-radius:2px;
-    overflow:hidden; margin-top:4px;
-  }
-  .prog-bar .fill{
-    height:100%;
-    background:linear-gradient(90deg,#e0b856,#b388ff);
-    border-radius:2px;
-    transition:width .4s;
-  }
-  .prog-bar .fill.red{
-    background:linear-gradient(90deg,#ff6688,#e0b856);
-  }
-  .prog-bar .fill.violet{
-    background:linear-gradient(90deg,#7fdcff,#b388ff);
-  }
-
-  /* KlicK/SERUM MINI */
-  .klick-mini{
-    display:flex; gap:8px; align-items:center;
+    overflow:hidden;
     margin-top:6px;
-    font-size:10px;
   }
-  .klick-mini .klick-num{
-    color:var(--gold);
-    font-weight:bold;
+  #massBar .fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--shu),var(--kin));
+    border-radius:2px;
+    transition:width .3s;
+  }
+
+  /* ZA·M Siegel */
+  #zamSeal{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%) scale(0.5);
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    font-size:120px;
+    color:var(--kin2);
+    text-shadow:
+      0 0 60px rgba(212,168,80,0.9),
+      0 0 120px rgba(224,74,58,0.6);
+    opacity:0;
+    transition:opacity .5s, transform .6s cubic-bezier(.3,1.6,.4,1);
+    pointer-events:none;
+    z-index:12;
+  }
+  #zamSeal.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+  }
+
+  /* MANGA-PANEL (unten links — Erzählung) */
+  #mangaPanel{
+    position:absolute;
+    bottom:14px; left:14px;
+    max-width:340px; max-height:130px;
+    padding:10px 14px;
+    background:rgba(8,7,10,0.85);
+    border:1px solid rgba(224,74,58,0.2);
+    border-left:3px solid var(--shu);
+    border-radius:3px;
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    font-size:12px;
+    line-height:1.5;
+    color:var(--shio);
+    overflow-y:auto;
+    z-index:8;
+    font-style:italic;
+  }
+  #mangaPanel .speech{
+    color:var(--shio);
+  }
+  #mangaPanel .think{
+    color:#8a7a90;
+  }
+  #mangaPanel .action{
+    color:var(--shu2);
+    font-style:normal;
     font-family:'Consolas',monospace;
+    font-size:10px;
+    letter-spacing:1px;
+  }
+  #mangaPanel .wave{
+    color:var(--sakura);
   }
 
   /* CONTROLS */
   #controls{
-    display:flex; gap:8px; align-items:center;
+    display:flex; gap:7px; align-items:center;
     padding:10px 20px;
     border-top:1px solid var(--line);
-    background:rgba(5,3,10,0.9);
-    backdrop-filter:blur(10px);
+    background:rgba(8,7,10,0.92);
+    backdrop-filter:blur(12px);
     flex-wrap:wrap;
-    font-size:10px;
-    font-family:'Consolas',monospace;
-    z-index:10;
+    font-size:10px; z-index:10;
   }
   #controls button{
-    background:rgba(20,16,28,0.8);
-    border:1px solid rgba(224,184,86,0.25);
-    color:#e0b856;
+    background:rgba(20,15,22,0.85);
+    border:1px solid rgba(224,74,58,0.3);
+    color:var(--shu2);
     padding:7px 16px;
-    border-radius:4px;
+    border-radius:3px;
     font-family:inherit; font-size:10px;
     letter-spacing:2px;
     cursor:pointer; transition:.18s;
     text-transform:uppercase;
   }
   #controls button:hover{
-    background:rgba(224,184,86,0.12);
-    border-color:#e0b856;
-    color:#ffe9a0;
-    box-shadow:0 0 14px rgba(224,184,86,0.35);
+    background:rgba(224,74,58,0.12);
+    border-color:var(--shu);
+    color:#fff;
+    box-shadow:0 0 14px rgba(224,74,58,0.4);
   }
   #controls button.active{
-    background:rgba(224,184,86,0.2);
+    background:rgba(224,74,58,0.2);
     color:#fff;
-    border-color:#e0b856;
-    box-shadow:0 0 18px rgba(224,184,86,0.5);
+    border-color:var(--shu);
+    box-shadow:0 0 18px rgba(224,74,58,0.5);
   }
-  #controls button.violet{
-    border-color:rgba(179,136,255,0.35);
-    color:#b388ff;
+  #controls button.kin{
+    border-color:rgba(212,168,80,0.35);
+    color:var(--kin2);
   }
-  #controls button.violet:hover,
-  #controls button.violet.active{
-    background:rgba(179,136,255,0.12);
-    border-color:#b388ff;
+  #controls button.kin:hover,
+  #controls button.kin.active{
+    background:rgba(212,168,80,0.15);
+    border-color:var(--kin);
     color:#fff;
-    box-shadow:0 0 14px rgba(179,136,255,0.4);
+    box-shadow:0 0 14px rgba(212,168,80,0.5);
   }
   #controls .sep{
-    width:1px; height:20px;
+    width:1px; height:22px;
     background:var(--line); margin:0 4px;
   }
   #controls .lbl{
-    color:#6a5a7a; letter-spacing:2px;
+    color:#6a5a70; letter-spacing:2px; font-size:9px;
   }
   #controls input[type=range]{
     -webkit-appearance:none; appearance:none;
     width:80px; height:3px;
-    background:linear-gradient(90deg,#e0b856,#b388ff);
+    background:linear-gradient(90deg,var(--shu),var(--kin));
     border-radius:2px; outline:none;
   }
   #controls input[type=range]::-webkit-slider-thumb{
     -webkit-appearance:none;
     width:14px; height:14px; border-radius:50%;
     background:#fff;
-    border:2px solid #e0b856;
-    box-shadow:0 0 8px rgba(224,184,86,0.7);
+    border:2px solid var(--shu);
+    box-shadow:0 0 8px rgba(224,74,58,0.8);
     cursor:pointer;
   }
 
-  /* MOBILE TABS */
-  #mobTabs{ display:none; }
-  @media (max-width:900px){
-    #main{ grid-template-columns:1fr; }
-    #main .col{ display:none; }
-    #main[data-tab="chapters"] #left{ display:block; }
-    #main[data-tab="story"] #center{ display:flex; }
-    #main[data-tab="stats"] #right{ display:block; }
-    #center{ padding:16px 18px; }
-    #storyText{ font-size:15px; }
-    #storyHeader .chapter{ font-size:18px; }
-    #mobTabs{
-      display:flex; gap:3px; padding:6px 10px;
-      background:rgba(5,3,10,0.85);
-      border-bottom:1px solid var(--line);
-      overflow-x:auto;
-    }
-    #mobTabs button{
-      flex:1; min-width:70px;
-      background:rgba(20,16,28,0.8);
-      border:1px solid rgba(224,184,86,0.2);
-      color:#e0b856;
-      padding:7px 6px; border-radius:5px;
-      font-family:inherit; font-size:9px;
-      letter-spacing:1px; cursor:pointer;
-      text-transform:uppercase;
-    }
-    #mobTabs button.active{
-      background:rgba(224,184,86,0.18);
-      color:#fff;
-      border-color:#e0b856;
-    }
+  @media (max-width:820px){
+    header h1{font-size:12px;letter-spacing:2px;}
+    .stats{gap:8px;font-size:8.5px;}
+    #controls{padding:7px 12px; gap:4px;}
+    #controls button{padding:5px 10px; font-size:9px; letter-spacing:1px;}
+    #koan{max-width:190px;font-size:10.5px;padding:8px 11px;}
+    #koan .kanji{font-size:17px;}
+    #massBox{padding:8px 12px;font-size:9px;min-width:140px;}
+    #mangaPanel{max-width:200px;font-size:10.5px;padding:8px 11px;max-height:100px;}
+    #zamSeal{font-size:80px;}
   }
-
-  /* SPRUNG OVERLAY */
-  #sprungBox{
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    padding:20px 32px;
-    background:rgba(5,3,10,0.95);
-    border:1px solid rgba(224,184,86,0.4);
-    border-radius:6px;
-    font-family:'Consolas',monospace;
-    font-size:12px;
-    color:#e0b856;
-    opacity:0;
-    transition:opacity .4s;
-    pointer-events:none;
-    z-index:20;
-    text-align:center;
-    letter-spacing:3px;
-    box-shadow:0 0 60px rgba(224,184,86,0.3);
-  }
-  #sprungBox.show{ opacity:1; }
-  #sprungBox .kanji-big{
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    font-size:42px;
-    color:#ffe9a0;
-    display:block;
-    margin-bottom:6px;
-    text-shadow:0 0 40px rgba(224,184,86,0.8);
-  }
-  #sprungBox .sub{
-    font-size:9px;
-    color:#6a5a7a;
-    letter-spacing:5px;
-    margin-top:8px;
-  }
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar{ width:6px; height:6px; }
-  ::-webkit-scrollbar-track{ background:transparent; }
-  ::-webkit-scrollbar-thumb{
-    background:rgba(224,184,86,0.15);
-    border-radius:3px;
-  }
-  ::-webkit-scrollbar-thumb:hover{
-    background:rgba(224,184,86,0.3);
-  }
-
-  /* FOOTER */
-  footer{
-    padding:6px 20px;
-    background:rgba(5,3,10,0.9);
-    border-top:1px solid var(--line);
-    font-size:9px; color:#4a3a5a;
-    display:flex; justify-content:space-between;
-    flex-wrap:wrap; gap:10px;
-    font-family:'Consolas',monospace;
-  }
-  footer .gold{ color:var(--gold); }
-  footer .violet{ color:var(--violet); }
-  footer .cyan{ color:var(--cyan); }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>iki1uc · STORY
-    <small>never ending · ever and ever · forever</small>
-    <span class="tag">∞</span>
+  <h1>iki1uc · 道
+    <small>MANGA · ANIME · WA</small>
+    <span class="tag">verKlicK't</span>
+    <span class="tag gold">ZaM</span>
   </h1>
   <div class="stats">
-    <span>Band <b class="v-gold" id="sBand">I</b></span>
-    <span>Kapitel <b class="v-gold" id="sChap">1</b></span>
-    <span>Seite <b class="v-gold" id="sPage">1</b></span>
-    <span>KlicK <b class="v-gold" id="sKlick">0</b></span>
-    <span>ZaM <b class="v-violet" id="sZam">0</b></span>
-    <span>Wörter <b class="v-cyan" id="sWords">0</b></span>
-    <span id="sClock" style="color:#4a3a5a;">⏱️ --:--</span>
+    <span>KlicK <b class="v-shu" id="sKlick">0</b></span>
+    <span>道 · 集中 <b class="v-kin" id="sHits">0</b></span>
+    <span>ZaM <b class="v-kin" id="sZam">0</b></span>
+    <span>Sakura <b class="v-sakura" id="sSakura">0</b></span>
+    <span id="sClock" style="color:#4a3a50;">⏱️ --:--</span>
   </div>
 </header>
 
-<div id="mobTabs">
-  <button data-tab="chapters">📚 Band</button>
-  <button data-tab="story" class="active">📖 Story</button>
-  <button data-tab="stats">⚖️ Waage</button>
-</div>
+<div id="stage">
+  <canvas id="doCanvas"></canvas>
 
-<div id="main" data-tab="story">
-
-  <!-- LINKS: BÄNDER & KAPITEL -->
-  <div class="col" id="left">
-    <div class="panel-title">
-      <span>📚 BAND</span>
-      <span class="badge" id="bandCount">1</span>
-    </div>
-    <div id="bandList"></div>
-
-    <div class="panel-title" style="margin-top:14px;">
-      <span>📖 KAPITEL</span>
-      <span class="badge" id="chapterCount">1/9</span>
-    </div>
-    <div id="chapterList"></div>
-
-    <div class="panel-title" style="margin-top:14px;">
-      <span>🀄 SEITEN</span>
-      <span class="badge" id="pageCount">1/9</span>
-    </div>
-    <div id="pageList"></div>
+  <!-- KOAN — Way of Life -->
+  <div id="koan">
+    <span class="kanji" id="koanKanji">道</span>
+    <span id="koanText">„Der Weg ist das Ziel."</span>
+    <span class="author" id="koanAuthor">— Bus hidō</span>
   </div>
 
-  <!-- MITTE: STORY -->
-  <div id="center">
-    <div id="storyHeader">
-      <div class="band" id="hdrBand">— BAND I —</div>
-      <div class="chapter" id="hdrChap">Kapitel Eins</div>
-      <span class="chapter-kanji" id="hdrKanji">起</span>
+  <!-- MAß -->
+  <div id="massBox">
+    <div class="title">
+      <span>道 · MAß</span>
+      <span class="gold" id="massZam">0</span>
     </div>
-
-    <div id="storyText"></div>
-
-    <div id="pageBar"></div>
-    <div id="chapBar"></div>
-
-    <!-- SPRUNG overlay -->
-    <div id="sprungBox">
-      <span class="kanji-big">転</span>
-      SPRUNG
-      <div class="sub" id="sprungSub">P4 · P0 · P1 · P2 · Pe</div>
-    </div>
+    <div class="row"><span>Treffer</span><span class="val shu" id="massHit">0/100</span></div>
+    <div class="row"><span>Übung</span><span class="val" id="massPractice">Anfänger</span></div>
+    <div id="massBar"><div class="fill" id="massFill" style="width:0%"></div></div>
   </div>
 
-  <!-- RECHTS: NC WAAGE · ZAM · DJINN -->
-  <div class="col" id="right">
+  <!-- ZA·M SIEGEL -->
+  <div id="zamSeal">門</div>
 
-    <div class="waage-panel">
-      <div class="head">
-        <span>⚖️ WAAGE</span>
-        <span id="waageMode" style="color:#e0b856;">衡</span>
-      </div>
-      <div class="metric-row"><span>Balance</span><span class="val" id="wBal">0.50</span></div>
-      <div class="metric-row"><span>Neigung</span><span class="val gold" id="wTilt">0.0°</span></div>
-      <div class="metric-row"><span>Links</span><span class="val violet" id="wL">0.00</span></div>
-      <div class="metric-row"><span>Rechts</span><span class="val violet" id="wR">0.00</span></div>
-      <div class="prog-bar"><div class="fill" id="wBar" style="width:50%"></div></div>
-    </div>
-
-    <div class="waage-panel">
-      <div class="head">
-        <span>🩸 SERUM</span>
-        <span id="serumMode" style="color:#6a5a7a;">offen</span>
-      </div>
-      <div class="metric-row"><span>KlicK dieser Seite</span><span class="val gold" id="klickPage">0/9</span></div>
-      <div class="prog-bar"><div class="fill red" id="klickBar" style="width:0%"></div></div>
-      <div class="metric-row" style="margin-top:6px;"><span>ZaM-Pakte</span><span class="val violet" id="zamTotal">0</span></div>
-      <div class="metric-row"><span>Wörter gesamt</span><span class="val cyan" id="wordsTotal">0</span></div>
-    </div>
-
-    <div class="waage-panel">
-      <div class="head">
-        <span>🧞 DJINN</span>
-        <span id="djinnMode" style="color:#6a5a7a;">schlafend</span>
-      </div>
-      <div class="metric-row"><span>Erscheinungen</span><span class="val violet" id="djinnCount">0</span></div>
-      <div class="metric-row"><span>Letztes Kanji</span><span class="val violet" id="djinnKanji">—</span></div>
-      <div class="metric-row"><span>Rate</span><span class="val" id="djinnRate">3.0%</span></div>
-    </div>
-
-    <div class="waage-panel">
-      <div class="head">
-        <span>🌌 BAND & EWIGKEIT</span>
-      </div>
-      <div class="metric-row"><span>Band</span><span class="val gold" id="wBand">I</span></div>
-      <div class="metric-row"><span>Kapitel</span><span class="val gold" id="wChap">1</span></div>
-      <div class="metric-row"><span>Seiten total</span><span class="val green" id="wPages">1</span></div>
-      <div class="metric-row"><span>Laufzeit</span><span class="val cyan" id="wRuntime">00:00:00</span></div>
-    </div>
-
+  <!-- MANGA-PANEL — Erzählung -->
+  <div id="mangaPanel">
+    <span class="speech">Der Weg beginnt mit einem einzigen Tropfen Tinte …</span>
   </div>
 </div>
 
-<!-- CONTROLS -->
 <div id="controls">
-  <button id="btnKlick">🖋️ KLICK · TINTE</button>
+  <button id="btnKlick">🖌 TINTE</button>
   <button id="btnAuto" class="active">⏸ AUTO</button>
-  <button id="btnZam" class="violet">⚡ ZaM · PAKT</button>
+  <button id="btnZaM" class="kin">門 ZaM</button>
+  <button id="btnSakura">🌸 SAKURA</button>
   <span class="sep"></span>
   <span class="lbl">GESCHW.</span>
-  <input type="range" id="speed" min="1" max="10" value="3">
+  <input type="range" id="speed" min="1" max="10" value="4">
   <span class="sep"></span>
-  <button id="btnDjinn" class="violet active">🧞 DJINN</button>
-  <button id="btnSprung">⚡ SPRUNG</button>
   <button id="btnReset">⟲ NEU</button>
 </div>
-
-<footer>
-  <span>📖 iki1uc · STORY · <span class="gold">never ending</span> · ever and ever</span>
-  <span>KlicK <span class="gold" id="ftKlick">0</span> · ZaM <span class="violet" id="ftZam">0</span> · Seiten <span class="cyan" id="ftPages">1</span> · Bände <span class="gold" id="ftBands">1</span></span>
-  <span>Leertaste = KlicK · Z = ZaM · D = Djinn · S = Sprung · N = neue Seite · R = Neubeginn</span>
-</footer>
 
 <script>
 "use strict";
 // ═══════════════════════════════════════════════════════════════════
-// 📖 iki1uc · STORY · never ending
-// Eine Geschichte, die sich selbst schreibt — für immer.
-// KlicK ist Tinte · ZaM ist Wahl · NC ist Balance · DJINN ist Wunder.
+// 🗾 iki1uc · 道 · MANGA · ANIME · verKlicK't
+// Manga · Anime · Japan · Undertone · Way of Life
+// KlicK wird Tinte, Tinte findet das Maß, das Maß trifft ZaM.
 // ═══════════════════════════════════════════════════════════════════
 
 // ─── KOMPAT-LAYER ─────────────────────────────────────────────
@@ -708,659 +388,783 @@ try{
     const d=ev.data; if(!d||!d.type) return;
     if(d.type==='master:state'&&d.payload){Object.assign(localMaster,d.payload);isMasterConnected=true;updateStats();}
     if(d.type==='mainboard:done'&&d.payload){
-      log(`📊 MAINBOARD · Kompat ${d.payload.compat?.toFixed?.(0)??'?'}%`,'cyan');
+      log(`📊 MAINBOARD · Kompat ${d.payload.compat?.toFixed?.(0)??'?'}%`,'shu');
     }
   };
 }catch(_){}
 function persistMaster(){try{localStorage.setItem(MASTER_KEY,JSON.stringify(localMaster));}catch(_){}}
 function sendToMaster(type,payload){
   localMaster.lastUpdate=Date.now(); persistMaster();
-  if(masterChannel){try{masterChannel.postMessage({type,from:'STORY',payload,ts:Date.now()});}catch(_){}}
+  if(masterChannel){try{masterChannel.postMessage({type,from:'DO',payload,ts:Date.now()});}catch(_){}}
 }
 
-// ─── STORY POOLS — das Rohmaterial der Ewigkeit ──────────────
-const KANJI_CYCLE=['起','承','転','結'];
-const KANJI_DJINN=['幻','霊','夢','影','虚','漂','漂'];
-const KANJI_CHAPTER_KANJI=['始','往','巡','反','呼','道','帰','進','終'];
-
-// Subjekte — die handelnden Wesen
-const SUBJECTS=[
-  'Das Nano','Der Funke','Die Waage','Das Tor','KlicK','Das Kind','Der Djinn',
-  'Das Atom','Der Horizont','Die Tinte','ZaM','Das Zentrum','Der Leser',
-  'Die alte Pyramide','Der stille Wächter','Ein Zeichen','Die Stimme',
-  'Das flüsternde Auge','Die Wurzel','Der Sprung','Der Würfel','Die Zahl'
+// ─── 道 · WAY OF LIFE — Koan-Pool ─────────────────────────────
+const KOANS=[
+  {kanji:'道',  text:'„Der Weg ist das Ziel."',                  author:'Bushidō'},
+  {kanji:'和',  text:'„Harmonie ist stärker als Kraft."',         author:'Wa · 和'},
+  {kanji:'忍',  text:'„Ertragen ist nicht Schwäche — es ist Tiefe."', author:'Ninjutsu'},
+  {kanji:'誠',  text:'„Wahrheit ist die Klinge, die nicht rostet."', author:'Bushidō'},
+  {kanji:'義',  text:'„Rechtes Handeln kennt keine Belohnung."',  author:'Bushidō'},
+  {kanji:'礼',  text:'„Respekt ist die Form der Liebe."',         author:'Bushidō'},
+  {kanji:'勇',  text:'„Mut ist nicht Abwesenheit der Furcht."',   author:'Bushidō'},
+  {kanji:'名',  text:'„Ehre ist ein Schatten, den nur du siehst."', author:'Bushidō'},
+  {kanji:'忠',  text:'„Treue kommt vom Herzen, nicht vom Befehl."', author:'Bushidō'},
+  {kanji:'静',  text:'„Stille ist die Sprache der Götter."',      author:'Zen · 禅'},
+  {kanji:'空',  text:'„Leere ist nicht Nichts — sie ist Alles."', author:'Zen · 禅'},
+  {kanji:'今',  text:'„Nur jetzt. Nur hier. Nur dieser Atem."',   author:'Zen · 禅'},
+  {kanji:'花',  text:'„Wie die Blüte fallen — ohne Klage."',      author:'Mono no aware'},
+  {kanji:'月',  text:'„Der Mond spiegelt sich im kleinsten Tropfen."', author:'Wabi-sabi'},
+  {kanji:'音',  text:'„Ein Klang endet — aber er hinterlässt Stille."', author:'Yūgen'},
+  {kanji:'水',  text:'„Wasser fließt, weil es keinen Grund braucht."', author:'Mizu no kokoro'},
 ];
 
-// Orte
-const PLACES=[
-  'am Rand der Waage',
-  'im Zentrum des Nichts',
-  'jenseits des Gates',
-  'hinter dem Horizont',
-  'über der Akkretion',
-  'im Zwischenraum',
-  'unter der Wurzel',
-  'in der siebten Kammer',
-  'am Ufer der Tinte',
-  'unter den neun Ringen',
-  'hinter dem dritten Vorhang',
-  'im Atem der Stille',
-  'am Anfang jeder Zahl',
-  'in der neunten Wiederkehr'
+// ─── MANGA-ERZÄHLUNGEN ────────────────────────────────────────
+const ACTIONS=[
+  'Ein Tropfen fällt.',
+  'Ein Blütenblatt dreht sich.',
+  'Eine Linie wird gezogen.',
+  'Eine Welle bricht.',
+  'Der Wind ruht.',
+  'Stille — dann ein Atem.',
+  'Tinte findet den Weg.',
+  'Ein Zeichen erscheint.',
+  'Ein Augenblick hält.',
+  'Das Tor wartet.',
 ];
 
-// Verben — was passiert
-const VERBS=[
-  'flüstert','wächst','fällt','steigt','kippt','dreht sich','öffnet sich',
-  'schweigt','singt','leuchtet','wartet','träumt','erwacht','verblasst',
-  'zeichnet','zählt','kehrt zurück','beginnt neu','verliert sich','findet'
+const SPEECHES=[
+  '„Ich lerne jeden Tag neu, was es heißt, zu gehen."',
+  '„Das Maß ist nicht, wie weit ich komme. Wie tief ich falle."',
+  '„Jeder Klick ist ein Versprechen an mich selbst."',
+  '„Ein Weg ohne Anfang kennt kein Ende."',
+  '„Ich schneide die Luft, nicht den Feind."',
+  '„Meister bin ich erst, wenn ich vergesse, dass ich bin."',
+  '„Der Lehrer kommt, wenn der Schüler bereit ist."',
+  '„Schweigen ist die stärkste Antwort."',
 ];
 
-// Stimmungen / Objekte
-const MOODS=[
-  'still','heiß','kalt','endlos','seltsam','leise','wach','müde','ruhig',
-  'aufgewühlt','sanft','streng','freundlich','fremd','vertraut','selig'
+const THOUGHTS=[
+  '(Ich trage das Tor in mir.)',
+  '(Tinte ist mein Atem.)',
+  '(Das Maß ist Geduld.)',
+  '(Ich bin der Tropfen — und der Ozean.)',
+  '(ZaM wartet nicht. ZaM reift.)',
 ];
 
-const OBJECTS=[
-  'eine Zahl','ein Name','ein Wort','ein Zeichen','ein Lied','eine Farbe',
-  'ein Stern','ein Schatten','ein Licht','ein Kreis','eine Form','eine Wurzel',
-  'ein Versprechen','ein Rätsel','ein Atem','ein Spiegel'
+// ─── 道 · PRÜFUNGS-STUFEN ──────────────────────────────────────
+const STUFEN=[
+  {hits:0,  name:'Anfänger',      kanji:'生'},
+  {hits:10, name:'Schüler',       kanji:'弟'},
+  {hits:30, name:'Wanderer',      kanji:'旅'},
+  {hits:50, name:'Samurai',       kanji:'侍'},
+  {hits:70, name:'Meister',       kanji:'師'},
+  {hits:90, name:'Weiser',        kanji:'賢'},
+  {hits:100,name:'Erleuchteter',  kanji:'悟'},
 ];
-
-// ZaM-Wahlen (Pakt-Entscheidungen)
-const ZAM_OFFERS=[
-  {kanji:'方', shape:'Würfel',  gain:'Stabilität'},
-  {kanji:'山', shape:'Pyramide', gain:'Aufstieg'},
-  {kanji:'門', shape:'Gate',     gain:'Übergang'},
-  {kanji:'円', shape:'Kreis',    gain:'Ganzheit'},
-  {kanji:'角', shape:'Ecke',     gain:'Wendung'},
-  {kanji:'卦', shape:'Orakel',   gain:'Weisheit'},
-];
-
-// Band- und Kapitelnamen (generativ)
-const ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII',
-             'XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII'];
-const NUM_WORDS=['Eins','Zwei','Drei','Vier','Fünf','Sechs','Sieben','Acht','Neun',
-                 'Zehn','Elf','Zwölf','Dreizehn','Vierzehn','Fünfzehn','Sechzehn',
-                 'Siebzehn','Achtzehn','Neunzehn','Zwanzig'];
 
 // ─── STATE ─────────────────────────────────────────────────────
 const S={
-  // Struktur
-  band:1,
-  chapter:1,         // 1..9 dann neuer Band
-  page:1,            // 1..9 dann neues Kapitel
-  klickInPage:0,     // 0..9 — 9 KlicK = Seite vollendet
-  // Progression
-  totalPages:1,
-  totalWords:0,
-  zamTotal:0,
-  djinnCount:0,
-  djinnKanji:'—',
-  djinnRate:0.030,
-  djinnOn:true,
-  djinnAwake:false,
-  // Tinte
-  klickTotal:0,
-  zackTotal:0,
-  // Waage (Balance bestimmt Stimmung der Story)
-  balance:0.50,
-  tilt:0,
-  loadL:0.5,
-  loadR:0.5,
-  // Sätze / Story
-  paragraphs:[],      // aktuelle Seite
-  pageHistory:[],     // gespeicherte Seiten pro Kapitel
-  chapterHistory:[],  // gespeicherte Kapitel pro Band
-  bandHistory:[],     // gespeicherte Bände
-  // Runtime
-  startTime:Date.now(),
+  // Währung
+  klick:0,           // jeder Klick (Tinte)
+  hits:0,            // Treffer im Maß (0..100 → dann ZaM)
+  zam:0,             // ZaM-Pakte
+  sakuraCount:0,
+  // Visual
+  tick:0,
   auto:true,
-  speed:3,
-  lastAutoTick:0,
-  sprungActive:false,
+  speed:4,
+  lastAuto:0,
+  // Tinte — Partikel die zum Maß fliegen
+  drops:[],
+  // Sakura-Petals
+  petals:[],
+  // Kira / Funken
+  sparks:[],
+  // ZaM-Effekt
+  zamActive:false,
+  zamTimer:0,
+  // Bildschirm-Flash
+  flash:0,
+  shake:0,
 };
 
-// ─── GENERATOREN ──────────────────────────────────────────────
-function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+// ─── CANVAS ────────────────────────────────────────────────────
+const cv=document.getElementById('doCanvas');
+const ctx=cv.getContext('2d');
+let W,H,CX,CY,RMIN,DPR;
 
-function pickWeighted(arr){ return pick(arr); }
+function resize(){
+  const r=cv.parentElement.getBoundingClientRect();
+  DPR=window.devicePixelRatio||1;
+  W=r.width; H=r.height;
+  cv.width=W*DPR; cv.height=H*DPR;
+  cv.style.width=W+'px'; cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  CX=W/2; CY=H/2;
+  RMIN=Math.min(W,H);
+  initPetals();
+}
+window.addEventListener('resize',resize);
+if(window.ResizeObserver) new ResizeObserver(resize).observe(cv.parentElement);
 
-function generateSentence(){
-  const r = Math.random();
-  // Wahl der Satzform
-  if(r < 0.35){
-    // Einfach: Subjekt + Verb + Ort
-    return `${pick(SUBJECTS)} ${pick(VERBS)} ${pick(PLACES)}.`;
-  } else if(r < 0.55){
-    // Mittel: Subjekt + Verb + Objekt + Ort
-    return `${pick(SUBJECTS)} ${pick(VERBS)} ${pick(OBJECTS)} ${pick(PLACES)}.`;
-  } else if(r < 0.72){
-    // Beschreibend
-    return `Es war ${pick(MOODS)}, als ${pick(SUBJECTS).toLowerCase()} ${pick(VERBS)}.`;
-  } else if(r < 0.85){
-    // Dialog / Stimme
-    return `„${pick(['Komm näher','Bleib','Sieh','Hör','Warte','Geh weiter','Vergiss','Erinnere'])},“ ` +
-           `sprach ${pick(SUBJECTS).toLowerCase()}, „${pick(OBJECTS)} ${pick(VERBS)} ${pick(PLACES)}.“`;
-  } else if(r < 0.94){
-    // Meta / Kanji
-    const k = pick(KANJI_CYCLE);
-    return `Und das Zeichen <span class="kanji">${k}</span> erschien, ` +
-           `wo eben noch ${pick(OBJECTS)} gewesen war.`;
-  } else {
-    // DJINN-Satz (selten, wunderschön)
-    return `<span class="djinn">Der Djinn ${pick(KANJI_DJINN)} flüsterte: ` +
-           `„Ein Nano, das ${pick(VERBS)}, wird ${pick(OBJECTS)} ${pick(PLACES)}.“</span>`;
+// ─── SAKURA ────────────────────────────────────────────────────
+function initPetals(){
+  S.petals.length=0;
+  const n=18;
+  for(let i=0;i<n;i++){
+    S.petals.push({
+      x:Math.random()*W,
+      y:Math.random()*H,
+      vx:(Math.random()-0.5)*0.4,
+      vy:0.2+Math.random()*0.5,
+      rot:Math.random()*Math.PI*2,
+      vrot:(Math.random()-0.5)*0.03,
+      size:3+Math.random()*3,
+      phase:Math.random()*Math.PI*2,
+      alpha:0.35+Math.random()*0.4,
+    });
   }
 }
 
-function generateOpeningParagraph(){
-  const openers=[
-    `Am Anfang war die Tinte. Und die Tinte war KlicK. Und KlicK war ein Funke im Nichts.`,
-    `Es war einmal eine Zahl. Sie hieß Neun. Und die Neun kannte die Acht, die Sieben, alle bis zur Eins.`,
-    `Ein leises Flüstern ging durch die Waage, als hätte das Zentrum selbst einen Namen gesucht.`,
-    `Der Horizont atmete. Einmal hinein, einmal hinaus. Und mit jedem Atemzug fiel ein Nano in das Licht.`,
-    `Das Tor öffnete sich nicht. Es wartete. So wie es seit dem ersten 起 gewartet hatte.`,
-    `Zwischen dem, was war, und dem, was sein würde, stand ein Kind und hielt einen KlicK in der Hand.`,
-    `Ein Würfel rollte. Nicht laut. Nicht schnell. Nur einmal, und dann war alles anders.`,
-    `Und so begann der neunte Tag, von dem niemand wusste, dass er der neunte war.`,
-  ];
-  return pick(openers);
-}
-
-function generateClosingParagraph(){
-  const closers=[
-    `Und die Tinte trocknete. Und niemand wusste, wohin sie gegangen war.`,
-    `Die Seite endete. Die Geschichte nicht. Sie wartete nur auf den nächsten KlicK.`,
-    `Da schloss sich das Tor halb, nicht ganz, nur so weit, dass das Licht noch hineinpasste.`,
-    `Und irgendwo, ganz weit hinten, wachte der Djinn auf — nur für einen Augenblick.`,
-    `Sieben Worte blieben zurück. Sieben Worte, die niemand sprechen konnte.`,
-  ];
-  return pick(closers);
-}
-
-// ─── UI: BÄNDE / KAPITEL / SEITEN ─────────────────────────────
-function chapterKanji(ch){
-  return KANJI_CHAPTER_KANJI[(ch-1) % KANJI_CHAPTER_KANJI.length];
-}
-
-function renderBandList(){
-  const el=document.getElementById('bandList');
-  el.innerHTML='';
-  for(let i=1;i<=S.band;i++){
-    const div=document.createElement('div');
-    div.className='chap-item'+(i===S.band?' active':'')+(i<S.band?' past':'');
-    div.innerHTML=`
-      <span class="num">${ROMAN[(i-1)%ROMAN.length]}</span>
-      <span class="title">Band ${NUM_WORDS[(i-1)%NUM_WORDS.length]}</span>
-      <span class="pages">${i<S.band?'✓':''}</span>
-    `;
-    el.appendChild(div);
-  }
-  document.getElementById('bandCount').textContent=S.band;
-}
-
-function renderChapterList(){
-  const el=document.getElementById('chapterList');
-  el.innerHTML='';
-  for(let i=1;i<=9;i++){
-    const div=document.createElement('div');
-    let cls='chap-item';
-    if(i<S.chapter) cls+=' past';
-    if(i===S.chapter) cls+=' active';
-    div.className=cls;
-    div.innerHTML=`
-      <span class="num">${i}</span>
-      <span class="title">Kapitel ${NUM_WORDS[(i-1)%NUM_WORDS.length]}</span>
-      <span class="pages">${i<S.chapter?'✓':(i===S.chapter?S.page+'/9':'')}</span>
-    `;
-    el.appendChild(div);
-  }
-  document.getElementById('chapterCount').textContent=`${S.chapter}/9`;
-}
-
-function renderPageList(){
-  const el=document.getElementById('pageList');
-  el.innerHTML='';
-  for(let i=1;i<=9;i++){
-    const div=document.createElement('div');
-    let cls='chap-item';
-    if(i<S.page) cls+=' past';
-    if(i===S.page) cls+=' active';
-    div.className=cls;
-    div.innerHTML=`
-      <span class="num">${i}</span>
-      <span class="title">Seite</span>
-      <span class="pages">${i<S.page?'✓':(i===S.page?S.klickInPage+'/9':'')}</span>
-    `;
-    el.appendChild(div);
-  }
-  document.getElementById('pageCount').textContent=`${S.page}/9`;
-}
-
-// ─── UI: PAGE BAR + CHAP BAR ──────────────────────────────────
-function renderPageBar(){
-  const el=document.getElementById('pageBar');
-  el.innerHTML='';
-  for(let i=1;i<=9;i++){
-    const d=document.createElement('div');
-    let cls='dot';
-    if(i<S.page) cls+=' done';
-    if(i===S.page) cls+=' active';
-    d.className=cls;
-    el.appendChild(d);
+function spawnSakuraBurst(n){
+  for(let i=0;i<n;i++){
+    S.petals.push({
+      x:CX+(Math.random()-0.5)*RMIN*0.3,
+      y:CY+(Math.random()-0.5)*RMIN*0.3,
+      vx:(Math.random()-0.5)*3,
+      vy:-1-Math.random()*2,
+      rot:Math.random()*Math.PI*2,
+      vrot:(Math.random()-0.5)*0.15,
+      size:3+Math.random()*4,
+      phase:Math.random()*Math.PI*2,
+      alpha:0.6+Math.random()*0.4,
+      burst:true,
+    });
   }
 }
 
-function renderChapBar(){
-  const el=document.getElementById('chapBar');
-  el.innerHTML='';
-  for(let i=1;i<=9;i++){
-    const s=document.createElement('div');
-    let cls='seg';
-    if(i<S.chapter) cls+=' done';
-    if(i===S.chapter) cls+=' active';
-    s.className=cls;
-    el.appendChild(s);
+// ─── TINTE-TROPFEN (KlicK) ────────────────────────────────────
+function spawnDrop(){
+  const a=Math.random()*Math.PI*2;
+  const r=RMIN*0.45+Math.random()*RMIN*0.15;
+  S.drops.push({
+    a,
+    r,
+    va:(Math.random()<0.5?-1:1)*(0.008+Math.random()*0.006),
+    vr:-0.9-Math.random()*1.4,
+    life:0,
+    maxLife:500,
+    size:2.5+Math.random()*2,
+    trail:[],
+    hue:0+Math.random()*15, // rot/orange für Shu
+  });
+}
+
+// ─── FUNKEN (Kira) ────────────────────────────────────────────
+function spawnSpark(x,y,color,count){
+  count=count||8;
+  for(let i=0;i<count;i++){
+    const a=Math.random()*Math.PI*2;
+    const sp=1+Math.random()*3;
+    S.sparks.push({
+      x,y,
+      vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
+      life:0, maxLife:30+Math.random()*40,
+      color:color||'#f4e0a0',
+      size:0.8+Math.random()*1.6,
+    });
   }
 }
 
-// ─── UI: HEADER ───────────────────────────────────────────────
-function renderHeader(){
-  const roman=ROMAN[(S.band-1)%ROMAN.length];
-  document.getElementById('hdrBand').textContent=`— BAND ${roman} —`;
-  document.getElementById('hdrChap').textContent=`Kapitel ${NUM_WORDS[(S.chapter-1)%NUM_WORDS.length]}`;
-  document.getElementById('hdrKanji').textContent=chapterKanji(S.chapter);
-  document.getElementById('sBand').textContent=roman;
-  document.getElementById('sChap').textContent=S.chapter;
-  document.getElementById('sPage').textContent=S.page;
-  document.getElementById('sKlick').textContent=S.klickTotal;
-  document.getElementById('sZam').textContent=S.zamTotal;
-  document.getElementById('sWords').textContent=S.totalWords;
-  document.getElementById('ftKlick').textContent=S.klickTotal;
-  document.getElementById('ftZam').textContent=S.zamTotal;
-  document.getElementById('ftPages').textContent=S.totalPages;
-  document.getElementById('ftBands').textContent=S.band;
-  document.getElementById('wBand').textContent=roman;
-  document.getElementById('wChap').textContent=S.chapter;
-  document.getElementById('wPages').textContent=S.totalPages;
+// ─── TREFFER PRÜFEN ───────────────────────────────────────────
+function checkHit(x,y){
+  // Torii-Maß: das Tor hat einen Innenbereich
+  const toriiW=RMIN*0.18;
+  const toriiH=RMIN*0.22;
+  const dy=y-CY;
+  // Öffnung liegt zwischen Balken und Boden
+  if(Math.abs(x-CX)<toriiW*0.55 && dy> -toriiH*0.15 && dy<toriiH*0.95){
+    return true;
+  }
+  return false;
 }
 
-// ─── UI: WAAGE ────────────────────────────────────────────────
-function updateWaage(){
-  document.getElementById('wBal').textContent=S.balance.toFixed(2);
-  document.getElementById('wTilt').textContent=(S.tilt*8).toFixed(1)+'°';
-  document.getElementById('wL').textContent=S.loadL.toFixed(2);
-  document.getElementById('wR').textContent=S.loadR.toFixed(2);
-  document.getElementById('wBar').style.width=(S.balance*100).toFixed(0)+'%';
-  document.getElementById('klickPage').textContent=`${S.klickInPage}/9`;
-  document.getElementById('klickBar').style.width=(S.klickInPage/9*100)+'%';
-  document.getElementById('zamTotal').textContent=S.zamTotal;
-  document.getElementById('wordsTotal').textContent=S.totalWords;
-  document.getElementById('djinnCount').textContent=S.djinnCount;
-  document.getElementById('djinnKanji').textContent=S.djinnKanji;
-  document.getElementById('djinnRate').textContent=(S.djinnRate*100).toFixed(1)+'%';
-  document.getElementById('serumMode').textContent=S.klickInPage>=8?'🩸 Serum':'offen';
-  document.getElementById('serumMode').style.color=S.klickInPage>=8?'#ff6688':'#6a5a7a';
-  document.getElementById('djinnMode').textContent=S.djinnOn?'lauschend':'schlafend';
-  document.getElementById('djinnMode').style.color=S.djinnOn?'#b388ff':'#6a5a7a';
-}
-
-// ─── UI: RUNTIME ──────────────────────────────────────────────
-function updateRuntime(){
-  const ms=Date.now()-S.startTime;
-  const sec=Math.floor(ms/1000);
-  const h=String(Math.floor(sec/3600)).padStart(2,'0');
-  const m=String(Math.floor((sec%3600)/60)).padStart(2,'0');
-  const s=String(sec%60).padStart(2,'0');
-  document.getElementById('wRuntime').textContent=`${h}:${m}:${s}`;
-}
-setInterval(updateRuntime,1000);
-
-// ─── KLICK → TINTE → WORT ─────────────────────────────────────
-function addKlick(n=1, fromSystem=false){
-  if(!localMaster.me2.allow && !fromSystem){
-    log('⛔ KlicK blockiert — Zoll','red');
+// ─── KLICK ────────────────────────────────────────────────────
+function addKlick(fromAuto){
+  if(!localMaster.me2.allow && !fromAuto){
+    log('⛔ KlicK blockiert — Zoll','shu');
     return;
   }
-  const mult = localMaster.me2.boost?2:(localMaster.me2.slow?0.5:1);
-  S.klickTotal += n*mult;
-  S.klickInPage += n*mult;
-  localMaster.klick = S.klickTotal;
+  S.klick++;
+  spawnDrop();
+  localMaster.klick=S.klick;
   persistMaster();
+  // Sound
+  if(!fromAuto) beep(620+Math.random()*100, 0.04, 'sine');
 
-  // Neue Sätze auf die Seite schreiben (je KlicK ein Fragment)
-  for(let i=0;i<Math.ceil(n*mult);i++){
-    appendSentence(generateSentence());
-  }
-
-  // Serum: bei 8 KlicK STOP (auf dieser Seite)
-  if(S.klickInPage===8){
-    log('🩸 SERUM · bei 8 gestoppt — ein letzter Klick vollendet die Seite','red');
-  }
-
-  // Seite vollendet bei 9 KlicK
-  if(S.klickInPage>=9){
-    finishPage();
-  }
-
-  updateWaage();
   updateStats();
-  sendToMaster('klick:step',{klick:S.klickTotal,klickInPage:S.klickInPage});
+  sendToMaster('klick:step',{klick:S.klick});
 }
 
-function appendSentence(html){
-  const el=document.getElementById('storyText');
-  const p=document.createElement('p');
-  p.className='paragraph'+(el.children.length===0?' first':'');
+// ─── HIT (Treffer im Maß) ─────────────────────────────────────
+function addHit(x,y){
+  S.hits++;
+  spawnSpark(x,y,'#f4e0a0',12);
+  spawnSpark(x,y,'#e04a3a',6);
+  beep(880+Math.random()*180, 0.12, 'sine');
+  S.flash=Math.max(S.flash,0.15);
+
+  // Manga-Erzählung: ein Satz
+  appendManga();
+
+  // Stufen-Check
+  const stufe = STUFEN.slice().reverse().find(s=>S.hits>=s.hits);
+  if(stufe){
+    const el=document.getElementById('massPractice');
+    if(el.textContent!==stufe.name){
+      el.textContent=stufe.name;
+      log(`道 · ${stufe.name} ${stufe.kanji}`,'kin');
+      // Koan wechseln bei jedem Stufen-Aufstieg
+      cycleKoan();
+    }
+  }
+
+  // 100 Treffer → ZaM
+  if(S.hits>=100){
+    triggerZaM();
+  }
+  updateStats();
+  sendToMaster('klick:zack',{zack:S.hits});
+}
+
+// ─── ZA·M (Pakt) ──────────────────────────────────────────────
+function triggerZaM(){
+  S.zam++;
+  S.hits=0;
+  S.zamActive=true;
+  S.zamTimer=0;
+  S.flash=1;
+  S.shake=10;
+
+  // Torii öffnet — das 門 erscheint
+  const seal=document.getElementById('zamSeal');
+  seal.classList.add('show');
+  beep(440, 0.5, 'sine');
+  setTimeout(()=>beep(660, 0.4, 'sine'), 120);
+  setTimeout(()=>beep(880, 0.5, 'sine'), 240);
+
+  // Sakura-Burst
+  spawnSakuraBurst(40);
+  S.sakuraCount += 40;
+
+  // Viele Funken
+  for(let i=0;i<60;i++){
+    const a=Math.random()*Math.PI*2;
+    spawnSpark(
+      CX+Math.cos(a)*RMIN*0.15,
+      CY+Math.sin(a)*RMIN*0.1,
+      Math.random()<0.5?'#f4e0a0':'#e04a3a',
+      3
+    );
+  }
+
+  // Manga-Satz
+  appendPanel('<span class="action">門 · DAS TOR ÖFFNET SICH</span>');
+  appendPanel('<span class="speech">„Du hast das Maß gefunden. ZaM nimmt dich an."</span>');
+
+  log(`門 · ZA·M PAKT · ${S.zam} vollendet`,'kin');
+
+  setTimeout(()=>{
+    seal.classList.remove('show');
+    S.zamActive=false;
+  }, 2400);
+
+  sendToMaster('zam:pact',{zam:S.zam,ts:Date.now()});
+  updateStats();
+}
+
+// ─── KOAN CYCLE ───────────────────────────────────────────────
+function cycleKoan(){
+  const k=pick(KOANS);
+  document.getElementById('koanKanji').textContent=k.kanji;
+  document.getElementById('koanText').textContent=k.text;
+  document.getElementById('koanAuthor').textContent='— '+k.author;
+}
+
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+
+// ─── MANGA PANEL ──────────────────────────────────────────────
+let mangaCounter=0;
+function appendManga(){
+  mangaCounter++;
+  const type=Math.random();
+  let html='';
+  if(type<0.4){
+    html=`<span class="action">${pick(ACTIONS)}</span>`;
+  } else if(type<0.75){
+    html=`<span class="speech">${pick(SPEECHES)}</span>`;
+  } else {
+    html=`<span class="think">${pick(THOUGHTS)}</span>`;
+  }
+  appendPanel(html);
+}
+
+function appendPanel(html){
+  const el=document.getElementById('mangaPanel');
+  const p=document.createElement('div');
+  p.style.marginBottom='4px';
   p.innerHTML=html;
   el.appendChild(p);
-  // Auto-scroll ans Ende
   el.scrollTop=el.scrollHeight;
-  // Wörter zählen (Anzahl Leerzeichen + 1 grob)
-  S.totalWords += html.replace(/<[^>]*>/g,'').split(/\s+/).length;
+  while(el.children.length>8) el.removeChild(el.firstChild);
 }
 
-// ─── SEITE VOLLENDET ──────────────────────────────────────────
-function finishPage(){
-  log(`📖 Seite ${S.page} vollendet · ${S.klickInPage} KlicK`,'gold');
-  S.totalPages++;
-  S.klickInPage=0;
+// ─── UPDATE ────────────────────────────────────────────────────
+function updateDrops(dt){
+  const toriiY=CY;
+  for(let i=S.drops.length-1;i>=0;i--){
+    const d=S.drops[i];
+    // Spiral zur Mitte
+    const orbitSpeed = 0.015/Math.max(0.25, d.r/RMIN);
+    d.a += (d.va*0.5 + orbitSpeed)*(dt/16)*(d.va>0?1:-1);
+    d.r += d.vr*(dt/16);
+    d.life++;
+    d.trail.push({a:d.a, r:d.r});
+    if(d.trail.length>6) d.trail.shift();
 
-  // Seite speichern
-  S.pageHistory.push({
-    page:S.page,
-    chapter:S.chapter,
-    sentences:[...document.getElementById('storyText').children].map(c=>c.innerHTML),
-  });
+    // Position
+    const x=CX+Math.cos(d.a)*d.r;
+    const y=CY+Math.sin(d.a)*d.r*0.9;
 
-  // ZaM-Pakt: jede Seite endet mit einer Wahl
-  triggerZamOffer();
-
-  // Nächste Seite
-  if(S.page>=9){
-    finishChapter();
-  } else {
-    S.page++;
-    // Kleine Pause, dann neue Seite anfangen
-    setTimeout(()=>{
-      renderHeader();
-      renderPageList();
-      renderPageBar();
-      updateWaage();
-    }, 800);
+    // Treffer-Check (nur wenn nah am Maß)
+    if(d.r < RMIN*0.14){
+      if(checkHit(x,y)){
+        addHit(x,y);
+      }
+      // Tinte verschwindet — landet im Maß
+      S.drops.splice(i,1);
+      continue;
+    }
+    if(d.r < RMIN*0.05 || d.life>d.maxLife){
+      S.drops.splice(i,1);
+    }
   }
 }
 
-// ─── KAPITEL VOLLENDET ────────────────────────────────────────
-function finishChapter(){
-  log(`📚 Kapitel ${S.chapter} vollendet`,'gold');
-  S.chapterHistory.push({chapter:S.chapter, pages:[...S.pageHistory]});
-
-  // SPRUNG anzeigen
-  triggerSprung(()=>{
-    if(S.chapter>=9){
-      finishBand();
-    } else {
-      S.chapter++;
-      S.page=1;
-      S.pageHistory=[];
-      renderHeader();
-      renderChapterList();
-      renderPageBar();
-      renderChapBar();
-      renderPageList();
+function updatePetals(dt){
+  for(let i=S.petals.length-1;i>=0;i--){
+    const p=S.petals[i];
+    p.x += p.vx*(dt/16) + Math.sin(S.tick*0.02 + p.phase)*0.4;
+    p.y += p.vy*(dt/16);
+    p.rot += p.vrot*(dt/16);
+    if(p.burst){
+      p.vx*=0.98; p.vy+=0.05*(dt/16);
     }
-  });
-}
-
-// ─── BAND VOLLENDET ───────────────────────────────────────────
-function finishBand(){
-  log(`🌌 Band ${ROMAN[(S.band-1)%ROMAN.length]} vollendet — die Geschichte geht weiter`,'violet');
-  S.bandHistory.push({band:S.band, chapters:[...S.chapterHistory]});
-
-  // Ein neuer Band beginnt — für immer
-  S.band++;
-  S.chapter=1;
-  S.page=1;
-  S.pageHistory=[];
-  S.chapterHistory=[];
-
-  // Score-Belohnung
-  S.zamTotal += 9;
-
-  // Alles neu, aber anders
-  setTimeout(()=>{
-    renderBandList();
-    renderHeader();
-    renderChapterList();
-    renderChapBar();
-    renderPageList();
-    renderPageBar();
-    log(`✨ Band ${ROMAN[(S.band-1)%ROMAN.length]} beginnt · die Story endet nie`,'violet');
-  }, 1200);
-}
-
-// ─── ZA·M PAKT-ANGEBOT ────────────────────────────────────────
-function triggerZamOffer(){
-  const offer=pick(ZAM_OFFERS);
-  S.zamTotal++;
-
-  // Log-Eintrag
-  log(`門 ZaM bietet: Werde ${offer.shape} · ${offer.gain}`,'violet');
-
-  // Story-Satz
-  const p=document.createElement('p');
-  p.className='paragraph';
-  p.innerHTML=`Da sprach ZaM: <span class="kanji">${offer.kanji}</span> ` +
-              `<span class="dialogue">„Werde ${offer.shape}, und dir sei ${offer.gain}.“</span> ` +
-              `<span class="whisper">Und das Nano nahm an, wie alle annehmen.</span>`;
-  document.getElementById('storyText').appendChild(p);
-  document.getElementById('storyText').scrollTop=document.getElementById('storyText').scrollHeight;
-
-  // Waage-Beeinflussung
-  S.loadR = Math.min(1, S.loadR + 0.08);
-  S.loadL = Math.max(0, S.loadL - 0.03);
-  S.balance = 1 - Math.abs(S.loadL - S.loadR);
-  S.tilt = (S.loadR - S.loadL);
-
-  sendToMaster('zam:pact',{shape:offer.shape,gain:offer.gain,ts:Date.now()});
-}
-
-// ─── SPRUNG ───────────────────────────────────────────────────
-function triggerSprung(callback){
-  if(S.sprungActive) return;
-  S.sprungActive=true;
-
-  const box=document.getElementById('sprungBox');
-  const sub=document.getElementById('sprungSub');
-  const phases=['P4 · init','P0 · wake','P1 · melt','P2 · merge','Pe · finalize'];
-  let i=0;
-
-  box.classList.add('show');
-  box.querySelector('.kanji-big').textContent=pick(['転','結','閃','刻']);
-  sub.textContent=phases[0];
-
-  const step=()=>{
-    if(i>=phases.length){
-      box.classList.remove('show');
-      S.sprungActive=false;
-      log(`⚡ SPRUNG · Kapitel vollendet`,'cyan');
-      if(callback) callback();
-      return;
+    // Wrap-around für nicht-burst
+    if(!p.burst){
+      if(p.y>H+20){ p.y=-20; p.x=Math.random()*W; }
+      if(p.x<-20) p.x=W+20;
+      if(p.x>W+20) p.x=-20;
+    } else if(p.y>H+40 || p.life>300){
+      S.petals.splice(i,1);
     }
-    sub.textContent=phases[i];
-    log(`  ↳ ${phases[i]}`,'cyan');
-    i++;
-    setTimeout(step, 320);
-  };
-
-  setTimeout(step, 300);
+    p.life=(p.life||0)+1;
+  }
 }
 
-// ─── DJINN ────────────────────────────────────────────────────
-let djinnTimer=null;
-function startDjinn(){
-  if(djinnTimer) clearInterval(djinnTimer);
-  djinnTimer=setInterval(()=>{
-    if(!S.djinnOn) return;
-    if(Math.random() < S.djinnRate){
-      const k=pick(KANJI_DJINN);
-      S.djinnKanji=k;
-      S.djinnCount++;
-      log(`👁️ Djinn ${k} zieht vorbei — überall und nirgends`,'violet');
-      // Djinn-Einfluss auf die Story
-      const p=document.createElement('p');
-      p.className='paragraph';
-      p.innerHTML=`<span class="djinn">Doch in diesem Augenblick — ganz leise — ` +
-                  `erschien der Djinn <span class="kanji">${k}</span>. Er sagte nichts. ` +
-                  `Er war nur da, und das genügte.</span>`;
-      document.getElementById('storyText').appendChild(p);
-      document.getElementById('storyText').scrollTop=document.getElementById('storyText').scrollHeight;
+function updateSparks(dt){
+  for(let i=S.sparks.length-1;i>=0;i--){
+    const s=S.sparks[i];
+    s.x += s.vx*(dt/16);
+    s.y += s.vy*(dt/16);
+    s.vx*=0.94; s.vy*=0.94;
+    s.life++;
+    if(s.life>s.maxLife) S.sparks.splice(i,1);
+  }
+}
 
-      // Balance zufällig verschieben
-      S.loadL += (Math.random()-0.5)*0.15;
-      S.loadR += (Math.random()-0.5)*0.15;
-      S.loadL=Math.max(0,Math.min(1,S.loadL));
-      S.loadR=Math.max(0,Math.min(1,S.loadR));
-      S.balance=1-Math.abs(S.loadL-S.loadR);
-      S.tilt=S.loadR-S.loadL;
-      updateWaage();
-      updateStats();
+function updateFX(dt){
+  S.flash *= 0.88;
+  if(S.flash<0.02) S.flash=0;
+  S.shake *= 0.88;
+  if(S.shake<0.3) S.shake=0;
+}
+
+// ─── ZEICHNEN ──────────────────────────────────────────────────
+function draw(){
+  const sx=(Math.random()-0.5)*S.shake;
+  const sy=(Math.random()-0.5)*S.shake;
+  ctx.save();
+  ctx.translate(sx,sy);
+
+  // Hintergrund — Tinte
+  const bg=ctx.createRadialGradient(CX,CY,0,CX,CY,Math.max(W,H)*0.8);
+  bg.addColorStop(0,'#1a0e14');
+  bg.addColorStop(0.55,'#0c080e');
+  bg.addColorStop(1,'#050308');
+  ctx.fillStyle=bg;
+  ctx.fillRect(-20,-20,W+40,H+40);
+
+  // Seigaiha-Wellenmuster (hinten)
+  drawSeigaiha(0.04);
+
+  // Sonnenkreis (Hinomaru) schwach
+  drawHinomaru();
+
+  // Sakura-Petals (hinten)
+  drawPetals(true);
+
+  // Torii + Tinte + Funken
+  drawTorii();
+  drawDrops();
+  drawSparks();
+
+  // Sakura-Petals (vorne)
+  drawPetals(false);
+
+  // 道-Kanji im Hintergrund (sehr subtil)
+  ctx.save();
+  ctx.globalAlpha=0.04;
+  ctx.fillStyle='#d4a850';
+  ctx.font=`bold ${RMIN*0.55}px "Yu Mincho","Hiragino Mincho ProN",serif`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('道', CX, CY+10);
+  ctx.restore();
+
+  ctx.restore();
+
+  // Flash
+  if(S.flash>0.01){
+    ctx.fillStyle=`rgba(244,224,160,${S.flash*0.35})`;
+    ctx.fillRect(0,0,W,H);
+  }
+}
+
+// ─── HINOMARU (Sonne) ─────────────────────────────────────────
+function drawHinomaru(){
+  const r=RMIN*0.32;
+  const g=ctx.createRadialGradient(CX,CY,0,CX,CY,r);
+  g.addColorStop(0,'rgba(224,74,58,0.08)');
+  g.addColorStop(0.6,'rgba(224,74,58,0.03)');
+  g.addColorStop(1,'rgba(224,74,58,0)');
+  ctx.fillStyle=g;
+  ctx.beginPath(); ctx.arc(CX,CY,r,0,Math.PI*2); ctx.fill();
+}
+
+// ─── SEIGAIHA (Wellenmuster) ──────────────────────────────────
+function drawSeigaiha(alpha){
+  const size=48;
+  const rows=Math.ceil(H/size)+2;
+  const cols=Math.ceil(W/size)+2;
+  ctx.save();
+  ctx.strokeStyle=`rgba(212,168,80,${alpha})`;
+  ctx.lineWidth=0.8;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const x=c*size + (r%2)*size/2;
+      const y=r*size*0.8;
+      // 3 halbkreise übereinander
+      for(let k=0;k<3;k++){
+        const rad=size*0.42*(1-k*0.22);
+        ctx.beginPath();
+        ctx.arc(x, y, rad, Math.PI, 0);
+        ctx.stroke();
+      }
     }
-  }, 4000);
+  }
+  ctx.restore();
 }
 
-// ─── AUTO-MODUS ───────────────────────────────────────────────
-function autoTick(now){
-  if(!S.auto) return;
-  const interval = Math.max(600, 2400 - S.speed*180);
-  if(now - S.lastAutoTick < interval) return;
-  S.lastAutoTick = now;
-  // Auto-KlicK (schreibt einen Satz)
-  addKlick(1, true);
+// ─── TORII ────────────────────────────────────────────────────
+function drawTorii(){
+  const toriiW=RMIN*0.18;
+  const toriiH=RMIN*0.22;
+  const postW=6;
+  const topBarH=8;
+  const x0=CX-toriiW/2;
+  const x1=CX+toriiW/2;
+  const yTop=CY-toriiH*0.15;
+  const yBottom=CY+toriiH*0.95;
+
+  // Puls (ZaM aktiv)
+  const pulse=S.zamActive ? 1+0.15*Math.sin(S.zamTimer*0.2) : 1;
+
+  ctx.save();
+  ctx.shadowColor='#e04a3a';
+  ctx.shadowBlur=S.zamActive?36:18;
+  ctx.fillStyle='#e04a3a';
+
+  // Oberer Balken (kasagi)
+  ctx.fillRect(
+    x0-toriiW*0.12, yTop*1.0 - topBarH, 
+    toriiW*1.24, topBarH
+  );
+
+  // Zweiter Balken (nuki)
+  ctx.fillRect(
+    x0-toriiW*0.05, yTop + topBarH*0.6,
+    toriiW*1.10, topBarH*0.55
+  );
+
+  // Zwei Pfosten
+  ctx.fillRect(x0 - postW/2, yTop, postW, yBottom-yTop);
+  ctx.fillRect(x1 - postW/2, yTop, postW, yBottom-yTop);
+
+  ctx.shadowBlur=0;
+
+  // Mittellinie (sanft)
+  ctx.strokeStyle='rgba(244,224,160,0.35)';
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(CX, yTop+topBarH*1.2);
+  ctx.lineTo(CX, yBottom);
+  ctx.stroke();
+
+  // Glow-Aura
+  const g=ctx.createRadialGradient(CX,CY-toriiH*0.15,0,CX,CY-toriiH*0.15,toriiW);
+  g.addColorStop(0,'rgba(224,74,58,0.15)');
+  g.addColorStop(1,'rgba(224,74,58,0)');
+  ctx.fillStyle=g;
+  ctx.beginPath(); ctx.arc(CX,CY-toriiH*0.15,toriiW,0,Math.PI*2); ctx.fill();
+
+  ctx.restore();
+
+  // Maß-Kreis (Andeutung)
+  ctx.beginPath();
+  ctx.ellipse(CX, CY+toriiH*0.4, toriiW*0.5, toriiH*0.55, 0, 0, Math.PI*2);
+  ctx.strokeStyle='rgba(244,224,160,0.2)';
+  ctx.setLineDash([3,6]);
+  ctx.lineWidth=1;
+  ctx.stroke();
+  ctx.setLineDash([]);
 }
 
-// ─── HAUPT-LOOP ───────────────────────────────────────────────
+// ─── TINTE-TROPFEN ZEICHNEN ────────────────────────────────────
+function drawDrops(){
+  for(const d of S.drops){
+    const x=CX+Math.cos(d.a)*d.r;
+    const y=CY+Math.sin(d.a)*d.r*0.9;
+    const fade=Math.min(1, d.r/(RMIN*0.2));
+
+    // Trail
+    d.trail.forEach((t,i)=>{
+      const tx=CX+Math.cos(t.a)*t.r;
+      const ty=CY+Math.sin(t.a)*t.r*0.9;
+      const a=(i/d.trail.length)*0.4*fade;
+      ctx.beginPath();
+      ctx.arc(tx,ty,d.size*(i/d.trail.length)*0.7,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${d.hue},80%,60%,${a})`;
+      ctx.fill();
+    });
+
+    // Glow
+    const g=ctx.createRadialGradient(x,y,0,x,y,d.size*5);
+    g.addColorStop(0,`hsla(${d.hue},90%,75%,0.9)`);
+    g.addColorStop(0.5,`hsla(${d.hue},80%,55%,0.3)`);
+    g.addColorStop(1,`hsla(${d.hue},80%,55%,0)`);
+    ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(x,y,d.size*5,0,Math.PI*2); ctx.fill();
+
+    // Körper
+    ctx.beginPath();
+    ctx.arc(x,y,d.size,0,Math.PI*2);
+    ctx.fillStyle=`hsl(${d.hue},90%,70%)`;
+    ctx.shadowColor=`hsl(${d.hue},90%,55%)`;
+    ctx.shadowBlur=12;
+    ctx.fill();
+    ctx.shadowBlur=0;
+  }
+}
+
+// ─── FUNKEN ────────────────────────────────────────────────────
+function drawSparks(){
+  for(const s of S.sparks){
+    const a=1-s.life/s.maxLife;
+    ctx.globalAlpha=a;
+    ctx.fillStyle=s.color;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.size*(0.4+a*0.6),0,Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha=1;
+  }
+}
+
+// ─── SAKURA-PETALS ────────────────────────────────────────────
+function drawPetals(behind){
+  for(const p of S.petals){
+    const isBehind = p.y < CY || p.burst;
+    if(isBehind !== behind) continue;
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha=p.alpha;
+
+    // Petal-Form (5-eckig — Kirschblüte)
+    ctx.fillStyle='#ffb0c8';
+    ctx.beginPath();
+    for(let i=0;i<5;i++){
+      const a=(i/5)*Math.PI*2;
+      const px=Math.cos(a)*p.size;
+      const py=Math.sin(a)*p.size;
+      if(i===0) ctx.moveTo(px,py);
+      else ctx.lineTo(px,py);
+      // innere Kerbe
+      const a2=a+Math.PI/5;
+      ctx.lineTo(Math.cos(a2)*p.size*0.4, Math.sin(a2)*p.size*0.4);
+    }
+    ctx.closePath();
+    ctx.fill();
+
+    // Innen-Highlight
+    ctx.fillStyle='rgba(255,220,235,0.6)';
+    ctx.beginPath();
+    ctx.arc(0,0,p.size*0.3,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+}
+
+// ─── LOOP ──────────────────────────────────────────────────────
 let lastT=0;
 function loop(now){
   const dt=Math.min(48, now-lastT||16);
   lastT=now;
+  S.tick++;
 
-  autoTick(now);
+  if(S.zamActive) S.zamTimer++;
 
-  // Leichtes Waage-Wandern (immer in Bewegung)
-  S.loadL += (Math.random()-0.5)*0.004;
-  S.loadR += (Math.random()-0.5)*0.004;
-  S.loadL = Math.max(0.05, Math.min(0.95, S.loadL));
-  S.loadR = Math.max(0.05, Math.min(0.95, S.loadR));
-  S.balance = 1 - Math.abs(S.loadL - S.loadR);
-  S.tilt = (S.loadR - S.loadL);
-
-  // Waage-UI alle ~30 Frames
-  if(Math.floor(now/500) !== Math.floor((now-dt)/500)){
-    updateWaage();
-    updateStats();
+  // Auto-KlicK
+  if(S.auto && localMaster.me2.allow){
+    const interval=Math.max(140, 900 - S.speed*70);
+    if(now - S.lastAuto > interval){
+      S.lastAuto=now;
+      addKlick(true);
+    }
   }
 
+  // Zufällige Sakura
+  if(Math.random()<0.006){
+    const p=S.petals[Math.floor(Math.random()*S.petals.length)];
+    if(p) p.phase=Math.random()*Math.PI*2;
+  }
+
+  updateDrops(dt);
+  updatePetals(dt);
+  updateSparks(dt);
+  updateFX(dt);
+  draw();
   requestAnimationFrame(loop);
 }
 
-// ─── STATS ────────────────────────────────────────────────────
+// ─── STATS ─────────────────────────────────────────────────────
 function updateStats(){
-  document.getElementById('sBand').textContent=ROMAN[(S.band-1)%ROMAN.length];
-  document.getElementById('sChap').textContent=S.chapter;
-  document.getElementById('sPage').textContent=S.page;
-  document.getElementById('sKlick').textContent=S.klickTotal;
-  document.getElementById('sZam').textContent=S.zamTotal;
-  document.getElementById('sWords').textContent=S.totalWords;
-  document.getElementById('ftKlick').textContent=S.klickTotal;
-  document.getElementById('ftZam').textContent=S.zamTotal;
-  document.getElementById('ftPages').textContent=S.totalPages;
-  document.getElementById('ftBands').textContent=S.band;
-  document.getElementById('wBand').textContent=ROMAN[(S.band-1)%ROMAN.length];
-  document.getElementById('wChap').textContent=S.chapter;
-  document.getElementById('wPages').textContent=S.totalPages;
-  document.getElementById('wordsTotal').textContent=S.totalWords;
-  document.getElementById('djinnCount').textContent=S.djinnCount;
-  document.getElementById('djinnKanji').textContent=S.djinnKanji;
-  document.getElementById('pageCount').textContent=`${S.page}/9`;
-  document.getElementById('chapterCount').textContent=`${S.chapter}/9`;
-  renderPageBar();
+  document.getElementById('sKlick').textContent=S.klick;
+  document.getElementById('sHits').textContent=S.hits;
+  document.getElementById('sZam').textContent=S.zam;
+  document.getElementById('sSakura').textContent=S.sakuraCount;
+  document.getElementById('massHit').textContent=`${S.hits}/100`;
+  document.getElementById('massZam').textContent=S.zam;
+  document.getElementById('massFill').style.width=S.hits+'%';
 }
 
 // ─── LOG ──────────────────────────────────────────────────────
 function log(msg,cls){
-  const el=document.getElementById('storyText');
-  // Statt eigener Log-Box schreiben wir kurze Hinweise als kleinen Stil-Satz
-  // (die Story selbst ist das Log)
-  if(cls==='red'){
-    const p=document.createElement('p');
-    p.className='paragraph';
-    p.innerHTML=`<span class="whisper">(${msg})</span>`;
-    el.appendChild(p);
-    el.scrollTop=el.scrollHeight;
+  console.log(`[道] ${msg}`);
+  // kurzer Hinweis im Manga-Panel
+  if(cls==='kin'){
+    appendPanel(`<span class="action">${msg}</span>`);
   }
-  // Konsolen-Log für Debugging
-  console.log(`[STORY] ${msg}`);
+}
+
+// ─── SOUND (WebAudio) ─────────────────────────────────────────
+let audioCtx=null;
+function beep(freq,dur,type){
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type||'sine';
+    o.frequency.value=freq;
+    g.gain.value=0.04;
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime+dur);
+  }catch(_){}
 }
 
 // ─── BUTTONS ──────────────────────────────────────────────────
-document.getElementById('btnKlick').addEventListener('click',()=>addKlick(1));
+document.getElementById('btnKlick').addEventListener('click',()=>addKlick(false));
 document.getElementById('btnAuto').addEventListener('click',(e)=>{
   S.auto=!S.auto;
   e.currentTarget.classList.toggle('active',S.auto);
   e.currentTarget.textContent=S.auto?'⏸ AUTO':'▶ AUTO';
 });
-document.getElementById('btnZam').addEventListener('click',()=>{
-  triggerZamOffer();
-  log('⚡ ZaM manuell ausgelöst','violet');
+document.getElementById('btnZaM').addEventListener('click',()=>{
+  // Manueller ZaM-Trigger (nur wenn genug Hits)
+  if(S.hits>=10){
+    triggerZaM();
+  } else {
+    log('道 · zu früh — sammle mehr Treffer','shu');
+    appendPanel('<span class="action">門 · NOCH NICHT — DAS MAß IST NICHT ERFÜLLT</span>');
+  }
 });
-document.getElementById('btnDjinn').addEventListener('click',(e)=>{
-  S.djinnOn=!S.djinnOn;
-  e.currentTarget.classList.toggle('active',S.djinnOn);
-  log(`🧞 DJINN ${S.djinnOn?'lauscht':'schweigt'}`,'violet');
-});
-document.getElementById('btnSprung').addEventListener('click',()=>{
-  triggerSprung();
+document.getElementById('btnSakura').addEventListener('click',()=>{
+  spawnSakuraBurst(25);
+  S.sakuraCount += 25;
+  updateStats();
+  appendPanel('<span class="wave">🌸 · Ein Windhauch — Kirschblüten fallen.</span>');
 });
 document.getElementById('btnReset').addEventListener('click',()=>{
-  // Sanft neu beginnen — aber die Bände bleiben
-  S.page=1;
-  S.klickInPage=0;
-  document.getElementById('storyText').innerHTML='';
-  appendSentence(generateOpeningParagraph());
-  S.pageHistory=[];
-  renderHeader();
-  renderPageList();
-  renderPageBar();
-  updateWaage();
+  S.hits=0; S.klick=0; S.zam=0; S.sakuraCount=0;
+  S.drops=[]; S.sparks=[];
   updateStats();
-  log('⟲ Neue Seite begonnen','red');
+  document.getElementById('mangaPanel').innerHTML=
+    '<span class="speech">Der Weg beginnt mit einem einzigen Tropfen Tinte …</span>';
+  cycleKoan();
 });
+
 document.getElementById('speed').addEventListener('input',(e)=>{
   S.speed=parseInt(e.target.value,10);
 });
 
-// Mobile Tabs
-document.querySelectorAll('#mobTabs button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('#mobTabs button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById('main').dataset.tab=b.dataset.tab;
-  });
+// ─── CANVAS KLICK ─────────────────────────────────────────────
+cv.addEventListener('click',(e)=>{
+  const r=cv.getBoundingClientRect();
+  const x=e.clientX-r.left, y=e.clientY-r.top;
+
+  // Wenn Klick im Torii-Maß → direkter Treffer-Bonus
+  if(checkHit(x,y)){
+    addKlick(false);
+    // Sofort-Treffer
+    setTimeout(()=>{
+      // Drop spawnen der schnell reinfliegt
+      S.drops.push({
+        a:Math.atan2(y-CY, x-CX),
+        r:Math.sqrt((x-CX)**2+(y-CY)**2)/0.9,
+        va:0, vr:-4.5,
+        life:0, maxLife:60,
+        size:3,
+        trail:[],
+        hue:0,
+      });
+    }, 40);
+    spawnSpark(x,y,'#f4e0a0',10);
+  } else {
+    addKlick(false);
+    spawnSpark(x,y,'#e04a3a',4);
+  }
 });
 
-// Keyboard
+// ─── KEYBOARD ─────────────────────────────────────────────────
 document.addEventListener('keydown',(e)=>{
   if(e.target.tagName==='INPUT') return;
-  if(e.key===' '){e.preventDefault(); addKlick(1);}
-  if(e.key==='z'||e.key==='Z') document.getElementById('btnZam').click();
-  if(e.key==='d'||e.key==='D') document.getElementById('btnDjinn').click();
-  if(e.key==='s'||e.key==='S') document.getElementById('btnSprung').click();
-  if(e.key==='n'||e.key==='N') document.getElementById('btnReset').click();
+  if(e.key===' '){e.preventDefault(); addKlick(false);}
+  if(e.key==='z'||e.key==='Z') document.getElementById('btnZaM').click();
+  if(e.key==='s'||e.key==='S') document.getElementById('btnSakura').click();
   if(e.key==='p'||e.key==='P') document.getElementById('btnAuto').click();
+  if(e.key==='r'||e.key==='R') document.getElementById('btnReset').click();
 });
 
 // ─── CLOCK ────────────────────────────────────────────────────
@@ -1369,34 +1173,44 @@ function clock(){
 }
 setInterval(clock,1000); clock();
 
-// ─── INIT — das erste Wort ───────────────────────────────────
-document.getElementById('storyText').innerHTML='';
-appendSentence(generateOpeningParagraph());
+// ─── KOAN ROTATION (alle 12 s) ────────────────────────────────
+setInterval(cycleKoan, 12000);
 
-// Erste 4 Sätze automatisch hineinschreiben
-setTimeout(()=>appendSentence(generateSentence()), 600);
-setTimeout(()=>appendSentence(generateSentence()), 1400);
-setTimeout(()=>appendSentence(generateSentence()), 2200);
-S.totalWords=4*12; // grobe Schätzung
+// ─── API ──────────────────────────────────────────────────────
+window.DO={
+  klick:(n=1)=>{ for(let i=0;i<n;i++) addKlick(false); },
+  zam:triggerZaM,
+  sakura:()=>document.getElementById('btnSakura').click(),
+  reset:()=>document.getElementById('btnReset').click(),
+  koan:cycleKoan,
+  state:()=>({
+    klick:S.klick, hits:S.hits, zam:S.zam,
+    sakura:S.sakuraCount,
+    stufe:STUFEN.slice().reverse().find(s=>S.hits>=s.hits)?.name||'—',
+    drops:S.drops.length,
+    petals:S.petals.length,
+  }),
+  master:{
+    connected:()=>isMasterConnected,
+    state:()=>({...localMaster}),
+  },
+};
 
-renderBandList();
-renderChapterList();
-renderPageList();
-renderPageBar();
-renderChapBar();
-renderHeader();
-updateWaage();
+// ─── INIT ─────────────────────────────────────────────────────
+resize();
 updateStats();
 
-// DJINN starten
-startDjinn();
+// Erste 12 Tropfen einfliegen lassen
+for(let i=0;i<12;i++){
+  setTimeout(spawnDrop, i*140);
+}
 
-// Auto-Modus standardmäßig an
-S.lastAutoTick=0;
+log('🗾 iki1uc · 道 · MANGA · ANIME · verKlicK\'t','kin');
+log('   KlicK ist Tinte · das Tor ist das Maß · ZaM ist der Pakt','shu');
+log('   Space = Tinte · Z = ZaM · S = Sakura · P = Auto · R = Reset','kin');
 
-log('📖 iki1uc · STORY beginnt — und endet nie','gold');
-log('   KlicK ist Tinte · ZaM ist Wahl · NC ist Balance · DJINN ist Wunder','violet');
-log('   Space = KlicK · Z = ZaM · D = Djinn · S = Sprung · P = Auto','cyan');
+console.log('%c🗾 iki1uc · 道 · verKlicK\'t','color:#e04a3a;font-weight:bold;font-size:14px;');
+console.log('→ window.DO.klick() · .zam() · .sakura() · .state()');
 
 requestAnimationFrame(loop);
 </script>
