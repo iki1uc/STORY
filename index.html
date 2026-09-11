@@ -2,166 +2,1403 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>STORY · STATUS · 360° · 100%</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📖 iki1uc · STORY · never ending</title>
 <style>
-  body { background:#000; color:#0f0; font-family:Consolas, monospace; padding:40px; }
-  h1 { color:#6cf; text-align:center; margin-bottom:30px; }
-  .box { background:#111; border:1px solid #333; padding:20px; margin-bottom:25px; }
-  pre { background:#000; padding:12px; border-left:3px solid #6cf; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --void:#020308;
+    --bg:#0a0812;
+    --paper:#1a1420;
+    --parch:#e8dcc4;
+    --gold:#e0b856;
+    --gold2:#ffe9a0;
+    --violet:#b388ff;
+    --cyan:#7fdcff;
+    --green:#8cf0d0;
+    --red:#ff6688;
+    --line:rgba(224,184,86,0.15);
+  }
+  html,body{height:100%;}
+  body{
+    background:
+      radial-gradient(ellipse at 50% 30%, #1a0f24 0%, #0a0812 55%, #020308 100%);
+    color:#d8c8a8;
+    font-family:'EB Garamond','Georgia','Times New Roman',serif;
+    height:100vh; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+
+  /* HEADER */
+  header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 20px;
+    border-bottom:1px solid var(--line);
+    background:rgba(5,3,10,0.85);
+    backdrop-filter:blur(10px);
+    flex-wrap:wrap; gap:10px; z-index:10;
+  }
+  header h1{
+    font-size:16px; font-weight:400; letter-spacing:5px;
+    background:linear-gradient(135deg,#ffe9a0,#e0b856,#b388ff);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    font-family:'EB Garamond',serif;
+    font-style:italic;
+  }
+  header h1 small{
+    font-size:10px; color:#6a5a7a;
+    -webkit-text-fill-color:#6a5a7a;
+    letter-spacing:2px; margin-left:10px;
+    font-family:'Consolas',monospace;
+    font-style:normal;
+  }
+  header h1 .tag{
+    font-size:9px; letter-spacing:3px;
+    -webkit-text-fill-color:#e0b856;
+    border:1px solid rgba(224,184,86,0.4);
+    padding:1px 8px; border-radius:3px; margin-left:8px;
+    font-family:'Consolas',monospace;
+    font-style:normal;
+  }
+  .stats{
+    display:flex; gap:14px; font-size:10px;
+    color:#8a7a9a; align-items:center; flex-wrap:wrap;
+    font-family:'Consolas',monospace;
+  }
+  .stats b{font-weight:bold;}
+  .v-gold{color:#e0b856;}
+  .v-violet{color:#b388ff;}
+  .v-cyan{color:#7fdcff;}
+  .v-green{color:#8cf0d0;}
+  .v-red{color:#ff6688;}
+
+  /* MAIN */
+  #main{
+    flex:1; display:grid;
+    grid-template-columns:220px 1fr 240px;
+    overflow:hidden;
+  }
+  @media (max-width:900px){
+    #main{grid-template-columns:1fr;}
+    #main .col{display:none;}
+    #main[data-tab="chapters"] #left{display:block;}
+    #main[data-tab="story"] #center{display:flex;}
+    #main[data-tab="stats"] #right{display:block;}
+  }
+
+  .col{
+    padding:16px;
+    overflow-y:auto;
+    background:rgba(10,8,18,0.55);
+  }
+  #left  { border-right:1px solid var(--line); }
+  #right { border-left:1px solid var(--line); }
+
+  .panel-title{
+    font-size:10px; color:#e0b856; letter-spacing:3px;
+    border-bottom:1px solid rgba(224,184,86,0.12);
+    padding-bottom:6px; margin-bottom:10px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'Consolas',monospace;
+    text-transform:uppercase;
+  }
+  .panel-title .badge{
+    font-size:9px; color:#6a5a7a;
+    letter-spacing:1px;
+  }
+
+  /* CHAPTER LIST */
+  .chap-item{
+    display:flex; align-items:center; gap:8px;
+    padding:6px 8px; border-radius:4px;
+    font-size:12px; color:#a898b8;
+    cursor:pointer; transition:.15s;
+    margin-bottom:2px;
+    border-left:2px solid transparent;
+    font-family:'EB Garamond',serif;
+  }
+  .chap-item:hover{
+    background:rgba(224,184,86,0.05);
+    color:#e8dcc4;
+  }
+  .chap-item.active{
+    background:rgba(224,184,86,0.08);
+    border-left-color:var(--gold);
+    color:#ffe9a0;
+  }
+  .chap-item.past{
+    color:#6a5a7a;
+    font-style:italic;
+  }
+  .chap-item .num{
+    color:var(--gold);
+    font-family:'Consolas',monospace;
+    font-size:10px;
+    font-weight:bold;
+    min-width:24px;
+  }
+  .chap-item.past .num{ color:#4a3a5a; }
+  .chap-item .title{ flex:1; }
+  .chap-item .pages{
+    font-size:9px;
+    color:#5a4a6a;
+    font-family:'Consolas',monospace;
+  }
+
+  /* CENTER — STORY */
+  #center{
+    display:flex; flex-direction:column; padding:24px 32px;
+    overflow:hidden;
+    position:relative;
+  }
+  #center::before{
+    content:'';
+    position:absolute; inset:16px;
+    border:1px solid rgba(224,184,86,0.10);
+    pointer-events:none;
+    border-radius:2px;
+  }
+  #center::after{
+    content:'';
+    position:absolute; inset:20px;
+    border:1px solid rgba(224,184,86,0.05);
+    pointer-events:none;
+    border-radius:2px;
+  }
+
+  #storyHeader{
+    text-align:center;
+    margin-bottom:20px;
+    position:relative; z-index:2;
+  }
+  #storyHeader .band{
+    font-size:10px;
+    letter-spacing:6px;
+    color:#6a5a7a;
+    font-family:'Consolas',monospace;
+    margin-bottom:6px;
+  }
+  #storyHeader .chapter{
+    font-size:22px;
+    letter-spacing:4px;
+    color:#e0b856;
+    font-style:italic;
+    font-family:'EB Garamond',serif;
+    text-shadow:0 0 30px rgba(224,184,86,0.3);
+  }
+  #storyHeader .chapter-kanji{
+    display:block;
+    font-size:36px;
+    color:rgba(224,184,86,0.25);
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    margin-top:4px;
+    letter-spacing:8px;
+  }
+
+  #storyText{
+    flex:1;
+    overflow-y:auto;
+    padding:0 8px;
+    position:relative; z-index:2;
+    font-size:17px;
+    line-height:1.85;
+    color:#d8c8a8;
+    font-family:'EB Garamond',serif;
+    scroll-behavior:smooth;
+  }
+  #storyText::-webkit-scrollbar{ width:4px; }
+  #storyText::-webkit-scrollbar-track{ background:transparent; }
+  #storyText::-webkit-scrollbar-thumb{
+    background:rgba(224,184,86,0.2); border-radius:2px;
+  }
+
+  #storyText .paragraph{
+    margin-bottom:14px;
+    opacity:0;
+    animation:fadeIn .8s ease forwards;
+    text-indent:1.5em;
+  }
+  #storyText .paragraph.first{
+    text-indent:0;
+  }
+  #storyText .paragraph.first::first-letter{
+    font-size:3.2em;
+    float:left;
+    line-height:0.9;
+    margin:6px 8px 0 0;
+    color:var(--gold);
+    font-family:'EB Garamond',serif;
+    text-shadow:0 0 20px rgba(224,184,86,0.4);
+  }
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(8px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  #storyText .dialogue{
+    color:#ffe9a0;
+    font-style:italic;
+  }
+  #storyText .kanji{
+    color:var(--violet);
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    font-weight:bold;
+    font-style:normal;
+  }
+  #storyText .whisper{
+    color:#8a7a9a;
+    font-style:italic;
+  }
+  #storyText .mark{
+    color:var(--cyan);
+    font-weight:bold;
+  }
+  #storyText .djinn{
+    color:var(--violet);
+    font-style:italic;
+    text-shadow:0 0 12px rgba(179,136,255,0.4);
+  }
+  #storyText .cursor{
+    display:inline-block;
+    width:2px; height:1em;
+    background:var(--gold);
+    vertical-align:text-bottom;
+    animation:blink 1s steps(2) infinite;
+    margin-left:2px;
+  }
+  @keyframes blink{
+    0%,50%{opacity:1;} 51%,100%{opacity:0;}
+  }
+
+  /* PAGE INDICATOR */
+  #pageBar{
+    margin-top:16px;
+    display:flex;
+    gap:3px;
+    justify-content:center;
+    position:relative; z-index:2;
+  }
+  #pageBar .dot{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:rgba(224,184,86,0.15);
+    border:1px solid rgba(224,184,86,0.2);
+    transition:.3s;
+  }
+  #pageBar .dot.done{
+    background:var(--gold);
+    box-shadow:0 0 8px var(--gold);
+  }
+  #pageBar .dot.active{
+    background:var(--gold2);
+    box-shadow:0 0 12px var(--gold2);
+    transform:scale(1.3);
+  }
+
+  /* CHAPTER PROGRESS */
+  #chapBar{
+    display:flex;
+    justify-content:center;
+    gap:2px;
+    margin-top:6px;
+    position:relative; z-index:2;
+  }
+  #chapBar .seg{
+    width:20px; height:2px;
+    background:rgba(224,184,86,0.12);
+    transition:.3s;
+  }
+  #chapBar .seg.done{ background:var(--gold); }
+  #chapBar .seg.active{
+    background:var(--gold2);
+    box-shadow:0 0 8px var(--gold2);
+  }
+
+  /* RIGHT — NC WAAGE + DJINN + ZAM */
+  .waage-panel{
+    background:rgba(0,0,0,0.25);
+    border:1px solid rgba(179,136,255,0.10);
+    border-radius:6px;
+    padding:10px 12px;
+    margin-bottom:10px;
+    font-size:11px;
+    font-family:'Consolas',monospace;
+  }
+  .waage-panel .head{
+    color:#b388ff;
+    font-size:10px;
+    letter-spacing:2px;
+    border-bottom:1px solid rgba(179,136,255,0.10);
+    padding-bottom:4px; margin-bottom:6px;
+    display:flex; justify-content:space-between;
+    text-transform:uppercase;
+  }
+  .metric-row{
+    display:flex; justify-content:space-between;
+    padding:2px 0;
+    font-size:10px;
+    color:#a898b8;
+  }
+  .metric-row .val{
+    color:#d8c8a8;
+    font-weight:bold;
+  }
+  .metric-row .val.gold{ color:var(--gold); }
+  .metric-row .val.violet{ color:var(--violet); }
+  .metric-row .val.cyan{ color:var(--cyan); }
+  .metric-row .val.green{ color:var(--green); }
+  .metric-row .val.red{ color:var(--red); }
+
+  .prog-bar{
+    width:100%; height:4px;
+    background:rgba(20,18,28,0.7);
+    border-radius:2px;
+    overflow:hidden; margin-top:4px;
+  }
+  .prog-bar .fill{
+    height:100%;
+    background:linear-gradient(90deg,#e0b856,#b388ff);
+    border-radius:2px;
+    transition:width .4s;
+  }
+  .prog-bar .fill.red{
+    background:linear-gradient(90deg,#ff6688,#e0b856);
+  }
+  .prog-bar .fill.violet{
+    background:linear-gradient(90deg,#7fdcff,#b388ff);
+  }
+
+  /* KlicK/SERUM MINI */
+  .klick-mini{
+    display:flex; gap:8px; align-items:center;
+    margin-top:6px;
+    font-size:10px;
+  }
+  .klick-mini .klick-num{
+    color:var(--gold);
+    font-weight:bold;
+    font-family:'Consolas',monospace;
+  }
+
+  /* CONTROLS */
+  #controls{
+    display:flex; gap:8px; align-items:center;
+    padding:10px 20px;
+    border-top:1px solid var(--line);
+    background:rgba(5,3,10,0.9);
+    backdrop-filter:blur(10px);
+    flex-wrap:wrap;
+    font-size:10px;
+    font-family:'Consolas',monospace;
+    z-index:10;
+  }
+  #controls button{
+    background:rgba(20,16,28,0.8);
+    border:1px solid rgba(224,184,86,0.25);
+    color:#e0b856;
+    padding:7px 16px;
+    border-radius:4px;
+    font-family:inherit; font-size:10px;
+    letter-spacing:2px;
+    cursor:pointer; transition:.18s;
+    text-transform:uppercase;
+  }
+  #controls button:hover{
+    background:rgba(224,184,86,0.12);
+    border-color:#e0b856;
+    color:#ffe9a0;
+    box-shadow:0 0 14px rgba(224,184,86,0.35);
+  }
+  #controls button.active{
+    background:rgba(224,184,86,0.2);
+    color:#fff;
+    border-color:#e0b856;
+    box-shadow:0 0 18px rgba(224,184,86,0.5);
+  }
+  #controls button.violet{
+    border-color:rgba(179,136,255,0.35);
+    color:#b388ff;
+  }
+  #controls button.violet:hover,
+  #controls button.violet.active{
+    background:rgba(179,136,255,0.12);
+    border-color:#b388ff;
+    color:#fff;
+    box-shadow:0 0 14px rgba(179,136,255,0.4);
+  }
+  #controls .sep{
+    width:1px; height:20px;
+    background:var(--line); margin:0 4px;
+  }
+  #controls .lbl{
+    color:#6a5a7a; letter-spacing:2px;
+  }
+  #controls input[type=range]{
+    -webkit-appearance:none; appearance:none;
+    width:80px; height:3px;
+    background:linear-gradient(90deg,#e0b856,#b388ff);
+    border-radius:2px; outline:none;
+  }
+  #controls input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:14px; height:14px; border-radius:50%;
+    background:#fff;
+    border:2px solid #e0b856;
+    box-shadow:0 0 8px rgba(224,184,86,0.7);
+    cursor:pointer;
+  }
+
+  /* MOBILE TABS */
+  #mobTabs{ display:none; }
+  @media (max-width:900px){
+    #main{ grid-template-columns:1fr; }
+    #main .col{ display:none; }
+    #main[data-tab="chapters"] #left{ display:block; }
+    #main[data-tab="story"] #center{ display:flex; }
+    #main[data-tab="stats"] #right{ display:block; }
+    #center{ padding:16px 18px; }
+    #storyText{ font-size:15px; }
+    #storyHeader .chapter{ font-size:18px; }
+    #mobTabs{
+      display:flex; gap:3px; padding:6px 10px;
+      background:rgba(5,3,10,0.85);
+      border-bottom:1px solid var(--line);
+      overflow-x:auto;
+    }
+    #mobTabs button{
+      flex:1; min-width:70px;
+      background:rgba(20,16,28,0.8);
+      border:1px solid rgba(224,184,86,0.2);
+      color:#e0b856;
+      padding:7px 6px; border-radius:5px;
+      font-family:inherit; font-size:9px;
+      letter-spacing:1px; cursor:pointer;
+      text-transform:uppercase;
+    }
+    #mobTabs button.active{
+      background:rgba(224,184,86,0.18);
+      color:#fff;
+      border-color:#e0b856;
+    }
+  }
+
+  /* SPRUNG OVERLAY */
+  #sprungBox{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    padding:20px 32px;
+    background:rgba(5,3,10,0.95);
+    border:1px solid rgba(224,184,86,0.4);
+    border-radius:6px;
+    font-family:'Consolas',monospace;
+    font-size:12px;
+    color:#e0b856;
+    opacity:0;
+    transition:opacity .4s;
+    pointer-events:none;
+    z-index:20;
+    text-align:center;
+    letter-spacing:3px;
+    box-shadow:0 0 60px rgba(224,184,86,0.3);
+  }
+  #sprungBox.show{ opacity:1; }
+  #sprungBox .kanji-big{
+    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
+    font-size:42px;
+    color:#ffe9a0;
+    display:block;
+    margin-bottom:6px;
+    text-shadow:0 0 40px rgba(224,184,86,0.8);
+  }
+  #sprungBox .sub{
+    font-size:9px;
+    color:#6a5a7a;
+    letter-spacing:5px;
+    margin-top:8px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{ width:6px; height:6px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{
+    background:rgba(224,184,86,0.15);
+    border-radius:3px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background:rgba(224,184,86,0.3);
+  }
+
+  /* FOOTER */
+  footer{
+    padding:6px 20px;
+    background:rgba(5,3,10,0.9);
+    border-top:1px solid var(--line);
+    font-size:9px; color:#4a3a5a;
+    display:flex; justify-content:space-between;
+    flex-wrap:wrap; gap:10px;
+    font-family:'Consolas',monospace;
+  }
+  footer .gold{ color:var(--gold); }
+  footer .violet{ color:var(--violet); }
+  footer .cyan{ color:var(--cyan); }
 </style>
 </head>
-
 <body>
 
-<h1>STORY · STATUS · 360° · 100%</h1>
+<header>
+  <h1>iki1uc · STORY
+    <small>never ending · ever and ever · forever</small>
+    <span class="tag">∞</span>
+  </h1>
+  <div class="stats">
+    <span>Band <b class="v-gold" id="sBand">I</b></span>
+    <span>Kapitel <b class="v-gold" id="sChap">1</b></span>
+    <span>Seite <b class="v-gold" id="sPage">1</b></span>
+    <span>KlicK <b class="v-gold" id="sKlick">0</b></span>
+    <span>ZaM <b class="v-violet" id="sZam">0</b></span>
+    <span>Wörter <b class="v-cyan" id="sWords">0</b></span>
+    <span id="sClock" style="color:#4a3a5a;">⏱️ --:--</span>
+  </div>
+</header>
 
-<div class="box">
-  <h2>JS‑Module (I U R X Y Z)</h2>
-  <pre id="js"></pre>
+<div id="mobTabs">
+  <button data-tab="chapters">📚 Band</button>
+  <button data-tab="story" class="active">📖 Story</button>
+  <button data-tab="stats">⚖️ Waage</button>
 </div>
 
-<div class="box">
-  <h2>CSV‑Daten → % und °</h2>
-  <pre id="csv"></pre>
+<div id="main" data-tab="story">
+
+  <!-- LINKS: BÄNDER & KAPITEL -->
+  <div class="col" id="left">
+    <div class="panel-title">
+      <span>📚 BAND</span>
+      <span class="badge" id="bandCount">1</span>
+    </div>
+    <div id="bandList"></div>
+
+    <div class="panel-title" style="margin-top:14px;">
+      <span>📖 KAPITEL</span>
+      <span class="badge" id="chapterCount">1/9</span>
+    </div>
+    <div id="chapterList"></div>
+
+    <div class="panel-title" style="margin-top:14px;">
+      <span>🀄 SEITEN</span>
+      <span class="badge" id="pageCount">1/9</span>
+    </div>
+    <div id="pageList"></div>
+  </div>
+
+  <!-- MITTE: STORY -->
+  <div id="center">
+    <div id="storyHeader">
+      <div class="band" id="hdrBand">— BAND I —</div>
+      <div class="chapter" id="hdrChap">Kapitel Eins</div>
+      <span class="chapter-kanji" id="hdrKanji">起</span>
+    </div>
+
+    <div id="storyText"></div>
+
+    <div id="pageBar"></div>
+    <div id="chapBar"></div>
+
+    <!-- SPRUNG overlay -->
+    <div id="sprungBox">
+      <span class="kanji-big">転</span>
+      SPRUNG
+      <div class="sub" id="sprungSub">P4 · P0 · P1 · P2 · Pe</div>
+    </div>
+  </div>
+
+  <!-- RECHTS: NC WAAGE · ZAM · DJINN -->
+  <div class="col" id="right">
+
+    <div class="waage-panel">
+      <div class="head">
+        <span>⚖️ WAAGE</span>
+        <span id="waageMode" style="color:#e0b856;">衡</span>
+      </div>
+      <div class="metric-row"><span>Balance</span><span class="val" id="wBal">0.50</span></div>
+      <div class="metric-row"><span>Neigung</span><span class="val gold" id="wTilt">0.0°</span></div>
+      <div class="metric-row"><span>Links</span><span class="val violet" id="wL">0.00</span></div>
+      <div class="metric-row"><span>Rechts</span><span class="val violet" id="wR">0.00</span></div>
+      <div class="prog-bar"><div class="fill" id="wBar" style="width:50%"></div></div>
+    </div>
+
+    <div class="waage-panel">
+      <div class="head">
+        <span>🩸 SERUM</span>
+        <span id="serumMode" style="color:#6a5a7a;">offen</span>
+      </div>
+      <div class="metric-row"><span>KlicK dieser Seite</span><span class="val gold" id="klickPage">0/9</span></div>
+      <div class="prog-bar"><div class="fill red" id="klickBar" style="width:0%"></div></div>
+      <div class="metric-row" style="margin-top:6px;"><span>ZaM-Pakte</span><span class="val violet" id="zamTotal">0</span></div>
+      <div class="metric-row"><span>Wörter gesamt</span><span class="val cyan" id="wordsTotal">0</span></div>
+    </div>
+
+    <div class="waage-panel">
+      <div class="head">
+        <span>🧞 DJINN</span>
+        <span id="djinnMode" style="color:#6a5a7a;">schlafend</span>
+      </div>
+      <div class="metric-row"><span>Erscheinungen</span><span class="val violet" id="djinnCount">0</span></div>
+      <div class="metric-row"><span>Letztes Kanji</span><span class="val violet" id="djinnKanji">—</span></div>
+      <div class="metric-row"><span>Rate</span><span class="val" id="djinnRate">3.0%</span></div>
+    </div>
+
+    <div class="waage-panel">
+      <div class="head">
+        <span>🌌 BAND & EWIGKEIT</span>
+      </div>
+      <div class="metric-row"><span>Band</span><span class="val gold" id="wBand">I</span></div>
+      <div class="metric-row"><span>Kapitel</span><span class="val gold" id="wChap">1</span></div>
+      <div class="metric-row"><span>Seiten total</span><span class="val green" id="wPages">1</span></div>
+      <div class="metric-row"><span>Laufzeit</span><span class="val cyan" id="wRuntime">00:00:00</span></div>
+    </div>
+
+  </div>
 </div>
 
-<div class="box">
-  <h2>Status‑Checker (OK / MISSING)</h2>
-  <pre id="status"></pre>
+<!-- CONTROLS -->
+<div id="controls">
+  <button id="btnKlick">🖋️ KLICK · TINTE</button>
+  <button id="btnAuto" class="active">⏸ AUTO</button>
+  <button id="btnZam" class="violet">⚡ ZaM · PAKT</button>
+  <span class="sep"></span>
+  <span class="lbl">GESCHW.</span>
+  <input type="range" id="speed" min="1" max="10" value="3">
+  <span class="sep"></span>
+  <button id="btnDjinn" class="violet active">🧞 DJINN</button>
+  <button id="btnSprung">⚡ SPRUNG</button>
+  <button id="btnReset">⟲ NEU</button>
 </div>
 
-<script type="module">
-window.onerror = (msg, url, line, col, error) => {
-  const box = document.createElement("pre");
-  box.style.color = "red";
-  box.style.background = "#200";
-  box.style.padding = "12px";
-  box.style.borderLeft = "3px solid #f00";
-  box.textContent = `JS-ERROR: ${msg}\nFILE: ${url}\nLINE: ${line}`;
-  document.body.appendChild(box);
+<footer>
+  <span>📖 iki1uc · STORY · <span class="gold">never ending</span> · ever and ever</span>
+  <span>KlicK <span class="gold" id="ftKlick">0</span> · ZaM <span class="violet" id="ftZam">0</span> · Seiten <span class="cyan" id="ftPages">1</span> · Bände <span class="gold" id="ftBands">1</span></span>
+  <span>Leertaste = KlicK · Z = ZaM · D = Djinn · S = Sprung · N = neue Seite · R = Neubeginn</span>
+</footer>
+
+<script>
+"use strict";
+// ═══════════════════════════════════════════════════════════════════
+// 📖 iki1uc · STORY · never ending
+// Eine Geschichte, die sich selbst schreibt — für immer.
+// KlicK ist Tinte · ZaM ist Wahl · NC ist Balance · DJINN ist Wunder.
+// ═══════════════════════════════════════════════════════════════════
+
+// ─── KOMPAT-LAYER ─────────────────────────────────────────────
+const MASTER_KEY='iki1uc-master-respo';
+const BC_NAME='iki1uc-orbit';
+let masterChannel=null, isMasterConnected=false;
+
+const localMaster={
+  stations:{}, klick:0, zack:0, zam:'idle', zoll:'offen',
+  me2:{allow:true,boost:false,slow:false,override:false},
+  score:0, lastUpdate:Date.now()
+};
+try{
+  const s=localStorage.getItem(MASTER_KEY);
+  if(s) Object.assign(localMaster,JSON.parse(s));
+}catch(_){}
+try{
+  masterChannel=new BroadcastChannel(BC_NAME);
+  masterChannel.onmessage=(ev)=>{
+    const d=ev.data; if(!d||!d.type) return;
+    if(d.type==='master:state'&&d.payload){Object.assign(localMaster,d.payload);isMasterConnected=true;updateStats();}
+    if(d.type==='mainboard:done'&&d.payload){
+      log(`📊 MAINBOARD · Kompat ${d.payload.compat?.toFixed?.(0)??'?'}%`,'cyan');
+    }
+  };
+}catch(_){}
+function persistMaster(){try{localStorage.setItem(MASTER_KEY,JSON.stringify(localMaster));}catch(_){}}
+function sendToMaster(type,payload){
+  localMaster.lastUpdate=Date.now(); persistMaster();
+  if(masterChannel){try{masterChannel.postMessage({type,from:'STORY',payload,ts:Date.now()});}catch(_){}}
+}
+
+// ─── STORY POOLS — das Rohmaterial der Ewigkeit ──────────────
+const KANJI_CYCLE=['起','承','転','結'];
+const KANJI_DJINN=['幻','霊','夢','影','虚','漂','漂'];
+const KANJI_CHAPTER_KANJI=['始','往','巡','反','呼','道','帰','進','終'];
+
+// Subjekte — die handelnden Wesen
+const SUBJECTS=[
+  'Das Nano','Der Funke','Die Waage','Das Tor','KlicK','Das Kind','Der Djinn',
+  'Das Atom','Der Horizont','Die Tinte','ZaM','Das Zentrum','Der Leser',
+  'Die alte Pyramide','Der stille Wächter','Ein Zeichen','Die Stimme',
+  'Das flüsternde Auge','Die Wurzel','Der Sprung','Der Würfel','Die Zahl'
+];
+
+// Orte
+const PLACES=[
+  'am Rand der Waage',
+  'im Zentrum des Nichts',
+  'jenseits des Gates',
+  'hinter dem Horizont',
+  'über der Akkretion',
+  'im Zwischenraum',
+  'unter der Wurzel',
+  'in der siebten Kammer',
+  'am Ufer der Tinte',
+  'unter den neun Ringen',
+  'hinter dem dritten Vorhang',
+  'im Atem der Stille',
+  'am Anfang jeder Zahl',
+  'in der neunten Wiederkehr'
+];
+
+// Verben — was passiert
+const VERBS=[
+  'flüstert','wächst','fällt','steigt','kippt','dreht sich','öffnet sich',
+  'schweigt','singt','leuchtet','wartet','träumt','erwacht','verblasst',
+  'zeichnet','zählt','kehrt zurück','beginnt neu','verliert sich','findet'
+];
+
+// Stimmungen / Objekte
+const MOODS=[
+  'still','heiß','kalt','endlos','seltsam','leise','wach','müde','ruhig',
+  'aufgewühlt','sanft','streng','freundlich','fremd','vertraut','selig'
+];
+
+const OBJECTS=[
+  'eine Zahl','ein Name','ein Wort','ein Zeichen','ein Lied','eine Farbe',
+  'ein Stern','ein Schatten','ein Licht','ein Kreis','eine Form','eine Wurzel',
+  'ein Versprechen','ein Rätsel','ein Atem','ein Spiegel'
+];
+
+// ZaM-Wahlen (Pakt-Entscheidungen)
+const ZAM_OFFERS=[
+  {kanji:'方', shape:'Würfel',  gain:'Stabilität'},
+  {kanji:'山', shape:'Pyramide', gain:'Aufstieg'},
+  {kanji:'門', shape:'Gate',     gain:'Übergang'},
+  {kanji:'円', shape:'Kreis',    gain:'Ganzheit'},
+  {kanji:'角', shape:'Ecke',     gain:'Wendung'},
+  {kanji:'卦', shape:'Orakel',   gain:'Weisheit'},
+];
+
+// Band- und Kapitelnamen (generativ)
+const ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII',
+             'XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII'];
+const NUM_WORDS=['Eins','Zwei','Drei','Vier','Fünf','Sechs','Sieben','Acht','Neun',
+                 'Zehn','Elf','Zwölf','Dreizehn','Vierzehn','Fünfzehn','Sechzehn',
+                 'Siebzehn','Achtzehn','Neunzehn','Zwanzig'];
+
+// ─── STATE ─────────────────────────────────────────────────────
+const S={
+  // Struktur
+  band:1,
+  chapter:1,         // 1..9 dann neuer Band
+  page:1,            // 1..9 dann neues Kapitel
+  klickInPage:0,     // 0..9 — 9 KlicK = Seite vollendet
+  // Progression
+  totalPages:1,
+  totalWords:0,
+  zamTotal:0,
+  djinnCount:0,
+  djinnKanji:'—',
+  djinnRate:0.030,
+  djinnOn:true,
+  djinnAwake:false,
+  // Tinte
+  klickTotal:0,
+  zackTotal:0,
+  // Waage (Balance bestimmt Stimmung der Story)
+  balance:0.50,
+  tilt:0,
+  loadL:0.5,
+  loadR:0.5,
+  // Sätze / Story
+  paragraphs:[],      // aktuelle Seite
+  pageHistory:[],     // gespeicherte Seiten pro Kapitel
+  chapterHistory:[],  // gespeicherte Kapitel pro Band
+  bandHistory:[],     // gespeicherte Bände
+  // Runtime
+  startTime:Date.now(),
+  auto:true,
+  speed:3,
+  lastAutoTick:0,
+  sprungActive:false,
 };
 
-window.addEventListener("unhandledrejection", event => {
-  const box = document.createElement("pre");
-  box.style.color = "orange";
-  box.style.background = "#220";
-  box.style.padding = "12px";
-  box.style.borderLeft = "3px solid #fa0";
-  box.textContent = `PROMISE-ERROR: ${event.reason}`;
-  document.body.appendChild(box);
+// ─── GENERATOREN ──────────────────────────────────────────────
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+
+function pickWeighted(arr){ return pick(arr); }
+
+function generateSentence(){
+  const r = Math.random();
+  // Wahl der Satzform
+  if(r < 0.35){
+    // Einfach: Subjekt + Verb + Ort
+    return `${pick(SUBJECTS)} ${pick(VERBS)} ${pick(PLACES)}.`;
+  } else if(r < 0.55){
+    // Mittel: Subjekt + Verb + Objekt + Ort
+    return `${pick(SUBJECTS)} ${pick(VERBS)} ${pick(OBJECTS)} ${pick(PLACES)}.`;
+  } else if(r < 0.72){
+    // Beschreibend
+    return `Es war ${pick(MOODS)}, als ${pick(SUBJECTS).toLowerCase()} ${pick(VERBS)}.`;
+  } else if(r < 0.85){
+    // Dialog / Stimme
+    return `„${pick(['Komm näher','Bleib','Sieh','Hör','Warte','Geh weiter','Vergiss','Erinnere'])},“ ` +
+           `sprach ${pick(SUBJECTS).toLowerCase()}, „${pick(OBJECTS)} ${pick(VERBS)} ${pick(PLACES)}.“`;
+  } else if(r < 0.94){
+    // Meta / Kanji
+    const k = pick(KANJI_CYCLE);
+    return `Und das Zeichen <span class="kanji">${k}</span> erschien, ` +
+           `wo eben noch ${pick(OBJECTS)} gewesen war.`;
+  } else {
+    // DJINN-Satz (selten, wunderschön)
+    return `<span class="djinn">Der Djinn ${pick(KANJI_DJINN)} flüsterte: ` +
+           `„Ein Nano, das ${pick(VERBS)}, wird ${pick(OBJECTS)} ${pick(PLACES)}.“</span>`;
+  }
+}
+
+function generateOpeningParagraph(){
+  const openers=[
+    `Am Anfang war die Tinte. Und die Tinte war KlicK. Und KlicK war ein Funke im Nichts.`,
+    `Es war einmal eine Zahl. Sie hieß Neun. Und die Neun kannte die Acht, die Sieben, alle bis zur Eins.`,
+    `Ein leises Flüstern ging durch die Waage, als hätte das Zentrum selbst einen Namen gesucht.`,
+    `Der Horizont atmete. Einmal hinein, einmal hinaus. Und mit jedem Atemzug fiel ein Nano in das Licht.`,
+    `Das Tor öffnete sich nicht. Es wartete. So wie es seit dem ersten 起 gewartet hatte.`,
+    `Zwischen dem, was war, und dem, was sein würde, stand ein Kind und hielt einen KlicK in der Hand.`,
+    `Ein Würfel rollte. Nicht laut. Nicht schnell. Nur einmal, und dann war alles anders.`,
+    `Und so begann der neunte Tag, von dem niemand wusste, dass er der neunte war.`,
+  ];
+  return pick(openers);
+}
+
+function generateClosingParagraph(){
+  const closers=[
+    `Und die Tinte trocknete. Und niemand wusste, wohin sie gegangen war.`,
+    `Die Seite endete. Die Geschichte nicht. Sie wartete nur auf den nächsten KlicK.`,
+    `Da schloss sich das Tor halb, nicht ganz, nur so weit, dass das Licht noch hineinpasste.`,
+    `Und irgendwo, ganz weit hinten, wachte der Djinn auf — nur für einen Augenblick.`,
+    `Sieben Worte blieben zurück. Sieben Worte, die niemand sprechen konnte.`,
+  ];
+  return pick(closers);
+}
+
+// ─── UI: BÄNDE / KAPITEL / SEITEN ─────────────────────────────
+function chapterKanji(ch){
+  return KANJI_CHAPTER_KANJI[(ch-1) % KANJI_CHAPTER_KANJI.length];
+}
+
+function renderBandList(){
+  const el=document.getElementById('bandList');
+  el.innerHTML='';
+  for(let i=1;i<=S.band;i++){
+    const div=document.createElement('div');
+    div.className='chap-item'+(i===S.band?' active':'')+(i<S.band?' past':'');
+    div.innerHTML=`
+      <span class="num">${ROMAN[(i-1)%ROMAN.length]}</span>
+      <span class="title">Band ${NUM_WORDS[(i-1)%NUM_WORDS.length]}</span>
+      <span class="pages">${i<S.band?'✓':''}</span>
+    `;
+    el.appendChild(div);
+  }
+  document.getElementById('bandCount').textContent=S.band;
+}
+
+function renderChapterList(){
+  const el=document.getElementById('chapterList');
+  el.innerHTML='';
+  for(let i=1;i<=9;i++){
+    const div=document.createElement('div');
+    let cls='chap-item';
+    if(i<S.chapter) cls+=' past';
+    if(i===S.chapter) cls+=' active';
+    div.className=cls;
+    div.innerHTML=`
+      <span class="num">${i}</span>
+      <span class="title">Kapitel ${NUM_WORDS[(i-1)%NUM_WORDS.length]}</span>
+      <span class="pages">${i<S.chapter?'✓':(i===S.chapter?S.page+'/9':'')}</span>
+    `;
+    el.appendChild(div);
+  }
+  document.getElementById('chapterCount').textContent=`${S.chapter}/9`;
+}
+
+function renderPageList(){
+  const el=document.getElementById('pageList');
+  el.innerHTML='';
+  for(let i=1;i<=9;i++){
+    const div=document.createElement('div');
+    let cls='chap-item';
+    if(i<S.page) cls+=' past';
+    if(i===S.page) cls+=' active';
+    div.className=cls;
+    div.innerHTML=`
+      <span class="num">${i}</span>
+      <span class="title">Seite</span>
+      <span class="pages">${i<S.page?'✓':(i===S.page?S.klickInPage+'/9':'')}</span>
+    `;
+    el.appendChild(div);
+  }
+  document.getElementById('pageCount').textContent=`${S.page}/9`;
+}
+
+// ─── UI: PAGE BAR + CHAP BAR ──────────────────────────────────
+function renderPageBar(){
+  const el=document.getElementById('pageBar');
+  el.innerHTML='';
+  for(let i=1;i<=9;i++){
+    const d=document.createElement('div');
+    let cls='dot';
+    if(i<S.page) cls+=' done';
+    if(i===S.page) cls+=' active';
+    d.className=cls;
+    el.appendChild(d);
+  }
+}
+
+function renderChapBar(){
+  const el=document.getElementById('chapBar');
+  el.innerHTML='';
+  for(let i=1;i<=9;i++){
+    const s=document.createElement('div');
+    let cls='seg';
+    if(i<S.chapter) cls+=' done';
+    if(i===S.chapter) cls+=' active';
+    s.className=cls;
+    el.appendChild(s);
+  }
+}
+
+// ─── UI: HEADER ───────────────────────────────────────────────
+function renderHeader(){
+  const roman=ROMAN[(S.band-1)%ROMAN.length];
+  document.getElementById('hdrBand').textContent=`— BAND ${roman} —`;
+  document.getElementById('hdrChap').textContent=`Kapitel ${NUM_WORDS[(S.chapter-1)%NUM_WORDS.length]}`;
+  document.getElementById('hdrKanji').textContent=chapterKanji(S.chapter);
+  document.getElementById('sBand').textContent=roman;
+  document.getElementById('sChap').textContent=S.chapter;
+  document.getElementById('sPage').textContent=S.page;
+  document.getElementById('sKlick').textContent=S.klickTotal;
+  document.getElementById('sZam').textContent=S.zamTotal;
+  document.getElementById('sWords').textContent=S.totalWords;
+  document.getElementById('ftKlick').textContent=S.klickTotal;
+  document.getElementById('ftZam').textContent=S.zamTotal;
+  document.getElementById('ftPages').textContent=S.totalPages;
+  document.getElementById('ftBands').textContent=S.band;
+  document.getElementById('wBand').textContent=roman;
+  document.getElementById('wChap').textContent=S.chapter;
+  document.getElementById('wPages').textContent=S.totalPages;
+}
+
+// ─── UI: WAAGE ────────────────────────────────────────────────
+function updateWaage(){
+  document.getElementById('wBal').textContent=S.balance.toFixed(2);
+  document.getElementById('wTilt').textContent=(S.tilt*8).toFixed(1)+'°';
+  document.getElementById('wL').textContent=S.loadL.toFixed(2);
+  document.getElementById('wR').textContent=S.loadR.toFixed(2);
+  document.getElementById('wBar').style.width=(S.balance*100).toFixed(0)+'%';
+  document.getElementById('klickPage').textContent=`${S.klickInPage}/9`;
+  document.getElementById('klickBar').style.width=(S.klickInPage/9*100)+'%';
+  document.getElementById('zamTotal').textContent=S.zamTotal;
+  document.getElementById('wordsTotal').textContent=S.totalWords;
+  document.getElementById('djinnCount').textContent=S.djinnCount;
+  document.getElementById('djinnKanji').textContent=S.djinnKanji;
+  document.getElementById('djinnRate').textContent=(S.djinnRate*100).toFixed(1)+'%';
+  document.getElementById('serumMode').textContent=S.klickInPage>=8?'🩸 Serum':'offen';
+  document.getElementById('serumMode').style.color=S.klickInPage>=8?'#ff6688':'#6a5a7a';
+  document.getElementById('djinnMode').textContent=S.djinnOn?'lauschend':'schlafend';
+  document.getElementById('djinnMode').style.color=S.djinnOn?'#b388ff':'#6a5a7a';
+}
+
+// ─── UI: RUNTIME ──────────────────────────────────────────────
+function updateRuntime(){
+  const ms=Date.now()-S.startTime;
+  const sec=Math.floor(ms/1000);
+  const h=String(Math.floor(sec/3600)).padStart(2,'0');
+  const m=String(Math.floor((sec%3600)/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  document.getElementById('wRuntime').textContent=`${h}:${m}:${s}`;
+}
+setInterval(updateRuntime,1000);
+
+// ─── KLICK → TINTE → WORT ─────────────────────────────────────
+function addKlick(n=1, fromSystem=false){
+  if(!localMaster.me2.allow && !fromSystem){
+    log('⛔ KlicK blockiert — Zoll','red');
+    return;
+  }
+  const mult = localMaster.me2.boost?2:(localMaster.me2.slow?0.5:1);
+  S.klickTotal += n*mult;
+  S.klickInPage += n*mult;
+  localMaster.klick = S.klickTotal;
+  persistMaster();
+
+  // Neue Sätze auf die Seite schreiben (je KlicK ein Fragment)
+  for(let i=0;i<Math.ceil(n*mult);i++){
+    appendSentence(generateSentence());
+  }
+
+  // Serum: bei 8 KlicK STOP (auf dieser Seite)
+  if(S.klickInPage===8){
+    log('🩸 SERUM · bei 8 gestoppt — ein letzter Klick vollendet die Seite','red');
+  }
+
+  // Seite vollendet bei 9 KlicK
+  if(S.klickInPage>=9){
+    finishPage();
+  }
+
+  updateWaage();
+  updateStats();
+  sendToMaster('klick:step',{klick:S.klickTotal,klickInPage:S.klickInPage});
+}
+
+function appendSentence(html){
+  const el=document.getElementById('storyText');
+  const p=document.createElement('p');
+  p.className='paragraph'+(el.children.length===0?' first':'');
+  p.innerHTML=html;
+  el.appendChild(p);
+  // Auto-scroll ans Ende
+  el.scrollTop=el.scrollHeight;
+  // Wörter zählen (Anzahl Leerzeichen + 1 grob)
+  S.totalWords += html.replace(/<[^>]*>/g,'').split(/\s+/).length;
+}
+
+// ─── SEITE VOLLENDET ──────────────────────────────────────────
+function finishPage(){
+  log(`📖 Seite ${S.page} vollendet · ${S.klickInPage} KlicK`,'gold');
+  S.totalPages++;
+  S.klickInPage=0;
+
+  // Seite speichern
+  S.pageHistory.push({
+    page:S.page,
+    chapter:S.chapter,
+    sentences:[...document.getElementById('storyText').children].map(c=>c.innerHTML),
+  });
+
+  // ZaM-Pakt: jede Seite endet mit einer Wahl
+  triggerZamOffer();
+
+  // Nächste Seite
+  if(S.page>=9){
+    finishChapter();
+  } else {
+    S.page++;
+    // Kleine Pause, dann neue Seite anfangen
+    setTimeout(()=>{
+      renderHeader();
+      renderPageList();
+      renderPageBar();
+      updateWaage();
+    }, 800);
+  }
+}
+
+// ─── KAPITEL VOLLENDET ────────────────────────────────────────
+function finishChapter(){
+  log(`📚 Kapitel ${S.chapter} vollendet`,'gold');
+  S.chapterHistory.push({chapter:S.chapter, pages:[...S.pageHistory]});
+
+  // SPRUNG anzeigen
+  triggerSprung(()=>{
+    if(S.chapter>=9){
+      finishBand();
+    } else {
+      S.chapter++;
+      S.page=1;
+      S.pageHistory=[];
+      renderHeader();
+      renderChapterList();
+      renderPageBar();
+      renderChapBar();
+      renderPageList();
+    }
+  });
+}
+
+// ─── BAND VOLLENDET ───────────────────────────────────────────
+function finishBand(){
+  log(`🌌 Band ${ROMAN[(S.band-1)%ROMAN.length]} vollendet — die Geschichte geht weiter`,'violet');
+  S.bandHistory.push({band:S.band, chapters:[...S.chapterHistory]});
+
+  // Ein neuer Band beginnt — für immer
+  S.band++;
+  S.chapter=1;
+  S.page=1;
+  S.pageHistory=[];
+  S.chapterHistory=[];
+
+  // Score-Belohnung
+  S.zamTotal += 9;
+
+  // Alles neu, aber anders
+  setTimeout(()=>{
+    renderBandList();
+    renderHeader();
+    renderChapterList();
+    renderChapBar();
+    renderPageList();
+    renderPageBar();
+    log(`✨ Band ${ROMAN[(S.band-1)%ROMAN.length]} beginnt · die Story endet nie`,'violet');
+  }, 1200);
+}
+
+// ─── ZA·M PAKT-ANGEBOT ────────────────────────────────────────
+function triggerZamOffer(){
+  const offer=pick(ZAM_OFFERS);
+  S.zamTotal++;
+
+  // Log-Eintrag
+  log(`門 ZaM bietet: Werde ${offer.shape} · ${offer.gain}`,'violet');
+
+  // Story-Satz
+  const p=document.createElement('p');
+  p.className='paragraph';
+  p.innerHTML=`Da sprach ZaM: <span class="kanji">${offer.kanji}</span> ` +
+              `<span class="dialogue">„Werde ${offer.shape}, und dir sei ${offer.gain}.“</span> ` +
+              `<span class="whisper">Und das Nano nahm an, wie alle annehmen.</span>`;
+  document.getElementById('storyText').appendChild(p);
+  document.getElementById('storyText').scrollTop=document.getElementById('storyText').scrollHeight;
+
+  // Waage-Beeinflussung
+  S.loadR = Math.min(1, S.loadR + 0.08);
+  S.loadL = Math.max(0, S.loadL - 0.03);
+  S.balance = 1 - Math.abs(S.loadL - S.loadR);
+  S.tilt = (S.loadR - S.loadL);
+
+  sendToMaster('zam:pact',{shape:offer.shape,gain:offer.gain,ts:Date.now()});
+}
+
+// ─── SPRUNG ───────────────────────────────────────────────────
+function triggerSprung(callback){
+  if(S.sprungActive) return;
+  S.sprungActive=true;
+
+  const box=document.getElementById('sprungBox');
+  const sub=document.getElementById('sprungSub');
+  const phases=['P4 · init','P0 · wake','P1 · melt','P2 · merge','Pe · finalize'];
+  let i=0;
+
+  box.classList.add('show');
+  box.querySelector('.kanji-big').textContent=pick(['転','結','閃','刻']);
+  sub.textContent=phases[0];
+
+  const step=()=>{
+    if(i>=phases.length){
+      box.classList.remove('show');
+      S.sprungActive=false;
+      log(`⚡ SPRUNG · Kapitel vollendet`,'cyan');
+      if(callback) callback();
+      return;
+    }
+    sub.textContent=phases[i];
+    log(`  ↳ ${phases[i]}`,'cyan');
+    i++;
+    setTimeout(step, 320);
+  };
+
+  setTimeout(step, 300);
+}
+
+// ─── DJINN ────────────────────────────────────────────────────
+let djinnTimer=null;
+function startDjinn(){
+  if(djinnTimer) clearInterval(djinnTimer);
+  djinnTimer=setInterval(()=>{
+    if(!S.djinnOn) return;
+    if(Math.random() < S.djinnRate){
+      const k=pick(KANJI_DJINN);
+      S.djinnKanji=k;
+      S.djinnCount++;
+      log(`👁️ Djinn ${k} zieht vorbei — überall und nirgends`,'violet');
+      // Djinn-Einfluss auf die Story
+      const p=document.createElement('p');
+      p.className='paragraph';
+      p.innerHTML=`<span class="djinn">Doch in diesem Augenblick — ganz leise — ` +
+                  `erschien der Djinn <span class="kanji">${k}</span>. Er sagte nichts. ` +
+                  `Er war nur da, und das genügte.</span>`;
+      document.getElementById('storyText').appendChild(p);
+      document.getElementById('storyText').scrollTop=document.getElementById('storyText').scrollHeight;
+
+      // Balance zufällig verschieben
+      S.loadL += (Math.random()-0.5)*0.15;
+      S.loadR += (Math.random()-0.5)*0.15;
+      S.loadL=Math.max(0,Math.min(1,S.loadL));
+      S.loadR=Math.max(0,Math.min(1,S.loadR));
+      S.balance=1-Math.abs(S.loadL-S.loadR);
+      S.tilt=S.loadR-S.loadL;
+      updateWaage();
+      updateStats();
+    }
+  }, 4000);
+}
+
+// ─── AUTO-MODUS ───────────────────────────────────────────────
+function autoTick(now){
+  if(!S.auto) return;
+  const interval = Math.max(600, 2400 - S.speed*180);
+  if(now - S.lastAutoTick < interval) return;
+  S.lastAutoTick = now;
+  // Auto-KlicK (schreibt einen Satz)
+  addKlick(1, true);
+}
+
+// ─── HAUPT-LOOP ───────────────────────────────────────────────
+let lastT=0;
+function loop(now){
+  const dt=Math.min(48, now-lastT||16);
+  lastT=now;
+
+  autoTick(now);
+
+  // Leichtes Waage-Wandern (immer in Bewegung)
+  S.loadL += (Math.random()-0.5)*0.004;
+  S.loadR += (Math.random()-0.5)*0.004;
+  S.loadL = Math.max(0.05, Math.min(0.95, S.loadL));
+  S.loadR = Math.max(0.05, Math.min(0.95, S.loadR));
+  S.balance = 1 - Math.abs(S.loadL - S.loadR);
+  S.tilt = (S.loadR - S.loadL);
+
+  // Waage-UI alle ~30 Frames
+  if(Math.floor(now/500) !== Math.floor((now-dt)/500)){
+    updateWaage();
+    updateStats();
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// ─── STATS ────────────────────────────────────────────────────
+function updateStats(){
+  document.getElementById('sBand').textContent=ROMAN[(S.band-1)%ROMAN.length];
+  document.getElementById('sChap').textContent=S.chapter;
+  document.getElementById('sPage').textContent=S.page;
+  document.getElementById('sKlick').textContent=S.klickTotal;
+  document.getElementById('sZam').textContent=S.zamTotal;
+  document.getElementById('sWords').textContent=S.totalWords;
+  document.getElementById('ftKlick').textContent=S.klickTotal;
+  document.getElementById('ftZam').textContent=S.zamTotal;
+  document.getElementById('ftPages').textContent=S.totalPages;
+  document.getElementById('ftBands').textContent=S.band;
+  document.getElementById('wBand').textContent=ROMAN[(S.band-1)%ROMAN.length];
+  document.getElementById('wChap').textContent=S.chapter;
+  document.getElementById('wPages').textContent=S.totalPages;
+  document.getElementById('wordsTotal').textContent=S.totalWords;
+  document.getElementById('djinnCount').textContent=S.djinnCount;
+  document.getElementById('djinnKanji').textContent=S.djinnKanji;
+  document.getElementById('pageCount').textContent=`${S.page}/9`;
+  document.getElementById('chapterCount').textContent=`${S.chapter}/9`;
+  renderPageBar();
+}
+
+// ─── LOG ──────────────────────────────────────────────────────
+function log(msg,cls){
+  const el=document.getElementById('storyText');
+  // Statt eigener Log-Box schreiben wir kurze Hinweise als kleinen Stil-Satz
+  // (die Story selbst ist das Log)
+  if(cls==='red'){
+    const p=document.createElement('p');
+    p.className='paragraph';
+    p.innerHTML=`<span class="whisper">(${msg})</span>`;
+    el.appendChild(p);
+    el.scrollTop=el.scrollHeight;
+  }
+  // Konsolen-Log für Debugging
+  console.log(`[STORY] ${msg}`);
+}
+
+// ─── BUTTONS ──────────────────────────────────────────────────
+document.getElementById('btnKlick').addEventListener('click',()=>addKlick(1));
+document.getElementById('btnAuto').addEventListener('click',(e)=>{
+  S.auto=!S.auto;
+  e.currentTarget.classList.toggle('active',S.auto);
+  e.currentTarget.textContent=S.auto?'⏸ AUTO':'▶ AUTO';
+});
+document.getElementById('btnZam').addEventListener('click',()=>{
+  triggerZamOffer();
+  log('⚡ ZaM manuell ausgelöst','violet');
+});
+document.getElementById('btnDjinn').addEventListener('click',(e)=>{
+  S.djinnOn=!S.djinnOn;
+  e.currentTarget.classList.toggle('active',S.djinnOn);
+  log(`🧞 DJINN ${S.djinnOn?'lauscht':'schweigt'}`,'violet');
+});
+document.getElementById('btnSprung').addEventListener('click',()=>{
+  triggerSprung();
+});
+document.getElementById('btnReset').addEventListener('click',()=>{
+  // Sanft neu beginnen — aber die Bände bleiben
+  S.page=1;
+  S.klickInPage=0;
+  document.getElementById('storyText').innerHTML='';
+  appendSentence(generateOpeningParagraph());
+  S.pageHistory=[];
+  renderHeader();
+  renderPageList();
+  renderPageBar();
+  updateWaage();
+  updateStats();
+  log('⟲ Neue Seite begonnen','red');
+});
+document.getElementById('speed').addEventListener('input',(e)=>{
+  S.speed=parseInt(e.target.value,10);
 });
 
- 
-  
-  /* --- JS MODULE --- */
-  import { I } from "./i.js";
-  import { U } from "./u.js";
-  import { R } from "./r.js";
-  import { X } from "./x.js";
-  import { Y } from "./y.js";
-  import { Z } from "./z.js";
+// Mobile Tabs
+document.querySelectorAll('#mobTabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#mobTabs button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('main').dataset.tab=b.dataset.tab;
+  });
+});
 
-  const JS_MODULES = { I, U, R, X, Y, Z };
+// Keyboard
+document.addEventListener('keydown',(e)=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key===' '){e.preventDefault(); addKlick(1);}
+  if(e.key==='z'||e.key==='Z') document.getElementById('btnZam').click();
+  if(e.key==='d'||e.key==='D') document.getElementById('btnDjinn').click();
+  if(e.key==='s'||e.key==='S') document.getElementById('btnSprung').click();
+  if(e.key==='n'||e.key==='N') document.getElementById('btnReset').click();
+  if(e.key==='p'||e.key==='P') document.getElementById('btnAuto').click();
+});
 
-  /* --- CSV LOADER (mit Bereinigung) --- */
-  async function loadCSV(path){
-    try {
-      const res = await fetch(path);
-      const text = await res.text();
+// ─── CLOCK ────────────────────────────────────────────────────
+function clock(){
+  document.getElementById('sClock').textContent='⏱️ '+new Date().toLocaleTimeString('de-DE');
+}
+setInterval(clock,1000); clock();
 
-      const rows = text.trim().split("\n").filter(r => r.trim() !== "");
-      const header = rows[0].split(",");
+// ─── INIT — das erste Wort ───────────────────────────────────
+document.getElementById('storyText').innerHTML='';
+appendSentence(generateOpeningParagraph());
 
-      return rows.slice(1).map(line => {
-        const values = line.split(",");
-        const obj = {};
-        header.forEach((h,i)=>obj[h.trim()] = values[i].trim());
-        return obj;
-      });
-    } catch(e){
-      return null;
-    }
-  }
+// Erste 4 Sätze automatisch hineinschreiben
+setTimeout(()=>appendSentence(generateSentence()), 600);
+setTimeout(()=>appendSentence(generateSentence()), 1400);
+setTimeout(()=>appendSentence(generateSentence()), 2200);
+S.totalWords=4*12; // grobe Schätzung
 
-  /* --- CSV → % und ° --- */
-  function convertToPercent(raw){
-    const keys = Object.keys(raw);
-    const values = keys.map(k => raw[k].length);
-    const sum = values.reduce((a,b)=>a+b,0);
-    return values.map(v => Math.round((v/sum)*100));
-  }
+renderBandList();
+renderChapterList();
+renderPageList();
+renderPageBar();
+renderChapBar();
+renderHeader();
+updateWaage();
+updateStats();
 
-  function convertToDegrees(raw){
-    const keys = Object.keys(raw);
-    const values = keys.map(k => raw[k].length);
-    const sum = values.reduce((a,b)=>a+b,0);
-    return values.map(v => Math.round((v/sum)*360));
-  }
+// DJINN starten
+startDjinn();
 
-  /* --- STATUS CHECKER --- */
-  function checkStatus(file, raw){
-    if(!raw || raw.length === 0) return { file, status:"MISSING" };
-    return { file, status:"OK" };
-  }
+// Auto-Modus standardmäßig an
+S.lastAutoTick=0;
 
-  /* --- MAIN --- */
-  async function run(){
+log('📖 iki1uc · STORY beginnt — und endet nie','gold');
+log('   KlicK ist Tinte · ZaM ist Wahl · NC ist Balance · DJINN ist Wunder','violet');
+log('   Space = KlicK · Z = ZaM · D = Djinn · S = Sprung · P = Auto','cyan');
 
-    /* JS MODULE */
-    document.getElementById("js").textContent =
-      JSON.stringify(JS_MODULES, null, 2);
-
-    /* CSV LIST */
-    const csvFiles = [
-      "1.csv",
-      "2.csv",
-      "3.csv",
-      "3.csv",
-      "4.csv",
-      "5.csv",
-      "6.csv",
-      "7.csv",
-      "8.csv",
-      "9.csv",
-      "10.csv"
-      "11.csv",
-      "12.csv"
-    ];
-    
-
-    const csvResults = [];
-    const statusList = [];
-
-    for(const file of csvFiles){
-      const raw = await loadCSV("./" + file);
-
-      const status = checkStatus(file, raw);
-      statusList.push(status);
-
-      if(raw && raw.length > 0){
-        const pct = convertToPercent(raw[0]);
-        const deg = convertToDegrees(raw[0]);
-
-        csvResults.push({
-          file,
-          raw: raw[0],
-          percent: pct,
-          degrees: deg
-        });
-      }
-    }
-
-    document.getElementById("csv").textContent =
-      JSON.stringify(csvResults, null, 2);
-
-    document.getElementById("status").textContent =
-      JSON.stringify(statusList, null, 2);
-  }
-
-  run();
-
+requestAnimationFrame(loop);
 </script>
-
 </body>
 </html>
