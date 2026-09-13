@@ -1,856 +1,1257 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🛣️ UNI · HIGHWAY · TOOR · iki1uc</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>◈ DER LETZTE SOMMER · 81 MOMENTE · story · respo</title>
 <style>
+  :root{
+    --void:#000308;
+    --ink:#04070e;
+    --panel:rgba(6,12,22,.86);
+    --line:rgba(255,189,92,.14);
+    --line2:rgba(255,189,92,.05);
+    --text:#e0ecec;
+    --muted:#7a95a0;
+    --dim:#3f525a;
+    --gold:#ffcc66;
+    --gold2:#ffe9b0;
+    --amber:#ffbd5c;
+    --red:#ff5a7a;
+    --violet:#b388ff;
+    --blue:#6cc9ff;
+    --mint:#8cf0d0;
+    --pink:#ff6d9d;
+    --o2:#7ce0a8;
+    --co2:#ffcc44;
+    --h2o:#5fc8ff;
+    --serif:'Yu Mincho','Hiragino Mincho ProN','Times New Roman',serif;
+    --mono:'Consolas','Courier New',monospace;
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;overflow:hidden;
-    background:#050308;color:#f0e8e0;
-    font-family:'Yu Mincho','Hiragino Mincho ProN','Times New Roman',serif;
-    user-select:none;cursor:crosshair;
+  html,body{height:100%;}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:var(--mono);
+    min-height:100vh;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 22% 15%, rgba(179,136,255,.06), transparent 34rem),
+      radial-gradient(circle at 78% 85%, rgba(255,109,157,.05), transparent 34rem),
+      radial-gradient(circle at 50% 50%, rgba(255,189,92,.03), transparent 40rem);
   }
-  canvas{display:block;width:100vw;height:100vh;}
 
-  #hud{
-    position:fixed;top:18px;left:18px;
-    background:rgba(8,6,10,0.72);
-    border-left:3px solid #e04a3a;
-    padding:12px 18px;
-    font-size:13px;line-height:1.75;
-    letter-spacing:1px;
-    backdrop-filter:blur(6px);
-    pointer-events:none;
-    z-index:10;
+  /* ═══ BACKGROUND BREATH ═══ */
+  #breath{
+    position:fixed; inset:0;
+    z-index:0; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 45%,
+      rgba(140,240,208,.04) 0%,
+      transparent 60%);
+    animation:bgBreath 8s ease-in-out infinite;
   }
-  #hud .v{color:#f4e0a0;font-weight:bold;}
-  #hud .s{color:#e04a3a;}
-  #hud .k{font-size:10px;letter-spacing:3px;color:#8a8098;text-transform:uppercase;}
+  @keyframes bgBreath{
+    0%,100%{opacity:.4; transform:scale(1);}
+    50%{opacity:1; transform:scale(1.04);}
+  }
 
-  #speed{
-    position:fixed;bottom:20px;right:20px;
-    background:rgba(8,6,10,0.72);
-    border:1px solid rgba(224,74,58,0.3);
+  /* ═══ LAYOUT ═══ */
+  #shell{
+    position:relative; z-index:1;
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    padding:14px;
+    max-width:1600px;
+    margin:0 auto;
+  }
+
+  /* ═══ TOPBAR ═══ */
+  header{
+    display:flex; flex-wrap:wrap;
+    align-items:center; justify-content:space-between;
+    gap:14px;
+    padding:11px 18px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    backdrop-filter:blur(12px);
     border-radius:6px;
-    padding:10px 16px;
-    font-family:'Consolas',monospace;
-    font-size:11px;
+    margin-bottom:10px;
+  }
+  header .brand{
+    display:flex; align-items:center; gap:12px;
+    min-width:0;
+  }
+  header .brand .mark{
+    width:40px;height:40px; flex:0 0 auto;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#ff5a7a,#b388ff,#ffbd5c);
+    color:#04070e;
+    font-family:var(--serif);
+    font-weight:900; font-size:18px;
+    border-radius:4px;
+    box-shadow:0 0 24px rgba(255,189,92,.4);
+  }
+  header .brand h1{
+    font-family:var(--serif);
+    font-size:clamp(13px,1.7vw,20px);
+    letter-spacing:3px; font-weight:300;
+    background:linear-gradient(90deg,var(--gold),var(--violet),var(--pink),var(--blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    line-height:1.15;
+  }
+  header .brand p{
+    color:var(--muted);
+    font-size:10px;
     letter-spacing:2px;
-    z-index:10;
-    pointer-events:none;
+    margin-top:4px;
   }
-  #speed .bar{
-    margin-top:6px;
-    width:180px;height:5px;
-    background:rgba(20,15,20,0.85);
-    border-radius:2px;overflow:hidden;
+  header .meta{
+    display:flex; flex-wrap:wrap; gap:10px;
+    font-size:10px; color:var(--muted);
+    align-items:center;
   }
-  #speed .fill{
-    height:100%;width:0%;
-    background:linear-gradient(90deg,#e04a3a,#f4e0a0);
-    transition:width .25s;
-    border-radius:2px;
+  header .meta b{ color:var(--gold); font-weight:bold; }
+  header .meta .chip{
+    padding:3px 8px;
+    border:1px solid var(--line2);
+    background:rgba(2,6,10,.6);
+    border-radius:3px;
+    letter-spacing:1px;
   }
-  #speed .lbl{color:#8a8098;}
-  #speed .num{color:#f4e0a0;font-weight:bold;}
+  header #clock{ color:var(--blue); }
 
-  #quote{
-    position:fixed;bottom:20px;left:20px;
-    font-size:15px;font-style:italic;
-    color:rgba(240,232,224,0.65);
-    max-width:60vw;
-    pointer-events:none;
-    z-index:10;
-    transition:opacity .6s;
+  /* ═══ STAGE ═══ */
+  #stage{
+    flex:1;
+    display:grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, .4fr);
+    gap:10px;
+    min-height:0;
   }
-  #quote .kanji{
-    display:block;font-size:11px;
-    letter-spacing:6px;color:#e04a3a;
-    font-style:normal;margin-bottom:4px;
+  @media(max-width:1100px){
+    #stage{ grid-template-columns:1fr; }
+  }
+
+  /* ═══ CANVAS / IMAGE DISPLAY ═══ */
+  #visualWrap{
+    position:relative;
+    background:#020509;
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    aspect-ratio:16/9;
+    box-shadow:
+      inset 0 0 0 4px rgba(2,4,8,.6),
+      0 0 40px rgba(255,189,92,.06),
+      0 14px 50px rgba(0,0,0,.6);
+    backdrop-filter:blur(8px);
+  }
+  #visualWrap::before{
+    /* CRT scanlines */
+    content:'';
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.06) 0px,
+      rgba(0,0,0,.06) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events:none; z-index:5;
+    mix-blend-mode:multiply;
+  }
+  #visualWrap::after{
+    /* vignette */
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,.7) 100%);
+    pointer-events:none; z-index:6;
+  }
+
+  /* Image slideshow */
+  #slideshow{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:#020509;
+  }
+  #slideshow img{
+    max-width:100%; max-height:100%;
+    width:auto; height:auto;
+    object-fit:contain;
+    transition: opacity 1.2s ease, transform 8s ease;
+    opacity:0;
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%) scale(1.02);
+    filter:saturate(.85) contrast(1.05);
+  }
+  #slideshow img.show{
+    opacity:.92;
+    transform:translate(-50%,-50%) scale(1);
+  }
+
+  /* Fallback (if image is missing) */
+  #slideshow .placeholder{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,189,92,.02) 0 12px, transparent 12px 24px),
+      radial-gradient(circle at 50% 50%, rgba(179,136,255,.08), transparent 60%),
+      #020509;
+    color:var(--muted);
+    font-family:var(--serif);
+    font-size:36px;
+    letter-spacing:8px;
+    text-align:center;
+  }
+
+  /* Overlay text */
+  #overlay{
+    position:absolute; inset:0;
+    z-index:4; pointer-events:none;
+    display:flex; flex-direction:column;
+    justify-content:space-between;
+    padding:16px 20px;
+  }
+  #overlay .top{
+    display:flex; justify-content:space-between;
+    font-size:10px; letter-spacing:2px;
+    color:rgba(224,236,236,.7);
+    text-shadow:0 0 8px rgba(255,189,92,.6);
+  }
+  #overlay .top .left{ color:var(--amber); }
+  #overlay .top .right{ color:var(--blue); }
+  #overlay .bottom{
+    display:flex; justify-content:space-between;
+    font-size:10px; letter-spacing:2px;
+    color:rgba(224,236,236,.65);
+    text-shadow:0 0 8px rgba(179,136,255,.5);
+  }
+  #overlay .bottom .left{ color:var(--violet); }
+  #overlay .bottom .right{ color:var(--mint); }
+
+  /* Chapter big number */
+  #chapterNumber{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    font-family:var(--serif);
+    font-size:clamp(80px,16vw,220px);
+    color:rgba(255,189,92,.06);
+    letter-spacing:10px;
+    z-index:3; pointer-events:none;
+    font-weight:300;
+    text-shadow:0 0 60px rgba(255,189,92,.1);
+    transition:opacity 1.4s ease;
+  }
+
+  /* Story text overlay */
+  #storyBox{
+    position:absolute;
+    bottom:24px; left:24px; right:24px;
+    z-index:7;
+    max-width:640px;
+    padding:14px 18px;
+    background:rgba(2,6,10,.82);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold);
+    border-radius:4px;
+    font-family:var(--serif);
+    font-size:13px;
+    line-height:1.7;
+    color:#e8f0f0;
+    font-style:italic;
+    opacity:0;
+    transform:translateY(8px);
+    transition:.6s ease;
+    backdrop-filter:blur(8px);
+  }
+  #storyBox.show{ opacity:1; transform:translateY(0); }
+  #storyBox .label{
+    display:block;
+    font-family:var(--mono);
+    font-style:normal;
+    font-size:9px;
+    letter-spacing:3px;
+    color:var(--amber);
+    margin-bottom:6px;
     text-transform:uppercase;
   }
-
-  #seal{
-    position:fixed;top:50%;left:50%;
-    transform:translate(-50%,-50%) scale(0.4);
-    font-size:180px;
-    color:#f4e0a0;
-    font-family:'Yu Mincho','Hiragino Mincho ProN',serif;
-    text-shadow:0 0 80px rgba(224,74,58,0.95), 0 0 180px rgba(244,224,160,0.7);
-    opacity:0;pointer-events:none;z-index:20;
-    transition:opacity .35s, transform .6s cubic-bezier(.3,1.6,.4,1);
+  #storyBox .music{
+    display:block;
+    margin-top:10px;
+    padding-top:8px;
+    border-top:1px dashed rgba(255,189,92,.15);
+    font-family:var(--mono);
+    font-style:normal;
+    font-size:10px;
+    letter-spacing:1.5px;
+    color:var(--violet);
   }
-  #seal.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  #storyBox .music b{
+    color:var(--pink);
+    font-weight:normal;
+    letter-spacing:2px;
+  }
 
-  @media(max-width:640px){
-    #hud{padding:9px 12px;font-size:11px;}
-    #quote{font-size:12px;max-width:50vw;}
-    #speed{padding:7px 10px;font-size:9px;}
-    #speed .bar{width:110px;}
-    #seal{font-size:110px;}
+  /* ═══ CONTROLS ═══ */
+  #controls{
+    margin-top:10px;
+    display:flex; flex-wrap:wrap;
+    gap:6px; align-items:center;
+    padding:10px 14px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    backdrop-filter:blur(8px);
+  }
+  #controls button{
+    background:rgba(12,20,30,.8);
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:6px 14px;
+    border-radius:4px;
+    font-family:inherit;
+    font-size:10px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:.15s;
+  }
+  #controls button:hover{
+    background:rgba(255,189,92,.12);
+    border-color:var(--gold);
+    color:#fff;
+  }
+  #controls button.active{
+    background:var(--gold);
+    color:#04070e;
+    border-color:var(--gold);
+    box-shadow:0 0 16px rgba(255,189,92,.5);
+  }
+  #controls button.primary{
+    border-color:rgba(255,189,92,.4);
+    color:var(--amber);
+  }
+  #controls button.primary:hover{
+    background:rgba(255,189,92,.2);
+    color:#fff;
+  }
+  #controls .grow{ flex:1; }
+  #controls .sep{
+    width:1px; height:20px;
+    background:var(--line);
+    margin:0 6px;
+  }
+  #controls .lbl{
+    font-size:9px;
+    letter-spacing:2px;
+    color:var(--muted);
+  }
+  #controls input[type=range]{
+    -webkit-appearance:none;
+    appearance:none;
+    width:100px;
+    height:3px;
+    background:linear-gradient(90deg,var(--violet),var(--pink),var(--gold));
+    border-radius:2px;
+    outline:none;
+  }
+  #controls input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:#fff;
+    border:2px solid var(--gold);
+    box-shadow:0 0 10px var(--gold);
+    cursor:pointer;
+  }
+
+  /* ═══ SIDE PANEL ═══ */
+  .side-col{
+    display:flex; flex-direction:column;
+    gap:10px;
+    min-height:0;
+  }
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:11px 13px;
+    backdrop-filter:blur(8px);
+  }
+  .panel h3{
+    font-size:10px;
+    letter-spacing:2px;
+    color:var(--gold);
+    text-transform:uppercase;
+    font-family:var(--serif);
+    font-weight:normal;
+    padding-bottom:6px;
+    margin-bottom:8px;
+    border-bottom:1px solid var(--line2);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .panel h3 .badge{
+    font-family:var(--mono);
+    font-size:9px;
+    color:var(--muted);
+    letter-spacing:.5px;
+    background:rgba(0,0,0,.4);
+    padding:2px 7px;
+    border-radius:3px;
+  }
+
+  /* Chapter list */
+  #chapters{ display:flex; flex-direction:column; gap:4px; }
+  .chap{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:6px 10px;
+    background:rgba(2,6,10,.5);
+    border:1px solid var(--line2);
+    border-left:3px solid var(--dim);
+    border-radius:3px;
+    cursor:pointer;
+    font-size:10px;
+    transition:.2s;
+  }
+  .chap:hover{ background:rgba(255,189,92,.06); border-left-color:var(--gold); }
+  .chap.active{
+    background:rgba(255,189,92,.1);
+    border-left-color:var(--gold);
+    color:#fff;
+  }
+  .chap.active .num{ color:var(--gold); text-shadow:0 0 8px var(--gold); }
+  .chap .num{
+    font-family:var(--serif);
+    font-size:14px;
+    font-weight:bold;
+    color:var(--muted);
+    width:22px;
+  }
+  .chap .title{
+    flex:1; margin-left:10px;
+    letter-spacing:1px;
+  }
+  .chap .count{
+    font-size:9px;
+    color:var(--dim);
+    letter-spacing:1px;
+  }
+
+  /* Track list */
+  #tracks{
+    display:flex; flex-direction:column; gap:3px;
+    max-height:220px; overflow-y:auto;
+    padding-right:4px;
+  }
+  #tracks::-webkit-scrollbar{ width:5px; }
+  #tracks::-webkit-scrollbar-thumb{ background:var(--line); }
+  .track{
+    display:flex; align-items:center; gap:8px;
+    padding:5px 8px;
+    background:rgba(2,6,10,.35);
+    border-left:2px solid var(--violet);
+    border-radius:3px;
+    font-size:10px;
+    letter-spacing:.5px;
+    color:#b8cdd0;
+  }
+  .track .ic{
+    color:var(--pink);
+    font-size:11px;
+  }
+  .track.playing{
+    background:rgba(255,109,157,.08);
+    color:#fff;
+    border-left-color:var(--pink);
+  }
+
+  /* Log */
+  #log{
+    background:rgba(2,6,10,.5);
+    border-radius:4px;
+    padding:8px 10px;
+    font-family:var(--mono);
+    font-size:9.5px;
+    line-height:1.6;
+    color:#8ab0c0;
+    max-height:160px;
+    overflow-y:auto;
+  }
+  #log::-webkit-scrollbar{ width:5px; }
+  #log::-webkit-scrollbar-thumb{ background:var(--line); }
+  #log .ln{ padding:2px 0; }
+  #log .ts{ color:var(--dim); margin-right:6px; }
+  #log .ok{ color:var(--mint); }
+  #log .warn{ color:var(--amber); }
+  #log .err{ color:var(--red); }
+  #log .gold{ color:var(--gold); }
+  #log .vio{ color:var(--violet); }
+  #log .pink{ color:var(--pink); }
+
+  /* ═══ FOOTER ═══ */
+  footer{
+    margin-top:10px;
+    display:flex; flex-wrap:wrap;
+    justify-content:space-between;
+    gap:14px;
+    font-size:9px;
+    letter-spacing:2px;
+    color:var(--dim);
+    padding:10px 6px;
+  }
+  footer b{ color:var(--gold); font-weight:normal; }
+  footer .key{
+    padding:2px 6px;
+    border:1px solid var(--line2);
+    color:var(--muted);
+    margin:0 2px;
+  }
+
+  /* ═══ BOOT ═══ */
+  #boot{
+    position:fixed; inset:0;
+    background:#000;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:14px;
+    z-index:9999;
+    color:var(--gold);
+    letter-spacing:2px;
+    font-size:12px;
+    transition:opacity .8s ease;
+  }
+  #boot.done{ opacity:0; pointer-events:none; }
+  #boot .logo{
+    font-family:var(--serif);
+    font-size:44px;
+    letter-spacing:10px;
+    background:linear-gradient(90deg,var(--gold),var(--pink),var(--violet),var(--blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    font-weight:300;
+    animation:logoBreath 4s ease-in-out infinite;
+  }
+  @keyframes logoBreath{
+    0%,100%{ transform:scale(1); filter:brightness(1); }
+    50%{ transform:scale(1.04); filter:brightness(1.4); }
+  }
+  #boot .sub{
+    color:var(--blue);
+    font-size:11px;
+    letter-spacing:8px;
+    font-family:var(--serif);
+  }
+  #boot .lines{
+    width:600px; max-width:82%;
+    font-size:11px;
+    line-height:1.7;
+    text-align:left;
+    color:var(--mint);
+    font-family:var(--mono);
+  }
+  #boot .lines b{ color:var(--gold); }
+  #boot .lines .dim{ color:var(--dim); }
+  #boot .lines .vio{ color:var(--violet); }
+  #boot .lines .pink{ color:var(--pink); }
+  #boot .progress{
+    width:600px; max-width:82%;
+    height:3px;
+    background:#0a1420;
+    border-radius:2px;
+    overflow:hidden;
+  }
+  #boot .progress .bar{
+    height:100%; width:0;
+    background:linear-gradient(90deg,var(--violet),var(--pink),var(--gold));
+    transition:width .3s;
+  }
+
+  @media(max-width:700px){
+    #shell{ padding:8px; }
+    header .brand h1{ font-size:12px; letter-spacing:2px; }
+    #controls{ padding:8px; gap:4px; }
+    #controls button{ padding:5px 10px; font-size:9px; }
+    #storyBox{ font-size:11px; padding:10px 12px; bottom:14px; left:14px; right:14px; }
+    #controls input[type=range]{ width:60px; }
   }
 </style>
 </head>
 <body>
 
-<canvas id="uni"></canvas>
+<!-- ═══ BREATH BG ═══ -->
+<div id="breath"></div>
 
-<div id="hud">
-  <div><span class="k">seite</span> <span class="v" id="hPage">1/81</span></div>
-  <div><span class="k">kapitel</span> <span class="v" id="hChap">1/9</span></div>
-  <div><span class="k">klick</span> <span class="s" id="hClick">0</span></div>
-  <div><span class="k">zam</span> <span class="v" id="hZam">0</span></div>
-  <div><span class="k">ready</span> <span class="v" id="hReady">…</span></div>
+<!-- ═══ BOOT ═══ -->
+<div id="boot">
+  <div class="logo">◈ DER LETZTE SOMMER</div>
+  <div class="sub">81 MOMENTE · 9 KAPITEL · STORY · RESPO</div>
+  <div class="lines" id="bootLines"></div>
+  <div class="progress"><div class="bar" id="bootBar"></div></div>
 </div>
 
-<div id="quote">
-  <span class="kanji" id="qKanji">道</span>
-  <span id="qText">「水は形を選ばない。」</span>
-</div>
+<div id="shell">
 
-<div id="speed">
-  <span class="lbl">HIGHWAY</span>
-  <span class="num" id="sMode">OFF</span>
-  <div class="bar"><div class="fill" id="sFill"></div></div>
-</div>
+  <!-- ═══ TOPBAR ═══ -->
+  <header>
+    <div class="brand">
+      <div class="mark">夏</div>
+      <div>
+        <h1>DER LETZTE SOMMER · 81 MOMENTE</h1>
+        <p>IRFAN · CINEMATIC · MONSTER ID · DAS WUNDER IST UNTER UNS</p>
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip">KAPITEL <b id="chapIdx">1</b> / 9</span>
+      <span class="chip">BILD <b id="imgIdx">1</b> / 81</span>
+      <span class="chip">RESPO <b id="respoVal">0.42</b></span>
+      <span class="chip">PULS <b id="pulseVal">0</b></span>
+      <span id="clock">--:--:--</span>
+    </div>
+  </header>
 
-<div id="seal">門</div>
+  <!-- ═══ STAGE ═══ -->
+  <div id="stage">
+
+    <!-- LEFT: Visual -->
+    <div>
+      <div id="visualWrap">
+        <div id="slideshow">
+          <div class="placeholder" id="ph">
+            <span id="phText">◈ LADE MOMENT …</span>
+          </div>
+        </div>
+        <div id="chapterNumber">1</div>
+        <div id="overlay">
+          <div class="top">
+            <span class="left" id="ovChapLeft">KAPITEL 1 · ERINNERUNG</span>
+            <span class="right" id="ovTimeRight">00:00.0</span>
+          </div>
+          <div class="bottom">
+            <span class="left" id="ovImgLeft">01 / 81</span>
+            <span class="right" id="ovStatusRight">HOLD</span>
+          </div>
+        </div>
+
+        <!-- Story Box -->
+        <div id="storyBox">
+          <span class="label" id="storyLabel">KAPITEL 1 · DER LETZTE SOMMER</span>
+          <span id="storyText">Der letzte Sommer, wo mit Irfan noch alles in Ordnung war.</span>
+          <span class="music" id="storyMusic">
+            ♫ <b>Indila — Comme un bateau</b> · dark orchestra version
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Side Panels -->
+    <div class="side-col">
+
+      <!-- Chapters -->
+      <div class="panel">
+        <h3>◈ KAPITEL · 9 EBENEN <span class="badge" id="chapBadge">9 × 9 = 81</span></h3>
+        <div id="chapters"></div>
+      </div>
+
+      <!-- Soundtrack -->
+      <div class="panel">
+        <h3>◈ SOUNDTRACK <span class="badge" id="sndBadge">9</span></h3>
+        <div id="tracks"></div>
+      </div>
+
+      <!-- Log -->
+      <div class="panel">
+        <h3>◈ LOG · STORY-STREAM <span class="badge">live</span></h3>
+        <div id="log"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ═══ CONTROLS ═══ -->
+  <div id="controls">
+    <button class="primary" id="btnPlay">▶ START STORY</button>
+    <button id="btnBack">◀ ZURÜCK</button>
+    <button id="btnForward">▶ VOR</button>
+    <button id="btnFullscreen">⛶ FULL</button>
+    <span class="sep"></span>
+    <span class="lbl">TEMPO</span>
+    <input type="range" id="speedRange" min="2" max="20" step="1" value="7">
+    <span class="lbl" id="speedLbl">7 s</span>
+    <span class="sep"></span>
+    <button id="btnAuto">⟳ AUTO</button>
+    <button id="btnReset">⟲ RESET</button>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <span><b>STORY:</b> IRFAN · SOMMER · CINEMATIC · MONSTER ID</span>
+    <span><b>CONTROL:</b> <span class="key">SPACE</span> PLAY <span class="key">← →</span> BLÄTTERN <span class="key">F</span> FULL <span class="key">A</span> AUTO</span>
+    <span><b>BUILD:</b> SINGLE HTML · 81 MOMENTE · RESPO</span>
+  </footer>
+
+</div>
 
 <script>
 "use strict";
 // ═══════════════════════════════════════════════════════════════════
-// 🛣️ UNI · HIGHWAY · TOOR · iki1uc
-// Einbahnstraße wird Highway. Klick → Tinte. Tinte → Seite. Seite → ZaM.
+// ◈ DER LETZTE SOMMER · 81 MOMENTE
+// Die Story wird erzählt. Die Bilder sind die Zeit.
+// 9 Kapitel × 9 Bilder = 81 Momente = RESPO.
 // ═══════════════════════════════════════════════════════════════════
 
-// ─── CONST ─────────────────────────────────────────────────────────
-// Die Story-Struktur: 9 Kapitel (Ordner 1–9) × 9 Seiten (WEBP)
-// Ordner haben unterschiedliche Bildnamen — wir liefern alle und
-// lassen den Loader alles versuchen, fehlende werden prozedural gezeichnet.
-
-const STORY = {
-  chapters: [
-    { id:'1', title:'生 · Leben',   kanji:'生', pages:['th (45).webp','th (46).webp','th (47).webp','th (48).webp','th (49).webp','th (50).webp','th (51).webp','th (52).webp','th (53).webp'] },
-    { id:'2', title:'弟 · Schüler', kanji:'弟', pages:['th (35).webp','th (36).webp','th (37).webp','th (38).webp','th (39).webp','th (40).webp','th (41).webp','th (42).webp','th (43).webp'] },
-    { id:'3', title:'旅 · Wanderer',kanji:'旅', pages:['th (26).webp','th (27).webp','th (28).webp','th (29).webp','th (30).webp','th (31).webp','th (32).webp','th (33).webp','th (34).webp'] },
-    { id:'4', title:'侍 · Samurai', kanji:'侍', pages:['th (21).webp','th (22).webp','th (23).webp','th (24).webp','th (25).webp','th - 2026-09-09T064707.874.webp','th - 2026-09-09T064712.878.webp','th - 2026-09-09T064716.836.webp','th - 2026-09-09T064730.939.webp'] },
-    { id:'5', title:'師 · Meister', kanji:'師', pages:['th - 2026-09-09T090013.989.webp','th - 2026-09-09T090018.602.webp','th - 2026-09-09T090022.981.webp','th - 2026-09-09T090027.704.webp','th - 2026-09-09T090036.955.webp','th - 2026-09-09T090043.533.webp','th - 2026-09-09T090052.763.webp','th - 2026-09-09T090055.915.webp','th - 2026-09-09T090059.462.webp'] },
-    { id:'6', title:'賢 · Weiser',  kanji:'賢', pages:['th (69).webp','th (70).webp','th (71).webp','th (72).webp','th (73).webp','th - 2026-09-09T090059.462.webp','th - 2026-09-09T090104.571.webp','th - 2026-09-09T094926.529.webp','th - 2026-09-09T094929.785.webp'] },
-    { id:'7', title:'悟 · Erleuchtet',kanji:'悟',pages:['th (74).webp','th (75).webp','th (76).webp','th (77).webp','th (78).webp','th (79).webp','th (80).webp','th (81).webp','th (82).webp'] },
-    { id:'8', title:'無 · Leer',     kanji:'無', pages:['th (83).webp','th (84).webp','th (85).webp','th (86).webp','th (87).webp','th (88).webp','th (89).webp','th (90).webp','th (91).webp'] },
-    { id:'9', title:'∞ · Ende→Anfang',kanji:'∞',pages:['th (92).webp','th (93).webp','th (94).webp','th (95).webp','th (96).webp','th (97).webp','th (98).webp','th (99).webp','th (100).webp'] },
+// ─── 81 BILDER (aus den 9 Ordnern) ──────────────────────
+const IMAGES = {
+  1: [
+    '1/th (45).webp','1/th (46).webp','1/th (47).webp',
+    '1/th (48).webp','1/th (49).webp','1/th (50).webp',
+    '1/th (51).webp','1/th (52).webp','1/th (53).webp',
   ],
-  // Mögliche Ordner-Pfade (versucht der Loader in Reihenfolge)
-  paths: ['', './', '1/', '2/', '3/', '4/', '5/', '6/', '7/', '8/', '9/', 'manga/', 'story/', 'STORY/'],
-  totalPages: 81,
+  2: [
+    '2/th (35).webp','2/th (36).webp','2/th (37).webp',
+    '2/th (38).webp','2/th (39).webp','2/th (40).webp',
+    '2/th (41).webp','2/th (42).webp','2/th (43).webp',
+  ],
+  3: [
+    '3/th (26).webp','3/th (27).webp','3/th (28).webp',
+    '3/th (29).webp','3/th (30).webp','3/th (31).webp',
+    '3/th (32).webp','3/th (33).webp','3/th (34).webp',
+  ],
+  4: [
+    '4/th (21).webp','4/th (22).webp','4/th (23).webp',
+    '4/th (24).webp','4/th (25).webp',
+    '4/th - 2026-09-09T064707.874.webp',
+    '4/th - 2026-09-09T064712.878.webp',
+    '4/th - 2026-09-09T064716.836.webp',
+    '4/th - 2026-09-09T064730.939.webp',
+  ],
+  5: [
+    '5/th - 2026-09-09T090013.989.webp',
+    '5/th - 2026-09-09T090018.602.webp',
+    '5/th - 2026-09-09T090022.981.webp',
+    '5/th - 2026-09-09T090027.704.webp',
+    '5/th - 2026-09-09T090036.955.webp',
+    '5/th - 2026-09-09T090043.533.webp',
+    '5/th - 2026-09-09T090052.763.webp',
+    '5/th - 2026-09-09T090055.915.webp',
+    '5/th - 2026-09-09T090059.462.webp',
+  ],
+  6: [
+    '6/th (69).webp','6/th (70).webp','6/th (71).webp',
+    '6/th (72).webp','6/th (73).webp',
+    '6/th - 2026-09-09T090059.462.webp',
+    '6/th - 2026-09-09T090104.571.webp',
+    '6/th - 2026-09-09T094926.529.webp',
+    '6/th - 2026-09-09T094929.785.webp',
+  ],
+  7: [
+    '7/th (74).webp','7/th (75).webp','7/th (76).webp',
+    '7/th (77).webp','7/th (78).webp','7/th (79).webp',
+    '7/th (80).webp','7/th (81).webp','7/th (82).webp',
+  ],
+  8: [
+    '8/th (83).webp','8/th (84).webp','8/th (85).webp',
+    '8/th (86).webp','8/th (87).webp','8/th (88).webp',
+    '8/th (89).webp','8/th (90).webp','8/th (91).webp',
+  ],
+  9: [
+    '9/th (92).webp','9/th (93).webp','9/th (94).webp',
+    '9/th (95).webp','9/th (96).webp','9/th (97).webp',
+    '9/th (98).webp','9/th (99).webp','9/th (100).webp',
+  ],
 };
 
-// Koans — Way of Life
-const KOANS=[
-  {k:'道',q:'「水は形を選ばない。」',  d:'Wasser wählt keine Form.'},
-  {k:'和',q:'「和をもって尊しとなす。」', d:'Harmonie ist das Höchste.'},
-  {k:'今',q:'「今、ここ、この息。」',     d:'Jetzt. Hier. Dieser Atem.'},
-  {k:'空',q:'「空即是色。」',           d:'Leere ist Form.'},
-  {k:'静',q:'「静けさは神の言葉。」',    d:'Stille ist Sprache der Götter.'},
-  {k:'花',q:'「花は黙って散る。」',      d:'Blüten fallen schweigend.'},
-  {k:'月',q:'「月は一滴に映る。」',      d:'Der Mond spiegelt sich im Tropfen.'},
-  {k:'忍',q:'「忍は深さなり。」',        d:'Ertragen ist Tiefe.'},
-  {k:'誠',q:'「誠は錆びない刃。」',      d:'Wahrheit rostet nicht.'},
-  {k:'勇',q:'「勇は恐れの不在に非ず。」',d:'Mut ist nicht Abwesenheit der Furcht.'},
+// ─── 9 KAPITEL · STORY-TEXT ─────────────────────────────
+const CHAPTERS = [
+  {
+    n:1,
+    title:'DER LETZTE SOMMER',
+    text:'Der letzte Sommer, wo mit Irfan noch alles in Ordnung war. Alles war einfach. Die Luft war warm, die Zeit stand still, und nichts musste stimmen.',
+    music:'Indila — Comme un bateau · dark orchestra version',
+  },
+  {
+    n:2,
+    title:'MONSTER IM ID',
+    text:'Damals hatte ich noch Monster in meinem ID. Roh, offen, ungebrochen. Jeder Ton war eine Welle, jeder Blick ein Raum. Ich war da, aber größer als ich.',
+    music:'Key The Magical Violin — Mozart Techno Reimagined',
+  },
+  {
+    n:3,
+    title:'CINEMATIC',
+    text:'i miss u cinematic. Diese Weite. Musik war kein Ton mehr — Musik war ein Ort, den ich betreten konnte. Und du warst da.',
+    music:'Indila — S.O.S · cinematic edit',
+  },
+  {
+    n:4,
+    title:'AINSI BAS LA VIDA',
+    text:'Da war ein Track, der hat mich aus mir rausgehoben. Ich war außer mir. Nicht weil ich schwach war. Sondern weil ich offen war.',
+    music:'Indila — Ainsi Bas La Vida · dark orchestral',
+  },
+  {
+    n:5,
+    title:'DIE LADY VOM MEER',
+    text:'Eine Lady vom DARK. Der Clip war mehr vom Meer. Nicht real, aber Präsenz. So eine Stimme kann keine Stimme sein — das ist Zustand.',
+    music:'AURORA — Runaway · hybrid cinematic',
+  },
+  {
+    n:6,
+    title:'STROMAE-ENERGIE',
+    text:'Dann kam der Moment, wo sie Stromae eiferte. Markant, erzählend, fast sprechend. Aber orchestral unterstützt. Das war der Trigger.',
+    music:'Indila — Run Run · Stromae-energie',
+  },
+  {
+    n:7,
+    title:'DAS ANDERE KALIBER',
+    text:'Und dann kam noch einer. Ein anderes Kaliber. Es war alles drin. Ein Diebstahl aus zwanzig Welten. Der beste Trigger, den ich hatte.',
+    music:'THE WITCH — Dark Orchestral Hybrid',
+  },
+  {
+    n:8,
+    title:'DIE ACHSEN',
+    text:'Bei solchen Extremen habe ich die Achsen dir genauso beschrieben wie ich sie gefühlt habe. Druck. Zug. Öffnung. Tiefe. Dunkelheit. Wahrheit. Sommer. Irfan.',
+    music:'— achsen · 8 ebenen gleichzeitig —',
+  },
+  {
+    n:9,
+    title:'DAS WUNDER IST UNTER UNS',
+    text:'Und jetzt? Jetzt halte ich nur einen Moment. Aber alles was war, ist noch da. Im Atem. Im Atom. In O₂, CO₂, H₂O. Das Wunder ist unter uns.',
+    music:'— atem · atom · leben · wonder —',
+  },
+};
+
+// ─── SOUNDTRACK-LISTE (für die Seitenleiste) ────────────
+const TRACKS = [
+  { ic:'♫', name:'Indila — Comme un bateau' },
+  { ic:'♫', name:'Indila — S.O.S' },
+  { ic:'♫', name:'Indila — Ainsi Bas La Vida' },
+  { ic:'♫', name:'Indila — Run Run' },
+  { ic:'♫', name:'Indila — Dernière Danse' },
+  { ic:'♫', name:'Indila — Tourner Dans Le Vide' },
+  { ic:'♫', name:'Key — Mozart Techno Reimagined' },
+  { ic:'♫', name:'AURORA — Runaway (dark)' },
+  { ic:'♫', name:'THE WITCH — Dark Orchestral Hybrid' },
 ];
 
 // ═══════════════════════════════════════════════════════════════════
-// UNI — Konstante State (kein veränderliches Random hier)
+// STATE
 // ═══════════════════════════════════════════════════════════════════
-const UNI = {
-  // Progression
-  page: 0,             // 0..80 (81 Seiten)
-  chapterIdx: 0,       // 0..8
-  pageInChapter: 0,    // 0..8
-  // Zähler
-  klick: 0,
-  zam: 0,
-  // Ladezustand
-  imagesLoaded: 0,
-  imagesFailed: 0,
-  ready: false,
-  // Highway-Modus
-  highway: false,
-  highwaySpeed: 0,     // 0..1
-  highwayTarget: 0,
-  // Visual
+const S = {
+  chapIdx: 0,          // 0..8
+  imgIdx: 0,           // 0..8 innerhalb des Kapitels
+  playing: false,
+  auto: true,
+  speed: 7,            // Sekunden pro Bild
+  lastTick: 0,
+  lastFrame: 0,
+  frame: 0,
+  pulse: 0,
   tick: 0,
-  // Tinte
-  drops: [],
-  // Funken
-  sparks: [],
-  // Sakura
-  petals: [],
-  // Flash & Shake
-  flash: 0,
-  shake: 0,
-  // Übergang
-  transition: 0,       // 0..1 bei Page-Turn
-  // Sitzung
-  startTime: Date.now(),
-  // Koan
-  koanIdx: 0,
-  // Cache geladener Bilder
-  img: {},             // key -> HTMLImageElement | null
+  respo: 0.42,
+  chapTime: 0,
+  totalTime: 0,
+  imgEl: null,
+  currentPath: '',
+  booting: true,
+  bootTime: 0,
+  logHistory: [],
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// CANVAS — die Leinwand
+// LOG
 // ═══════════════════════════════════════════════════════════════════
-const cv = document.getElementById('uni');
-const ctx = cv.getContext('2d');
-let W, H, CX, CY, R, DPR;
-
-function resize(){
-  DPR = window.devicePixelRatio || 1;
-  W = window.innerWidth; H = window.innerHeight;
-  cv.width = W * DPR; cv.height = H * DPR;
-  cv.style.width = W + 'px'; cv.style.height = H + 'px';
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-  CX = W/2; CY = H/2; R = Math.min(W,H)*0.36;
-  initPetals();
+const logEl = document.getElementById('log');
+function log(msg, cls=''){
+  const t = new Date().toLocaleTimeString('de-DE');
+  const div = document.createElement('div');
+  div.className = 'ln';
+  div.innerHTML = `<span class="ts">[${t}]</span><span class="${cls}">${msg}</span>`;
+  logEl.appendChild(div);
+  logEl.scrollTop = logEl.scrollHeight;
+  while (logEl.children.length > 60) logEl.removeChild(logEl.firstChild);
+  S.logHistory.push({ t, msg, cls });
 }
-window.addEventListener('resize', resize);
 
 // ═══════════════════════════════════════════════════════════════════
-// READY — Lade alle Bilder (async, Fallback erlaubt)
+// IMAGE LOADING
 // ═══════════════════════════════════════════════════════════════════
-function preloadImages(){
-  const all = [];
-  STORY.chapters.forEach((ch,ci)=>{
-    ch.pages.forEach((p,pi)=>{
-      all.push({key:`${ci}_${pi}`, file:p, chapter:ci, page:pi});
-    });
+const slideshowEl = document.getElementById('slideshow');
+const phEl = document.getElementById('ph');
+const phTextEl = document.getElementById('phText');
+
+function loadImage(path){
+  // Entferne alte
+  const old = slideshowEl.querySelectorAll('img');
+  old.forEach(img => {
+    img.classList.remove('show');
+    setTimeout(() => { try { img.remove(); } catch(_){} }, 1300);
   });
-  let remaining = all.length;
-  const done = ()=>{
-    remaining--;
-    UNI.imagesLoaded = all.length - remaining;
-    document.getElementById('hReady').textContent = `${UNI.imagesLoaded}/${all.length}`;
-    if(remaining <= 0){
-      UNI.ready = true;
-      console.log(`🛣️ READY · ${UNI.imagesLoaded} Bilder geladen, ${UNI.imagesFailed} Fallback`);
-    }
+
+  // Placeholder zeigen
+  phTextEl.textContent = `◈ LADE MOMENT …`;
+  phEl.style.display = 'flex';
+
+  const img = new Image();
+  img.src = path;
+  img.alt = path;
+  img.onload = () => {
+    phEl.style.display = 'none';
+    img.classList.add('show');
+    S.imgEl = img;
+    log(`◈ MOMENT geladen · ${path.split('/').pop()}`, 'ok');
   };
-  all.forEach(item=>{
-    const img = new Image();
-    let tried = 0;
-    const tryNext = ()=>{
-      if(tried >= STORY.paths.length){
-        UNI.img[item.key] = null;  // Fallback
-        UNI.imagesFailed++;
-        done();
-        return;
-      }
-      img.onload = ()=>{ UNI.img[item.key] = img; done(); };
-      img.onerror = ()=>{ tried++; tryNext(); };
-      img.src = STORY.paths[tried] + item.file;
-      tried++;
-    };
-    tryNext();
+  img.onerror = () => {
+    phTextEl.textContent = `◈ MOMENT ${S.chapIdx*9 + S.imgIdx + 1} / 81`;
+    log(`◈ MOMENT ${S.chapIdx*9 + S.imgIdx + 1} · (bild nicht gefunden)`, 'warn');
+  };
+  slideshowEl.appendChild(img);
+  S.currentPath = path;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHAPTER / IMAGE NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+function updateUI(){
+  const chap = CHAPTERS[S.chapIdx];
+  const totalIdx = S.chapIdx * 9 + S.imgIdx + 1;
+
+  // Overlay
+  document.getElementById('ovChapLeft').textContent = `KAPITEL ${chap.n} · ${chap.title}`;
+  document.getElementById('ovTimeRight').textContent = formatTime(S.totalTime);
+  document.getElementById('ovImgLeft').textContent = `${String(totalIdx).padStart(2,'0')} / 81`;
+  document.getElementById('ovStatusRight').textContent = S.playing ? 'RUN' : 'HOLD';
+
+  // Chapter number
+  const chNumEl = document.getElementById('chapterNumber');
+  chNumEl.textContent = chap.n;
+  chNumEl.style.opacity = S.playing ? '1' : '0.4';
+
+  // Topbar
+  document.getElementById('chapIdx').textContent = chap.n;
+  document.getElementById('imgIdx').textContent = totalIdx;
+  document.getElementById('respoVal').textContent = S.respo.toFixed(3);
+  document.getElementById('pulseVal').textContent = S.pulse;
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
+
+  // Story
+  const sb = document.getElementById('storyBox');
+  document.getElementById('storyLabel').textContent = `KAPITEL ${chap.n} · ${chap.title}`;
+  document.getElementById('storyText').textContent = chap.text;
+  document.getElementById('storyMusic').innerHTML = `♫ <b>${chap.music}</b>`;
+  sb.classList.toggle('show', S.playing || totalIdx === 1);
+
+  // Chapters list
+  document.querySelectorAll('.chap').forEach((el, i) => {
+    el.classList.toggle('active', i === S.chapIdx);
+  });
+
+  // Tracks (nur aktuelle angezeigt)
+  renderTracks();
+}
+
+function renderChapters(){
+  const el = document.getElementById('chapters');
+  el.innerHTML = '';
+  CHAPTERS.forEach((chap, i) => {
+    const d = document.createElement('div');
+    d.className = 'chap';
+    d.dataset.idx = i;
+    d.innerHTML = `
+      <span class="num">${chap.n}</span>
+      <span class="title">${chap.title}</span>
+      <span class="count">9</span>
+    `;
+    d.addEventListener('click', () => jumpToChapter(i));
+    el.appendChild(d);
   });
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// TOOR — Torii-Gate als Zentrum
-// ═══════════════════════════════════════════════════════════════════
-function drawTorii(){
-  const tw = R * 0.55;
-  const th = R * 0.62;
-  const x0 = CX - tw/2;
-  const x1 = CX + tw/2;
-  const yTop = CY - th*0.55;
-  const yBot = CY + th*0.95;
-  const postW = Math.max(5, R*0.022);
-  const topH = Math.max(8, R*0.032);
-
-  const pulse = UNI.zam > 0 ? (1 + 0.08*Math.sin(UNI.tick*0.15)) : 1;
-
-  ctx.save();
-  ctx.shadowColor = '#e04a3a';
-  ctx.shadowBlur = UNI.zam > 0 ? 36 : 18;
-  ctx.fillStyle = '#e04a3a';
-
-  // Kasagi (oberer Bogen)
-  ctx.fillRect(x0 - tw*0.08, yTop, tw*1.16, topH);
-
-  // Nuki (zweiter Balken)
-  ctx.fillRect(x0 - tw*0.03, yTop + topH*1.7, tw*1.06, topH*0.55);
-
-  // Pfosten
-  ctx.fillRect(x0, yTop, postW*pulse, yBot - yTop);
-  ctx.fillRect(x1 - postW*pulse, yTop, postW*pulse, yBot - yTop);
-
-  ctx.shadowBlur = 0;
-  ctx.restore();
-
-  // Öffnung (das Maß) — feiner Kreis
-  ctx.beginPath();
-  ctx.ellipse(CX, CY + th*0.1, tw*0.42, th*0.52, 0, 0, Math.PI*2);
-  ctx.strokeStyle = `rgba(244,224,160,${0.14 + 0.06*Math.sin(UNI.tick*0.05)})`;
-  ctx.setLineDash([3, 8]);
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.setLineDash([]);
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// SAKURA — Petals
-// ═══════════════════════════════════════════════════════════════════
-function initPetals(){
-  UNI.petals.length = 0;
-  const n = 24;
-  for(let i=0;i<n;i++){
-    UNI.petals.push({
-      x: Math.random()*W, y: Math.random()*H,
-      vx: (Math.random()-0.5)*0.25, vy: 0.15 + Math.random()*0.4,
-      rot: Math.random()*Math.PI*2, vrot: (Math.random()-0.5)*0.02,
-      size: 2.5 + Math.random()*2.5,
-      phase: Math.random()*Math.PI*2,
-      alpha: 0.3 + Math.random()*0.4,
-    });
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// TINTE — Drops
-// ═══════════════════════════════════════════════════════════════════
-function spawnDrop(x, y){
-  const dx = CX - x, dy = CY - y;
-  const dist = Math.hypot(dx, dy);
-  if(dist < 20) return;
-  const a = Math.atan2(dy, dx);
-  UNI.drops.push({
-    x, y, a,
-    r: dist,
-    vr: -Math.max(2.5, dist*0.038),
-    va: 0.004,
-    life: 0,
-    maxLife: 220,
-    size: 2 + Math.random()*1.5,
-    trail: [],
+function renderTracks(){
+  const el = document.getElementById('tracks');
+  const chap = CHAPTERS[S.chapIdx];
+  el.innerHTML = '';
+  // Aktueller Track des Kapitels wird hervorgehoben
+  TRACKS.forEach((t, i) => {
+    const d = document.createElement('div');
+    d.className = 'track';
+    // Wenn der Name im Kapitel-music-Text vorkommt → playing
+    const isPlaying = chap.music.toLowerCase().includes(t.name.toLowerCase().split('—')[0].trim().toLowerCase());
+    if (isPlaying) d.classList.add('playing');
+    d.innerHTML = `<span class="ic">${t.ic}</span><span>${t.name}</span>`;
+    el.appendChild(d);
   });
 }
 
-function spawnSparks(x, y, color, n){
-  n = n || 8;
-  for(let i=0;i<n;i++){
-    const a = Math.random()*Math.PI*2;
-    const sp = 0.8 + Math.random()*2.5;
-    UNI.sparks.push({
-      x, y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp,
-      life: 0, maxLife: 25 + Math.random()*35,
-      color: color || '#f4e0a0',
-      size: 0.8 + Math.random()*1.4,
-    });
+function jumpToChapter(i){
+  S.chapIdx = i;
+  S.imgIdx = 0;
+  S.chapTime = 0;
+  S.totalTime = i * 9 * S.speed;
+  const path = IMAGES[CHAPTERS[i].n][0];
+  loadImage(path);
+  log(`◈ KAPITEL ${i+1} · ${CHAPTERS[i].title}`, 'gold');
+  updateUI();
+}
+
+function nextImage(){
+  S.imgIdx++;
+  if (S.imgIdx >= 9){
+    S.imgIdx = 0;
+    S.chapIdx = (S.chapIdx + 1) % 9;
   }
+  S.pulse++;
+  const chap = CHAPTERS[S.chapIdx];
+  const path = IMAGES[chap.n][S.imgIdx];
+  loadImage(path);
+  updateUI();
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// HIT-CHECK — trifft der Drop das Torii-Maß?
-// ═══════════════════════════════════════════════════════════════════
-function isHit(x, y){
-  const tw = R * 0.55;
-  const th = R * 0.62;
-  const dy = y - CY;
-  return Math.abs(x - CX) < tw*0.48 && dy > -th*0.15 && dy < th*0.85;
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// PAGE-WECHSEL — Einbahnstraße
-// ═══════════════════════════════════════════════════════════════════
-function nextPage(){
-  if(UNI.transition > 0) return;
-  UNI.page++;
-  UNI.pageInChapter++;
-  if(UNI.pageInChapter >= 9){
-    UNI.pageInChapter = 0;
-    UNI.chapterIdx++;
-    if(UNI.chapterIdx >= 9) UNI.chapterIdx = 0;
-    cycleKoan();
+function prevImage(){
+  S.imgIdx--;
+  if (S.imgIdx < 0){
+    S.imgIdx = 8;
+    S.chapIdx = (S.chapIdx - 1 + 9) % 9;
   }
-  if(UNI.page >= 81){
-    // Ende → Anfang (Ewigkeit)
-    UNI.page = 0;
-    UNI.chapterIdx = 0;
-    UNI.pageInChapter = 0;
-    UNI.zam++;
-    showSeal('∞');
-    updateHUD();
-  }
-  UNI.transition = 1;
-  updateHUD();
-}
-
-function showSeal(kanji){
-  const s = document.getElementById('seal');
-  s.textContent = kanji || '門';
-  s.classList.add('show');
-  setTimeout(()=>s.classList.remove('show'), 1600);
+  S.pulse++;
+  const chap = CHAPTERS[S.chapIdx];
+  const path = IMAGES[chap.n][S.imgIdx];
+  loadImage(path);
+  updateUI();
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// KLICK — Tinte + Progress
+// FORMAT TIME
 // ═══════════════════════════════════════════════════════════════════
-function click(x, y){
-  UNI.klick++;
-  spawnDrop(x, y);
-
-  // Sound
-  beep(520 + Math.random()*80, 0.03);
-
-  // Jeder 9. Klick → Seite weiter (Einbahnstraße)
-  if(UNI.klick % 9 === 0){
-    nextPage();
-    beep(880, 0.15);
-  }
-  // Alle 100 → ZaM
-  if(UNI.klick % 100 === 0 && UNI.klick > 0){
-    UNI.zam++;
-    showSeal('門');
-    spawnSparks(CX, CY, '#f4e0a0', 50);
-    spawnSparks(CX, CY, '#e04a3a', 30);
-    UNI.flash = 0.9;
-    UNI.shake = 10;
-    beep(440, 0.4);
-    setTimeout(()=>beep(660, 0.35), 130);
-    setTimeout(()=>beep(880, 0.5), 260);
-    updateHUD();
-  }
-  updateHUD();
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// HIGHWAY — Beschleunigung: alle Seiten rauschen durch
-// ═══════════════════════════════════════════════════════════════════
-function toggleHighway(){
-  UNI.highway = !UNI.highway;
-  UNI.highwayTarget = UNI.highway ? 1 : 0;
-  const el = document.getElementById('sMode');
-  el.textContent = UNI.highway ? 'ON' : 'OFF';
-  el.style.color = UNI.highway ? '#f4e0a0' : '';
-  if(UNI.highway) beep(990, 0.2);
-  else beep(330, 0.2);
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// KOAN — Way of Life
-// ═══════════════════════════════════════════════════════════════════
-function cycleKoan(){
-  UNI.koanIdx = (UNI.koanIdx + 1) % KOANS.length;
-  const k = KOANS[UNI.koanIdx];
-  document.getElementById('qKanji').textContent = k.k;
-  document.getElementById('qText').textContent = k.q;
-}
-setInterval(cycleKoan, 11000);
-
-// ═══════════════════════════════════════════════════════════════════
-// HUD
-// ═══════════════════════════════════════════════════════════════════
-function updateHUD(){
-  document.getElementById('hPage').textContent = `${UNI.page + 1}/${STORY.totalPages}`;
-  document.getElementById('hChap').textContent = `${UNI.chapterIdx + 1}/9`;
-  document.getElementById('hClick').textContent = UNI.klick;
-  document.getElementById('hZam').textContent = UNI.zam;
-  const fill = document.getElementById('sFill');
-  fill.style.width = (UNI.highwaySpeed*100).toFixed(0) + '%';
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// SOUND
-// ═══════════════════════════════════════════════════════════════════
-let audioCtx = null;
-function beep(freq, dur){
-  try{
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = 'sine'; o.frequency.value = freq;
-    g.gain.value = 0.035;
-    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime + dur);
-  }catch(_){}
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// DRAW — der Rahmen + prozedurale Story-Seite
-// ═══════════════════════════════════════════════════════════════════
-function drawStoryPage(ci, pi){
-  const key = `${ci}_${pi}`;
-  const img = UNI.img[key];
-
-  // Bereich für Bild (Manga-Panel innen)
-  const pw = R*1.8;
-  const ph = R*1.2;
-  const px = CX - pw/2;
-  const py = CY - ph/2;
-
-  // Panel-Rahmen (weiß schmal, innen schwarz)
-  ctx.fillStyle = 'rgba(8,6,10,0.92)';
-  ctx.fillRect(px, py, pw, ph);
-  ctx.strokeStyle = 'rgba(240,232,224,0.35)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(px, py, pw, ph);
-  ctx.strokeStyle = 'rgba(240,232,224,0.12)';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(px+4, py+4, pw-8, ph-8);
-
-  if(img){
-    // Bild zeichnen, in Panel einpassen
-    const iw = img.width, ih = img.height;
-    const scale = Math.min(pw/iw, ph/ih);
-    const dw = iw*scale, dh = ih*scale;
-    const dx = px + (pw-dw)/2, dy = py + (ph-dh)/2;
-    ctx.globalAlpha = 0.92;
-    ctx.drawImage(img, dx, dy, dw, dh);
-    ctx.globalAlpha = 1;
-  } else {
-    // Prozeduraler Fallback — Manga-Panel
-    drawProceduralPanel(px, py, pw, ph, ci, pi);
-  }
-
-  // Seitenzahl im Panel
-  ctx.fillStyle = 'rgba(240,232,224,0.55)';
-  ctx.font = '10px Consolas';
-  ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
-  ctx.fillText(`${UNI.page+1}/${STORY.totalPages}`, px + pw - 8, py + ph - 8);
-
-  // Kapitel-Kanji links oben
-  const ch = STORY.chapters[ci];
-  if(ch){
-    ctx.fillStyle = 'rgba(244,224,160,0.75)';
-    ctx.font = '22px "Yu Mincho","Hiragino Mincho ProN",serif';
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    ctx.fillText(ch.kanji, px + 10, py + 8);
-  }
-}
-
-function drawProceduralPanel(px, py, pw, ph, ci, pi){
-  // Seed für deterministische Panels
-  const seed = ci*9 + pi + 1;
-
-  // Hintergrund
-  const g = ctx.createLinearGradient(px, py, px, py+ph);
-  g.addColorStop(0, `hsl(${(seed*11)%60}, 30%, 8%)`);
-  g.addColorStop(1, `hsl(${(seed*17)%60}, 25%, 4%)`);
-  ctx.fillStyle = g;
-  ctx.fillRect(px, py, pw, ph);
-
-  // Manga-Linien (Schraffur)
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(px, py, pw, ph);
-  ctx.clip();
-  ctx.strokeStyle = 'rgba(240,232,224,0.05)';
-  ctx.lineWidth = 0.8;
-  for(let i=0; i<40; i++){
-    const x = px + (i*23 + seed*7) % pw;
-    ctx.beginPath();
-    ctx.moveTo(x, py);
-    ctx.lineTo(x - 30, py + ph);
-    ctx.stroke();
-  }
-  ctx.restore();
-
-  // Ein Kanji groß
-  const kanjis = ['道','和','静','空','今','花','月','忍','誠','勇','無','∞'];
-  const k = kanjis[seed % kanjis.length];
-  ctx.save();
-  ctx.globalAlpha = 0.18;
-  ctx.fillStyle = '#f4e0a0';
-  ctx.font = `bold ${Math.min(pw,ph)*0.55}px "Yu Mincho","Hiragino Mincho ProN",serif`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(k, px + pw/2, py + ph/2);
-  ctx.restore();
-
-  // Kleines Sonnen-Symbol
-  ctx.beginPath();
-  ctx.arc(px + pw*0.85, py + ph*0.18, 14, 0, Math.PI*2);
-  ctx.fillStyle = 'rgba(224,74,58,0.35)';
-  ctx.fill();
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// DRAW — Gesamtbild
-// ═══════════════════════════════════════════════════════════════════
-function draw(){
-  const sx = (Math.random()-0.5) * UNI.shake;
-  const sy = (Math.random()-0.5) * UNI.shake;
-  ctx.save();
-  ctx.translate(sx, sy);
-
-  // Hintergrund
-  ctx.fillStyle = '#050308';
-  ctx.fillRect(-20, -20, W+40, H+40);
-
-  // Aura
-  const bg = ctx.createRadialGradient(CX, CY, 0, CX, CY, Math.max(W,H)*0.75);
-  bg.addColorStop(0, 'rgba(224,74,58,0.06)');
-  bg.addColorStop(0.5, 'rgba(224,74,58,0.02)');
-  bg.addColorStop(1, 'rgba(224,74,58,0)');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, W, H);
-
-  // 道 im Hintergrund
-  ctx.save();
-  ctx.globalAlpha = 0.03;
-  ctx.fillStyle = '#f4e0a0';
-  ctx.font = `bold ${R*1.4}px "Yu Mincho","Hiragino Mincho ProN",serif`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('道', CX, CY + R*0.1);
-  ctx.restore();
-
-  // Sakura hinten
-  drawPetals(true);
-
-  // Torii
-  drawTorii();
-
-  // Story-Seite (Manga-Panel)
-  drawStoryPage(UNI.chapterIdx, UNI.pageInChapter);
-
-  // Tinte
-  drawDrops();
-
-  // Funken
-  drawSparks();
-
-  // Sakura vorne
-  drawPetals(false);
-
-  ctx.restore();
-
-  // Flash
-  if(UNI.flash > 0.01){
-    ctx.fillStyle = `rgba(244,224,160,${UNI.flash * 0.35})`;
-    ctx.fillRect(0, 0, W, H);
-  }
-}
-
-function drawPetals(behind){
-  for(const p of UNI.petals){
-    const isBehind = p.y < CY;
-    if(isBehind !== behind) continue;
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot);
-    ctx.globalAlpha = p.alpha;
-    ctx.fillStyle = '#ffb0c8';
-    ctx.beginPath();
-    for(let i=0;i<5;i++){
-      const a = (i/5)*Math.PI*2;
-      const a2 = a + Math.PI/5;
-      const px = Math.cos(a)*p.size;
-      const py = Math.sin(a)*p.size;
-      if(i===0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
-      ctx.lineTo(Math.cos(a2)*p.size*0.4, Math.sin(a2)*p.size*0.4);
-    }
-    ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(0, 0, p.size*0.25, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(255,220,235,0.7)';
-    ctx.fill();
-    ctx.restore();
-  }
-}
-
-function drawDrops(){
-  for(const d of UNI.drops){
-    d.trail.forEach((t, i)=>{
-      const a = (i/d.trail.length) * 0.35;
-      ctx.beginPath();
-      ctx.arc(t.x, t.y, d.size*(i/d.trail.length)*0.65, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(224,74,58,${a})`;
-      ctx.fill();
-    });
-    const x = CX + Math.cos(d.a) * d.r;
-    const y = CY + Math.sin(d.a) * d.r * 0.9;
-
-    const g = ctx.createRadialGradient(x, y, 0, x, y, d.size*4);
-    g.addColorStop(0, 'rgba(244,224,160,0.9)');
-    g.addColorStop(0.4, 'rgba(224,74,58,0.4)');
-    g.addColorStop(1, 'rgba(224,74,58,0)');
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(x, y, d.size*4, 0, Math.PI*2); ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(x, y, d.size, 0, Math.PI*2);
-    ctx.fillStyle = '#f4e0a0';
-    ctx.shadowColor = '#e04a3a';
-    ctx.shadowBlur = 10;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-  }
-}
-
-function drawSparks(){
-  for(const s of UNI.sparks){
-    const a = 1 - s.life/s.maxLife;
-    ctx.globalAlpha = a;
-    ctx.fillStyle = s.color;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.size*(0.5+a*0.5), 0, Math.PI*2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// UPDATE
-// ═══════════════════════════════════════════════════════════════════
-function updateDrops(dt){
-  for(let i = UNI.drops.length - 1; i >= 0; i--){
-    const d = UNI.drops[i];
-    d.r += d.vr * (dt/16);
-    d.life++;
-    const t = 1 - d.r/(R*2);
-    d.a += d.va * (dt/16) * (0.5 + t);
-    const x = CX + Math.cos(d.a)*d.r;
-    const y = CY + Math.sin(d.a)*d.r*0.9;
-    d.trail.push({x, y});
-    if(d.trail.length > 8) d.trail.shift();
-    if(d.r < R*0.14){
-      if(isHit(x, y)){
-        spawnSparks(x, y, '#f4e0a0', 10);
-        spawnSparks(x, y, '#e04a3a', 4);
-        beep(880 + Math.random()*120, 0.08);
-        UNI.flash = Math.min(0.25, UNI.flash + 0.1);
-      } else {
-        spawnSparks(x, y, '#8a8098', 3);
-      }
-      UNI.drops.splice(i, 1);
-      continue;
-    }
-    if(d.life > d.maxLife) UNI.drops.splice(i, 1);
-  }
-}
-
-function updatePetals(dt){
-  for(const p of UNI.petals){
-    p.x += p.vx*(dt/16) + Math.sin(UNI.tick*0.02 + p.phase)*0.35;
-    p.y += p.vy*(dt/16);
-    p.rot += p.vrot*(dt/16);
-    if(p.y > H + 20){ p.y = -20; p.x = Math.random()*W; }
-    if(p.x < -20) p.x = W+20;
-    if(p.x > W+20) p.x = -20;
-  }
-}
-
-function updateSparks(dt){
-  for(let i = UNI.sparks.length - 1; i >= 0; i--){
-    const s = UNI.sparks[i];
-    s.x += s.vx*(dt/16); s.y += s.vy*(dt/16);
-    s.vx *= 0.94; s.vy *= 0.94;
-    s.life++;
-    if(s.life > s.maxLife) UNI.sparks.splice(i, 1);
-  }
-}
-
-function updateHighway(dt){
-  // Sanft zum Zielwert
-  UNI.highwaySpeed += (UNI.highwayTarget - UNI.highwaySpeed) * 0.06;
-  if(UNI.highway && UNI.highwaySpeed > 0.3){
-    // Alle ~180ms eine Seite weiter, abhängig von Geschwindigkeit
-    const interval = 180 / Math.max(0.5, UNI.highwaySpeed);
-    if(UNI.tick % Math.max(4, Math.round(interval/16)) === 0){
-      if(UNI.klick % 9 === 0) nextPage();
-      UNI.klick++;
-      if(UNI.klick % 100 === 0){
-        UNI.zam++;
-        showSeal('門');
-        spawnSparks(CX, CY, '#f4e0a0', 40);
-        UNI.flash = 0.8;
-        beep(660, 0.3);
-        updateHUD();
-      }
-    }
-  }
-  document.getElementById('sFill').style.width = (UNI.highwaySpeed*100).toFixed(0) + '%';
-}
-
-function updateFX(){
-  UNI.flash *= 0.88; if(UNI.flash < 0.02) UNI.flash = 0;
-  UNI.shake *= 0.88; if(UNI.shake < 0.3) UNI.shake = 0;
-  if(UNI.transition > 0) UNI.transition = Math.max(0, UNI.transition - 0.05);
+function formatTime(sec){
+  sec = Math.max(0, sec);
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = Math.floor(sec%60).toString().padStart(2,'0');
+  const d = Math.floor((sec%1)*10);
+  return `${m}:${s}.${d}`;
 }
 
 // ═══════════════════════════════════════════════════════════════════
 // LOOP
 // ═══════════════════════════════════════════════════════════════════
-let lastT = 0;
+let lastT = performance.now();
+let accum = 0;
 function loop(now){
-  const dt = Math.min(48, now - lastT || 16);
+  const dt = Math.min(0.1, (now - lastT)/1000);
   lastT = now;
-  UNI.tick++;
+  S.frame++;
 
-  updateDrops(dt);
-  updatePetals(dt);
-  updateSparks(dt);
-  updateHighway(dt);
-  updateFX();
+  // Boot
+  if (S.booting){
+    S.bootTime += dt;
+    if (S.bootTime >= 3.0){
+      S.booting = false;
+      document.getElementById('boot').classList.add('done');
+      S.playing = true;
+      log('◈ STORY gestartet · 81 Momente', 'ok');
+      log('◈ Kapitel 1 · Der letzte Sommer', 'gold');
+    }
+    requestAnimationFrame(loop);
+    return;
+  }
 
-  draw();
+  if (S.playing){
+    S.chapTime += dt;
+    S.totalTime += dt;
+    accum += dt;
+
+    // Auto-Advance nach S.speed Sekunden
+    if (S.auto && accum >= S.speed){
+      accum = 0;
+      nextImage();
+    }
+
+    // Respo-Wert leicht fluktuieren
+    S.respo = 0.42 + Math.sin(S.frame * 0.008) * 0.12;
+    document.getElementById('respoVal').textContent = S.respo.toFixed(3);
+
+    // Clock
+    if (S.frame % 30 === 0){
+      document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
+      document.getElementById('ovTimeRight').textContent = formatTime(S.totalTime);
+    }
+  }
+
   requestAnimationFrame(loop);
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// INPUT
+// CONTROLS / BINDINGS
 // ═══════════════════════════════════════════════════════════════════
-cv.addEventListener('click', (e)=>{
-  click(e.clientX, e.clientY);
-});
-cv.addEventListener('touchstart', (e)=>{
-  const t = e.touches[0];
-  if(t) click(t.clientX, t.clientY);
-  e.preventDefault();
-}, { passive: false });
+function bind(){
+  document.getElementById('btnPlay').addEventListener('click', () => {
+    S.playing = !S.playing;
+    document.getElementById('btnPlay').textContent = S.playing ? '⏸ PAUSE' : '▶ START STORY';
+    document.getElementById('btnPlay').classList.toggle('active', S.playing);
+    log(S.playing ? '▶ STORY läuft' : '⏸ STORY pausiert', S.playing ? 'ok' : 'warn');
+    updateUI();
+  });
+  document.getElementById('btnBack').addEventListener('click', () => {
+    S.playing = false;
+    document.getElementById('btnPlay').textContent = '▶ START STORY';
+    prevImage();
+  });
+  document.getElementById('btnForward').addEventListener('click', () => {
+    S.playing = false;
+    document.getElementById('btnPlay').textContent = '▶ START STORY';
+    nextImage();
+  });
+  document.getElementById('btnFullscreen').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.();
+    } else {
+      document.exitFullscreen?.();
+    }
+  });
+  document.getElementById('btnAuto').addEventListener('click', (e) => {
+    S.auto = !S.auto;
+    e.currentTarget.classList.toggle('active', S.auto);
+    log(`⟳ AUTO ${S.auto ? 'an' : 'aus'}`, 'warn');
+  });
+  document.getElementById('btnReset').addEventListener('click', () => {
+    S.chapIdx = 0;
+    S.imgIdx = 0;
+    S.totalTime = 0;
+    S.chapTime = 0;
+    accum = 0;
+    S.playing = false;
+    document.getElementById('btnPlay').textContent = '▶ START STORY';
+    loadImage(IMAGES[1][0]);
+    log('⟲ RESET · zurück zum letzten Sommer', 'warn');
+    updateUI();
+  });
+  document.getElementById('speedRange').addEventListener('input', (e) => {
+    S.speed = parseInt(e.target.value, 10);
+    document.getElementById('speedLbl').textContent = S.speed + ' s';
+  });
 
-document.addEventListener('keydown', (e)=>{
-  if(e.key === ' '){ e.preventDefault(); click(CX + (Math.random()-0.5)*R*0.6, CY + (Math.random()-0.5)*R*0.5); }
-  if(e.key === 'h' || e.key === 'H') toggleHighway();
-  if(e.key === 'n' || e.key === 'N') nextPage();
-  if(e.key === 'k' || e.key === 'K') cycleKoan();
-});
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.code === 'Space'){
+      e.preventDefault();
+      document.getElementById('btnPlay').click();
+    }
+    if (e.key === 'ArrowLeft'){
+      document.getElementById('btnBack').click();
+    }
+    if (e.key === 'ArrowRight'){
+      document.getElementById('btnForward').click();
+    }
+    if (e.key === 'f' || e.key === 'F'){
+      document.getElementById('btnFullscreen').click();
+    }
+    if (e.key === 'a' || e.key === 'A'){
+      document.getElementById('btnAuto').click();
+    }
+    if (e.key === 'r' || e.key === 'R'){
+      document.getElementById('btnReset').click();
+    }
+  });
+}
 
 // ═══════════════════════════════════════════════════════════════════
-// API
+// BOOT
 // ═══════════════════════════════════════════════════════════════════
-window.UNI = {
-  click: (n=1)=>{ for(let i=0;i<n;i++) click(CX, CY); },
-  next: nextPage,
-  highway: toggleHighway,
-  koan: cycleKoan,
-  state: ()=>({
-    page: UNI.page, chapter: UNI.chapterIdx, pageInChapter: UNI.pageInChapter,
-    klick: UNI.klick, zam: UNI.zam,
-    ready: UNI.ready, loaded: UNI.imagesLoaded, failed: UNI.imagesFailed,
-    highway: UNI.highway, speed: UNI.highwaySpeed,
-  }),
-  story: STORY,
-  images: UNI.img,
-};
+const BOOT_LINES = [
+  ['▸ RESPO · 81 MOMENTE <b>gefunden</b> <span class="dim">· 9 × 9</span>', 180],
+  ['▸ IRFAN · SOMMER <b>gemountet</b> <span class="dim">· der letzte sommer</span>', 200],
+  ['▸ MONSTER ID <b>lädt</b> <span class="dim">· roh · offen · ungebrochen</span>', 200],
+  ['▸ CINEMATIC <b>aktiv</b> <span class="dim">· weite · raum · erinnerung</span>', 200],
+  ['▸ <span class="pink">INDIJA</span> · Comme un bateau <b>verbunden</b>', 180],
+  ['▸ <span class="pink">INDIJA</span> · S.O.S <b>verbunden</b>', 180],
+  ['▸ <span class="pink">INDIJA</span> · Ainsi Bas La Vida <b>verbunden</b>', 180],
+  ['▸ <span class="vio">KEY</span> · Mozart Techno Reimagined <b>verbunden</b>', 200],
+  ['▸ <span class="vio">AURORA</span> · Runaway <b>verbunden</b>', 180],
+  ['▸ <span class="vio">THE WITCH</span> · Dark Orchestral <b>verbunden</b>', 180],
+  ['▸ ACHSEN <b>kalibriert</b> <span class="dim">· druck · zug · tiefe · wahrheit</span>', 200],
+  ['▸ <b>DAS WUNDER IST UNTER UNS</b>', 280],
+];
+
+function bootSequence(){
+  const linesEl = document.getElementById('bootLines');
+  const barEl = document.getElementById('bootBar');
+  linesEl.innerHTML = '';
+  let i = 0, total = 0;
+  const totalDur = BOOT_LINES.reduce((a,b) => a+b[1], 0);
+
+  function next(){
+    if (i >= BOOT_LINES.length){
+      barEl.style.width = '100%';
+      return;
+    }
+    const [txt, delay] = BOOT_LINES[i];
+    const div = document.createElement('div');
+    div.innerHTML = txt;
+    linesEl.appendChild(div);
+    total += delay;
+    barEl.style.width = ((total/totalDur)*100).toFixed(1)+'%';
+    i++;
+    setTimeout(next, delay);
+  }
+  next();
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════
-resize();
-preloadImages();
-updateHUD();
+function init(){
+  bootSequence();
+  renderChapters();
+  renderTracks();
+  bind();
 
-console.log('%c🛣️ UNI · HIGHWAY · TOOR · iki1uc','color:#e04a3a;font-weight:bold;font-size:14px;');
-console.log('Klick = Tinte · Tinte = Seite · 9 Seiten = Kapitel · 100 Klick = ZaM');
-console.log('H = HIGHWAY · N = next · K = Koan · Leertaste = Klick');
-console.log('Die Einbahnstraße läuft.');
+  // Erstes Bild vorladen
+  loadImage(IMAGES[1][0]);
+  updateUI();
 
-requestAnimationFrame(loop);
+  log('◈ DER LETZTE SOMMER · 81 MOMENTE', 'gold');
+  log('▸ 9 Kapitel × 9 Momente = 81', 'vio');
+  log('▸ story · irfan · cinematic · monster id', 'pink');
+  log('▸ tasten: space=play · ←→=blättern · f=full · a=auto · r=reset', 'ok');
+
+  requestAnimationFrame(loop);
+}
+
+if (document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PUBLIC API
+// ═══════════════════════════════════════════════════════════════════
+window.STORY = {
+  play:  () => document.getElementById('btnPlay').click(),
+  next:  () => nextImage(),
+  prev:  () => prevImage(),
+  jump:  (i) => jumpToChapter(i),
+  state: () => ({
+    chapter: S.chapIdx + 1,
+    image: S.imgIdx + 1,
+    total: S.chapIdx * 9 + S.imgIdx + 1,
+    playing: S.playing,
+    auto: S.auto,
+    speed: S.speed,
+    respo: S.respo,
+    pulse: S.pulse,
+    currentPath: S.currentPath,
+  }),
+  chapters: () => CHAPTERS.map(c => ({ ...c })),
+  images: () => JSON.parse(JSON.stringify(IMAGES)),
+};
+window.S = window.STORY;
+
+console.log('%c◈ DER LETZTE SOMMER · 81 MOMENTE geladen',
+  'color:#ffbd5c;font-weight:bold;font-size:14px;');
+console.log('→ window.STORY.play() · .next() · .prev() · .jump(0-8) · .state()');
+console.log('→ IRFAN · CINEMATIC · MONSTER ID · DAS WUNDER IST UNTER UNS');
 </script>
 </body>
 </html>
