@@ -3,1255 +3,1745 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>◈ DER LETZTE SOMMER · 81 MOMENTE · story · respo</title>
+<title>◈ ANIME RUNTIME · ATEM · ATOM · WONDER</title>
 <style>
   :root{
-    --void:#000308;
-    --ink:#04070e;
-    --panel:rgba(6,12,22,.86);
-    --line:rgba(255,189,92,.14);
-    --line2:rgba(255,189,92,.05);
-    --text:#e0ecec;
-    --muted:#7a95a0;
-    --dim:#3f525a;
-    --gold:#ffcc66;
-    --gold2:#ffe9b0;
-    --amber:#ffbd5c;
-    --red:#ff5a7a;
-    --violet:#b388ff;
-    --blue:#6cc9ff;
-    --mint:#8cf0d0;
-    --pink:#ff6d9d;
-    --o2:#7ce0a8;
-    --co2:#ffcc44;
-    --h2o:#5fc8ff;
-    --serif:'Yu Mincho','Hiragino Mincho ProN','Times New Roman',serif;
-    --mono:'Consolas','Courier New',monospace;
+    --ink:#04060c; --deep:#080d18; --panel:#0c1622;
+    --line:#1e3a4a; --text:#d8f0e8; --muted:#6a8e94;
+    --mint:#68f6c0; --amber:#ffbd5c; --pink:#ff6d9d;
+    --blue:#6cc9ff; --violet:#b388ff; --gold:#ffcc66;
+    --o2:#7ce0a8; --co2:#ffcc44; --h2o:#5fc8ff; --atom:#b388ff;
+    --mana:#ff66c8; --aura:#ffd93d; --zen:#8cf0d0;
+    --shadow:0 0 0 1px rgba(104,246,192,.14),0 12px 44px rgba(0,0,0,.5);
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
+  *{box-sizing:border-box;}
   html,body{height:100%;}
   body{
-    background:var(--void);
-    color:var(--text);
-    font-family:var(--mono);
-    min-height:100vh;
-    overflow-x:hidden;
-    background-image:
-      radial-gradient(circle at 22% 15%, rgba(179,136,255,.06), transparent 34rem),
-      radial-gradient(circle at 78% 85%, rgba(255,109,157,.05), transparent 34rem),
-      radial-gradient(circle at 50% 50%, rgba(255,189,92,.03), transparent 40rem);
-  }
-
-  /* ═══ BACKGROUND BREATH ═══ */
-  #breath{
-    position:fixed; inset:0;
-    z-index:0; pointer-events:none;
-    background:radial-gradient(ellipse at 50% 45%,
-      rgba(140,240,208,.04) 0%,
-      transparent 60%);
-    animation:bgBreath 8s ease-in-out infinite;
-  }
-  @keyframes bgBreath{
-    0%,100%{opacity:.4; transform:scale(1);}
-    50%{opacity:1; transform:scale(1.04);}
-  }
-
-  /* ═══ LAYOUT ═══ */
-  #shell{
-    position:relative; z-index:1;
-    min-height:100vh;
-    display:flex; flex-direction:column;
-    padding:14px;
-    max-width:1600px;
-    margin:0 auto;
-  }
-
-  /* ═══ TOPBAR ═══ */
-  header{
-    display:flex; flex-wrap:wrap;
-    align-items:center; justify-content:space-between;
-    gap:14px;
-    padding:11px 18px;
-    border:1px solid var(--line);
-    background:var(--panel);
-    backdrop-filter:blur(12px);
-    border-radius:6px;
-    margin-bottom:10px;
-  }
-  header .brand{
-    display:flex; align-items:center; gap:12px;
-    min-width:0;
-  }
-  header .brand .mark{
-    width:40px;height:40px; flex:0 0 auto;
-    display:grid;place-items:center;
-    background:linear-gradient(135deg,#ff5a7a,#b388ff,#ffbd5c);
-    color:#04070e;
-    font-family:var(--serif);
-    font-weight:900; font-size:18px;
-    border-radius:4px;
-    box-shadow:0 0 24px rgba(255,189,92,.4);
-  }
-  header .brand h1{
-    font-family:var(--serif);
-    font-size:clamp(13px,1.7vw,20px);
-    letter-spacing:3px; font-weight:300;
-    background:linear-gradient(90deg,var(--gold),var(--violet),var(--pink),var(--blue));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    line-height:1.15;
-  }
-  header .brand p{
-    color:var(--muted);
-    font-size:10px;
-    letter-spacing:2px;
-    margin-top:4px;
-  }
-  header .meta{
-    display:flex; flex-wrap:wrap; gap:10px;
-    font-size:10px; color:var(--muted);
-    align-items:center;
-  }
-  header .meta b{ color:var(--gold); font-weight:bold; }
-  header .meta .chip{
-    padding:3px 8px;
-    border:1px solid var(--line2);
-    background:rgba(2,6,10,.6);
-    border-radius:3px;
-    letter-spacing:1px;
-  }
-  header #clock{ color:var(--blue); }
-
-  /* ═══ STAGE ═══ */
-  #stage{
-    flex:1;
-    display:grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(280px, .4fr);
-    gap:10px;
-    min-height:0;
-  }
-  @media(max-width:1100px){
-    #stage{ grid-template-columns:1fr; }
-  }
-
-  /* ═══ CANVAS / IMAGE DISPLAY ═══ */
-  #visualWrap{
-    position:relative;
-    background:#020509;
-    border:1px solid var(--line);
-    border-radius:6px;
-    overflow:hidden;
-    aspect-ratio:16/9;
-    box-shadow:
-      inset 0 0 0 4px rgba(2,4,8,.6),
-      0 0 40px rgba(255,189,92,.06),
-      0 14px 50px rgba(0,0,0,.6);
-    backdrop-filter:blur(8px);
-  }
-  #visualWrap::before{
-    /* CRT scanlines */
-    content:'';
-    position:absolute; inset:0;
-    background:repeating-linear-gradient(
-      0deg,
-      rgba(0,0,0,.06) 0px,
-      rgba(0,0,0,.06) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    pointer-events:none; z-index:5;
-    mix-blend-mode:multiply;
-  }
-  #visualWrap::after{
-    /* vignette */
-    content:'';
-    position:absolute; inset:0;
-    background:radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,.7) 100%);
-    pointer-events:none; z-index:6;
-  }
-
-  /* Image slideshow */
-  #slideshow{
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    background:#020509;
-  }
-  #slideshow img{
-    max-width:100%; max-height:100%;
-    width:auto; height:auto;
-    object-fit:contain;
-    transition: opacity 1.2s ease, transform 8s ease;
-    opacity:0;
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%) scale(1.02);
-    filter:saturate(.85) contrast(1.05);
-  }
-  #slideshow img.show{
-    opacity:.92;
-    transform:translate(-50%,-50%) scale(1);
-  }
-
-  /* Fallback (if image is missing) */
-  #slideshow .placeholder{
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
+    margin:0;color:var(--text);
     background:
-      repeating-linear-gradient(45deg, rgba(255,189,92,.02) 0 12px, transparent 12px 24px),
-      radial-gradient(circle at 50% 50%, rgba(179,136,255,.08), transparent 60%),
-      #020509;
-    color:var(--muted);
-    font-family:var(--serif);
-    font-size:36px;
-    letter-spacing:8px;
-    text-align:center;
+      radial-gradient(circle at 25% 15%,rgba(104,246,192,.06),transparent 30rem),
+      radial-gradient(circle at 78% 80%,rgba(179,136,255,.05),transparent 34rem),
+      linear-gradient(145deg,#04060c,#080f1a 54%,#04080e);
+    font-family:"Courier New",monospace;
+    letter-spacing:.03em;
+    overflow-x:hidden;
   }
+  button,input{font:inherit;}
+  button{
+    color:var(--text);background:#0d202a;
+    border:1px solid #2c5560;padding:.55rem .85rem;
+    cursor:pointer;text-transform:uppercase;
+    letter-spacing:.08em;transition:.15s;font-size:11px;
+  }
+  button:hover,button:focus-visible{
+    color:#04110f;background:var(--mint);border-color:var(--mint);outline:none;
+  }
+  button.active{color:#04110f;background:var(--mint);border-color:var(--mint);}
 
-  /* Overlay text */
-  #overlay{
-    position:absolute; inset:0;
-    z-index:4; pointer-events:none;
-    display:flex; flex-direction:column;
-    justify-content:space-between;
-    padding:16px 20px;
+  .app-shell{min-height:100%;padding:14px;}
+  .topbar{
+    max-width:1560px;margin:0 auto 10px;
+    display:flex;gap:16px;align-items:center;justify-content:space-between;
+    padding:11px 16px;border:1px solid var(--line);
+    background:rgba(6,14,22,.94);box-shadow:var(--shadow);
+    flex-wrap:wrap;
   }
-  #overlay .top{
-    display:flex; justify-content:space-between;
-    font-size:10px; letter-spacing:2px;
-    color:rgba(224,236,236,.7);
-    text-shadow:0 0 8px rgba(255,189,92,.6);
+  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+  .brand-mark{
+    width:38px;height:38px;flex:0 0 auto;
+    display:grid;place-items:center;
+    color:#04110f;background:var(--mint);
+    font-weight:900;font-size:13px;
+    box-shadow:4px 4px 0 #1f5750;
+    animation:markPulse 3s ease-in-out infinite;
   }
-  #overlay .top .left{ color:var(--amber); }
-  #overlay .top .right{ color:var(--blue); }
-  #overlay .bottom{
-    display:flex; justify-content:space-between;
-    font-size:10px; letter-spacing:2px;
-    color:rgba(224,236,236,.65);
-    text-shadow:0 0 8px rgba(179,136,255,.5);
+  @keyframes markPulse{
+    0%,100%{box-shadow:4px 4px 0 #1f5750;}
+    50%{box-shadow:4px 4px 0 #1f5750,0 0 22px rgba(104,246,192,.6);}
   }
-  #overlay .bottom .left{ color:var(--violet); }
-  #overlay .bottom .right{ color:var(--mint); }
+  .brand h1{margin:0;font-size:clamp(13px,1.7vw,19px);line-height:1.15;
+    background:linear-gradient(90deg,var(--mint),var(--violet),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .brand p{margin:4px 0 0;color:var(--muted);font-size:10px;}
+  .top-status{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;font-size:10px;color:var(--muted);}
+  .led{display:inline-flex;align-items:center;gap:6px;}
+  .led::before{content:"";width:7px;height:7px;background:var(--pink);border-radius:50%;box-shadow:0 0 9px var(--pink);}
+  .led.online::before{background:var(--mint);box-shadow:0 0 9px var(--mint);animation:ledBreath 4s ease-in-out infinite;}
+  @keyframes ledBreath{0%,100%{transform:scale(.85);}50%{transform:scale(1.3);}}
 
-  /* Chapter big number */
-  #chapterNumber{
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    font-family:var(--serif);
-    font-size:clamp(80px,16vw,220px);
-    color:rgba(255,189,92,.06);
-    letter-spacing:10px;
-    z-index:3; pointer-events:none;
-    font-weight:300;
-    text-shadow:0 0 60px rgba(255,189,92,.1);
-    transition:opacity 1.4s ease;
+  .elem-strip{
+    max-width:1560px;margin:0 auto 10px;
+    display:grid;grid-template-columns:repeat(7,1fr);gap:6px;
+    padding:8px 10px;background:rgba(6,14,22,.9);
+    border:1px solid var(--line);box-shadow:var(--shadow);
   }
+  @media(max-width:1000px){.elem-strip{grid-template-columns:repeat(4,1fr);}}
+  @media(max-width:600px){.elem-strip{grid-template-columns:repeat(3,1fr);}}
+  .elem-chip{
+    padding:6px 8px;background:rgba(2,8,12,.6);
+    border:1px solid var(--line);border-left:3px solid #2a3644;
+    border-radius:4px;font-size:10px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .elem-chip.o2{border-left-color:var(--o2);}
+  .elem-chip.co2{border-left-color:var(--co2);}
+  .elem-chip.h2o{border-left-color:var(--h2o);}
+  .elem-chip.atom{border-left-color:var(--atom);}
+  .elem-chip.mana{border-left-color:var(--mana);}
+  .elem-chip.aura{border-left-color:var(--aura);}
+  .elem-chip.zen{border-left-color:var(--zen);}
+  .elem-chip .k{color:var(--muted);letter-spacing:1.5px;font-size:9px;font-weight:bold;}
+  .elem-chip .v{font-weight:bold;font-size:12px;}
+  .elem-chip.o2 .v{color:var(--o2);}
+  .elem-chip.co2 .v{color:var(--co2);}
+  .elem-chip.h2o .v{color:var(--h2o);}
+  .elem-chip.atom .v{color:var(--atom);}
+  .elem-chip.mana .v{color:var(--mana);}
+  .elem-chip.aura .v{color:var(--aura);}
+  .elem-chip.zen .v{color:var(--zen);}
 
-  /* Story text overlay */
-  #storyBox{
-    position:absolute;
-    bottom:24px; left:24px; right:24px;
-    z-index:7;
-    max-width:640px;
-    padding:14px 18px;
-    background:rgba(2,6,10,.82);
-    border:1px solid var(--line);
-    border-left:3px solid var(--gold);
-    border-radius:4px;
-    font-family:var(--serif);
-    font-size:13px;
-    line-height:1.7;
-    color:#e8f0f0;
-    font-style:italic;
-    opacity:0;
-    transform:translateY(8px);
-    transition:.6s ease;
-    backdrop-filter:blur(8px);
-  }
-  #storyBox.show{ opacity:1; transform:translateY(0); }
-  #storyBox .label{
-    display:block;
-    font-family:var(--mono);
-    font-style:normal;
-    font-size:9px;
-    letter-spacing:3px;
-    color:var(--amber);
-    margin-bottom:6px;
-    text-transform:uppercase;
-  }
-  #storyBox .music{
-    display:block;
-    margin-top:10px;
-    padding-top:8px;
-    border-top:1px dashed rgba(255,189,92,.15);
-    font-family:var(--mono);
-    font-style:normal;
-    font-size:10px;
-    letter-spacing:1.5px;
-    color:var(--violet);
-  }
-  #storyBox .music b{
-    color:var(--pink);
-    font-weight:normal;
-    letter-spacing:2px;
-  }
-
-  /* ═══ CONTROLS ═══ */
-  #controls{
-    margin-top:10px;
-    display:flex; flex-wrap:wrap;
-    gap:6px; align-items:center;
-    padding:10px 14px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:6px;
-    backdrop-filter:blur(8px);
-  }
-  #controls button{
-    background:rgba(12,20,30,.8);
-    color:var(--text);
-    border:1px solid var(--line);
-    padding:6px 14px;
-    border-radius:4px;
-    font-family:inherit;
-    font-size:10px;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:.15s;
-  }
-  #controls button:hover{
-    background:rgba(255,189,92,.12);
-    border-color:var(--gold);
-    color:#fff;
-  }
-  #controls button.active{
-    background:var(--gold);
-    color:#04070e;
-    border-color:var(--gold);
-    box-shadow:0 0 16px rgba(255,189,92,.5);
-  }
-  #controls button.primary{
-    border-color:rgba(255,189,92,.4);
-    color:var(--amber);
-  }
-  #controls button.primary:hover{
-    background:rgba(255,189,92,.2);
-    color:#fff;
-  }
-  #controls .grow{ flex:1; }
-  #controls .sep{
-    width:1px; height:20px;
-    background:var(--line);
-    margin:0 6px;
-  }
-  #controls .lbl{
-    font-size:9px;
-    letter-spacing:2px;
-    color:var(--muted);
-  }
-  #controls input[type=range]{
-    -webkit-appearance:none;
-    appearance:none;
-    width:100px;
-    height:3px;
-    background:linear-gradient(90deg,var(--violet),var(--pink),var(--gold));
-    border-radius:2px;
-    outline:none;
-  }
-  #controls input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:14px; height:14px;
-    border-radius:50%;
-    background:#fff;
-    border:2px solid var(--gold);
-    box-shadow:0 0 10px var(--gold);
-    cursor:pointer;
-  }
-
-  /* ═══ SIDE PANEL ═══ */
-  .side-col{
-    display:flex; flex-direction:column;
+  .workspace{
+    max-width:1560px;margin:0 auto;
+    display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,.5fr);
     gap:10px;
-    min-height:0;
+  }
+  @media(max-width:1040px){
+    .workspace{grid-template-columns:1fr;}
+    .side-stack{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media(max-width:690px){
+    .app-shell{padding:8px;}
+    .side-stack{grid-template-columns:1fr;}
   }
   .panel{
-    background:var(--panel);
     border:1px solid var(--line);
-    border-radius:6px;
-    padding:11px 13px;
-    backdrop-filter:blur(8px);
+    background:rgba(8,18,26,.92);
+    box-shadow:var(--shadow);
   }
-  .panel h3{
-    font-size:10px;
-    letter-spacing:2px;
-    color:var(--gold);
-    text-transform:uppercase;
-    font-family:var(--serif);
-    font-weight:normal;
-    padding-bottom:6px;
-    margin-bottom:8px;
-    border-bottom:1px solid var(--line2);
-    display:flex; justify-content:space-between; align-items:center;
+  .panel-title{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:9px 12px;border-bottom:1px solid var(--line);
+    color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.12em;
   }
-  .panel h3 .badge{
-    font-family:var(--mono);
-    font-size:9px;
-    color:var(--muted);
-    letter-spacing:.5px;
-    background:rgba(0,0,0,.4);
-    padding:2px 7px;
-    border-radius:3px;
-  }
+  .panel-title strong{color:var(--mint);font-weight:700;}
 
-  /* Chapter list */
-  #chapters{ display:flex; flex-direction:column; gap:4px; }
-  .chap{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:6px 10px;
-    background:rgba(2,6,10,.5);
-    border:1px solid var(--line2);
-    border-left:3px solid var(--dim);
-    border-radius:3px;
-    cursor:pointer;
-    font-size:10px;
-    transition:.2s;
+  .monitor-wrap{position:relative;padding:10px;background:#040b12;}
+  #stage{
+    width:100%;display:block;aspect-ratio:16/9;background:#040b12;
+    border:1px solid #2e5666;image-rendering:pixelated;
+    box-shadow:inset 0 0 0 5px rgba(2,8,12,.6),0 0 24px rgba(104,246,192,.1);
   }
-  .chap:hover{ background:rgba(255,189,92,.06); border-left-color:var(--gold); }
-  .chap.active{
-    background:rgba(255,189,92,.1);
-    border-left-color:var(--gold);
-    color:#fff;
+  .monitor-overlay{
+    position:absolute;inset:18px;pointer-events:none;
+    display:flex;justify-content:space-between;align-items:flex-start;
+    color:rgba(216,240,232,.75);font-size:9px;
+    text-shadow:0 0 6px #35dca7;letter-spacing:.15em;
   }
-  .chap.active .num{ color:var(--gold); text-shadow:0 0 8px var(--gold); }
-  .chap .num{
-    font-family:var(--serif);
-    font-size:14px;
-    font-weight:bold;
-    color:var(--muted);
-    width:22px;
-  }
-  .chap .title{
-    flex:1; margin-left:10px;
-    letter-spacing:1px;
-  }
-  .chap .count{
-    font-size:9px;
-    color:var(--dim);
-    letter-spacing:1px;
-  }
+  .monitor-overlay span:last-child{text-align:right;}
 
-  /* Track list */
-  #tracks{
-    display:flex; flex-direction:column; gap:3px;
-    max-height:220px; overflow-y:auto;
-    padding-right:4px;
+  .scene-tabs{
+    display:grid;grid-template-columns:repeat(6,minmax(90px,1fr));
+    gap:5px;padding:10px 10px 0;background:rgba(4,12,20,.7);
   }
-  #tracks::-webkit-scrollbar{ width:5px; }
-  #tracks::-webkit-scrollbar-thumb{ background:var(--line); }
-  .track{
-    display:flex; align-items:center; gap:8px;
-    padding:5px 8px;
-    background:rgba(2,6,10,.35);
-    border-left:2px solid var(--violet);
-    border-radius:3px;
-    font-size:10px;
-    letter-spacing:.5px;
-    color:#b8cdd0;
+  .scene-tab{
+    min-height:58px;text-align:left;padding:8px;
+    border-color:#1f4150;background:#0a1a22;
+    color:var(--muted);font-size:10px;
   }
-  .track .ic{
-    color:var(--pink);
-    font-size:11px;
-  }
-  .track.playing{
-    background:rgba(255,109,157,.08);
-    color:#fff;
-    border-left-color:var(--pink);
-  }
+  .scene-tab small{display:block;margin-top:4px;color:#4f7a80;font-size:9px;}
+  .scene-tab.active{color:#04110f;background:var(--mint);border-color:var(--mint);}
+  .scene-tab.active small{color:#155a48;}
+  .scene-tab[data-color="amber"].active{background:var(--amber);border-color:var(--amber);}
+  .scene-tab[data-color="pink"].active{background:var(--pink);border-color:var(--pink);}
+  .scene-tab[data-color="blue"].active{background:var(--blue);border-color:var(--blue);}
+  .scene-tab[data-color="violet"].active{background:var(--violet);border-color:var(--violet);}
+  .scene-tab[data-color="mint"].active{background:var(--mint);border-color:var(--mint);}
+  .scene-tab[data-color="gold"].active{background:var(--gold);border-color:var(--gold);}
 
-  /* Log */
-  #log{
-    background:rgba(2,6,10,.5);
-    border-radius:4px;
-    padding:8px 10px;
-    font-family:var(--mono);
-    font-size:9.5px;
-    line-height:1.6;
-    color:#8ab0c0;
-    max-height:160px;
-    overflow-y:auto;
+  .transport{
+    display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+    padding:10px;border-top:1px solid var(--line);
+    background:#08161e;
   }
-  #log::-webkit-scrollbar{ width:5px; }
-  #log::-webkit-scrollbar-thumb{ background:var(--line); }
-  #log .ln{ padding:2px 0; }
-  #log .ts{ color:var(--dim); margin-right:6px; }
-  #log .ok{ color:var(--mint); }
-  #log .warn{ color:var(--amber); }
-  #log .err{ color:var(--red); }
-  #log .gold{ color:var(--gold); }
-  #log .vio{ color:var(--violet); }
-  #log .pink{ color:var(--pink); }
+  .transport .primary{
+    min-width:150px;color:#04110f;background:var(--mint);
+    border-color:var(--mint);font-weight:700;
+  }
+  .transport .primary:hover{background:#a0ffdd;}
+  .transport .grow{flex:1;}
+  .transport label{color:var(--muted);font-size:10px;}
+  .speed-group{display:flex;gap:4px;}
+  .speed-group button{padding:.45rem .55rem;font-size:10px;}
 
-  /* ═══ FOOTER ═══ */
-  footer{
-    margin-top:10px;
-    display:flex; flex-wrap:wrap;
-    justify-content:space-between;
-    gap:14px;
-    font-size:9px;
-    letter-spacing:2px;
-    color:var(--dim);
-    padding:10px 6px;
+  .timeline{padding:10px 12px 12px;border-top:1px solid #1a3a44;background:#06121a;}
+  .timeline-head{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:10px;margin-bottom:7px;}
+  .timeline-head strong{color:var(--amber);}
+  .range-wrap{position:relative;}
+  input[type=range]{
+    width:100%;height:18px;margin:0;appearance:none;background:transparent;cursor:pointer;
   }
-  footer b{ color:var(--gold); font-weight:normal; }
-  footer .key{
-    padding:2px 6px;
-    border:1px solid var(--line2);
-    color:var(--muted);
-    margin:0 2px;
+  input[type=range]::-webkit-slider-runnable-track{height:5px;background:#1e3a44;border:1px solid #2e5866;}
+  input[type=range]::-moz-range-track{height:5px;background:#1e3a44;border:1px solid #2e5866;}
+  input[type=range]::-webkit-slider-thumb{
+    appearance:none;width:14px;height:18px;margin-top:-7px;
+    background:var(--mint);border:1px solid #d7ffed;box-shadow:0 0 10px var(--mint);
   }
+  input[type=range]::-moz-range-thumb{width:14px;height:18px;border-radius:0;background:var(--mint);border:1px solid #d7ffed;box-shadow:0 0 10px var(--mint);}
+  .markers{position:absolute;inset:0 0 auto;height:18px;pointer-events:none;}
+  .marker{position:absolute;top:4px;width:1px;height:11px;background:var(--amber);opacity:.85;}
+  .marker em{position:absolute;top:13px;left:3px;white-space:nowrap;color:#5e898d;font-style:normal;font-size:8px;}
 
-  /* ═══ BOOT ═══ */
-  #boot{
-    position:fixed; inset:0;
-    background:#000;
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    gap:14px;
-    z-index:9999;
-    color:var(--gold);
-    letter-spacing:2px;
-    font-size:12px;
-    transition:opacity .8s ease;
-  }
-  #boot.done{ opacity:0; pointer-events:none; }
-  #boot .logo{
-    font-family:var(--serif);
-    font-size:44px;
-    letter-spacing:10px;
-    background:linear-gradient(90deg,var(--gold),var(--pink),var(--violet),var(--blue));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    font-weight:300;
-    animation:logoBreath 4s ease-in-out infinite;
-  }
-  @keyframes logoBreath{
-    0%,100%{ transform:scale(1); filter:brightness(1); }
-    50%{ transform:scale(1.04); filter:brightness(1.4); }
-  }
-  #boot .sub{
-    color:var(--blue);
-    font-size:11px;
-    letter-spacing:8px;
-    font-family:var(--serif);
-  }
-  #boot .lines{
-    width:600px; max-width:82%;
-    font-size:11px;
-    line-height:1.7;
-    text-align:left;
-    color:var(--mint);
-    font-family:var(--mono);
-  }
-  #boot .lines b{ color:var(--gold); }
-  #boot .lines .dim{ color:var(--dim); }
-  #boot .lines .vio{ color:var(--violet); }
-  #boot .lines .pink{ color:var(--pink); }
-  #boot .progress{
-    width:600px; max-width:82%;
-    height:3px;
-    background:#0a1420;
-    border-radius:2px;
-    overflow:hidden;
-  }
-  #boot .progress .bar{
-    height:100%; width:0;
-    background:linear-gradient(90deg,var(--violet),var(--pink),var(--gold));
-    transition:width .3s;
-  }
+  .side-stack{display:grid;align-content:start;gap:10px;}
+  .side-content{padding:11px;}
 
-  @media(max-width:700px){
-    #shell{ padding:8px; }
-    header .brand h1{ font-size:12px; letter-spacing:2px; }
-    #controls{ padding:8px; gap:4px; }
-    #controls button{ padding:5px 10px; font-size:9px; }
-    #storyBox{ font-size:11px; padding:10px 12px; bottom:14px; left:14px; right:14px; }
-    #controls input[type=range]{ width:60px; }
+  .cue-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+  .scene-big{color:var(--amber);font-size:20px;font-weight:700;line-height:1;}
+  .scene-big span{display:block;margin-top:5px;color:var(--text);font-size:11px;}
+  .source-chip{padding:4px 7px;border:1px solid #2c5666;color:var(--muted);font-size:9px;white-space:nowrap;letter-spacing:.1em;}
+  .progress-meter{height:5px;margin:12px 0 10px;background:#0f2b34;overflow:hidden;}
+  .progress-meter > i{display:block;height:100%;width:0%;background:var(--mint);box-shadow:0 0 12px rgba(104,246,192,.6);transition:width .3s;}
+  .time-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+  .time-box{padding:7px;border:1px solid #1e3a44;background:#06141d;}
+  .time-box small{display:block;color:var(--muted);font-size:8px;margin-bottom:3px;}
+  .time-box strong{color:var(--text);font-size:13px;}
+
+  .readout{min-height:76px;color:#a9d9ca;font-size:11px;line-height:1.55;white-space:pre-wrap;}
+  .readout .quote{color:var(--amber);}
+  .readout-title{margin:0 0 6px;color:var(--mint);font-size:10px;}
+
+  .cue-list{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:5px;}
+  .cue-list li{display:grid;grid-template-columns:48px 1fr;gap:8px;color:#5a8488;font-size:9px;line-height:1.35;position:relative;padding-left:6px;}
+  .cue-list li b{color:var(--amber);font-weight:400;}
+  .cue-list li.active{color:var(--text);}
+  .cue-list li.active b{color:var(--mint);}
+  .cue-list li.active::before{content:"▶";position:absolute;left:-6px;color:var(--pink);font-size:8px;}
+
+  .sfx-log{display:flex;flex-direction:column;gap:5px;font-size:9px;color:#79a1a4;min-height:80px;}
+  .sfx-line{display:flex;gap:8px;border-bottom:1px dashed #1e3a44;padding-bottom:4px;}
+  .sfx-line b{color:var(--pink);font-weight:400;}
+  .sfx-line span{color:#8cb7ae;}
+
+  .footer-strip{
+    max-width:1560px;margin:10px auto 0;
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    color:#4a6e72;font-size:9px;letter-spacing:.08em;
   }
+  .footer-strip strong{color:var(--mint);font-weight:400;}
+  .key{padding:2px 6px;border:1px solid #2c5660;color:#8ab8af;font-size:9px;}
+
+  .axis-row{
+    display:grid;grid-template-columns:56px 1fr 42px;gap:6px;align-items:center;
+    padding:3px 0;border-bottom:1px dashed rgba(104,246,192,.06);font-size:10px;
+  }
+  .axis-row:last-child{border-bottom:none;}
+  .axis-row .k{color:var(--muted);font-size:9px;letter-spacing:1px;font-weight:bold;}
+  .axis-row .bar{height:6px;background:#0a1c24;border-radius:2px;overflow:hidden;}
+  .axis-row .bar .f{height:100%;transition:width .35s;}
+  .axis-row .v{text-align:right;font-weight:bold;font-size:10px;}
 </style>
 </head>
 <body>
+<div class="app-shell">
 
-<!-- ═══ BREATH BG ═══ -->
-<div id="breath"></div>
-
-<!-- ═══ BOOT ═══ -->
-<div id="boot">
-  <div class="logo">◈ DER LETZTE SOMMER</div>
-  <div class="sub">81 MOMENTE · 9 KAPITEL · STORY · RESPO</div>
-  <div class="lines" id="bootLines"></div>
-  <div class="progress"><div class="bar" id="bootBar"></div></div>
-</div>
-
-<div id="shell">
-
-  <!-- ═══ TOPBAR ═══ -->
-  <header>
+  <header class="topbar">
     <div class="brand">
-      <div class="mark">夏</div>
+      <div class="brand-mark">幻</div>
       <div>
-        <h1>DER LETZTE SOMMER · 81 MOMENTE</h1>
-        <p>IRFAN · CINEMATIC · MONSTER ID · DAS WUNDER IST UNTER UNS</p>
+        <h1>ANIME RUNTIME · ATEM · ATOM · WONDER</h1>
+        <p>1960-FAN × ERZÄHLER × COMMUNICATOR · DAS WUNDER IST UNTER UNS</p>
       </div>
     </div>
-    <div class="meta">
-      <span class="chip">KAPITEL <b id="chapIdx">1</b> / 9</span>
-      <span class="chip">BILD <b id="imgIdx">1</b> / 81</span>
-      <span class="chip">RESPO <b id="respoVal">0.42</b></span>
-      <span class="chip">PULS <b id="pulseVal">0</b></span>
-      <span id="clock">--:--:--</span>
+    <div class="top-status">
+      <span class="led online">RUNTIME ATMET</span>
+      <span>CANVAS 2D · ANIME RENDER</span>
+      <span>OFFLINE · SINGLE HTML</span>
     </div>
   </header>
 
-  <!-- ═══ STAGE ═══ -->
-  <div id="stage">
-
-    <!-- LEFT: Visual -->
-    <div>
-      <div id="visualWrap">
-        <div id="slideshow">
-          <div class="placeholder" id="ph">
-            <span id="phText">◈ LADE MOMENT …</span>
-          </div>
-        </div>
-        <div id="chapterNumber">1</div>
-        <div id="overlay">
-          <div class="top">
-            <span class="left" id="ovChapLeft">KAPITEL 1 · ERINNERUNG</span>
-            <span class="right" id="ovTimeRight">00:00.0</span>
-          </div>
-          <div class="bottom">
-            <span class="left" id="ovImgLeft">01 / 81</span>
-            <span class="right" id="ovStatusRight">HOLD</span>
-          </div>
-        </div>
-
-        <!-- Story Box -->
-        <div id="storyBox">
-          <span class="label" id="storyLabel">KAPITEL 1 · DER LETZTE SOMMER</span>
-          <span id="storyText">Der letzte Sommer, wo mit Irfan noch alles in Ordnung war.</span>
-          <span class="music" id="storyMusic">
-            ♫ <b>Indila — Comme un bateau</b> · dark orchestra version
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: Side Panels -->
-    <div class="side-col">
-
-      <!-- Chapters -->
-      <div class="panel">
-        <h3>◈ KAPITEL · 9 EBENEN <span class="badge" id="chapBadge">9 × 9 = 81</span></h3>
-        <div id="chapters"></div>
-      </div>
-
-      <!-- Soundtrack -->
-      <div class="panel">
-        <h3>◈ SOUNDTRACK <span class="badge" id="sndBadge">9</span></h3>
-        <div id="tracks"></div>
-      </div>
-
-      <!-- Log -->
-      <div class="panel">
-        <h3>◈ LOG · STORY-STREAM <span class="badge">live</span></h3>
-        <div id="log"></div>
-      </div>
-
-    </div>
-
+  <div class="elem-strip" aria-label="Element-Zyklus">
+    <div class="elem-chip atom"><span class="k">◈ ATOM</span><span class="v" id="chipAtom">—</span></div>
+    <div class="elem-chip o2"><span class="k">O₂</span><span class="v" id="chipO2">—</span></div>
+    <div class="elem-chip co2"><span class="k">CO₂</span><span class="v" id="chipCO2">—</span></div>
+    <div class="elem-chip h2o"><span class="k">H₂O</span><span class="v" id="chipH2O">—</span></div>
+    <div class="elem-chip mana"><span class="k">MANA</span><span class="v" id="chipMana">—</span></div>
+    <div class="elem-chip aura"><span class="k">AURA</span><span class="v" id="chipAura">—</span></div>
+    <div class="elem-chip zen"><span class="k">ZEN</span><span class="v" id="chipZen">—</span></div>
   </div>
 
-  <!-- ═══ CONTROLS ═══ -->
-  <div id="controls">
-    <button class="primary" id="btnPlay">▶ START STORY</button>
-    <button id="btnBack">◀ ZURÜCK</button>
-    <button id="btnForward">▶ VOR</button>
-    <button id="btnFullscreen">⛶ FULL</button>
-    <span class="sep"></span>
-    <span class="lbl">TEMPO</span>
-    <input type="range" id="speedRange" min="2" max="20" step="1" value="7">
-    <span class="lbl" id="speedLbl">7 s</span>
-    <span class="sep"></span>
-    <button id="btnAuto">⟳ AUTO</button>
-    <button id="btnReset">⟲ RESET</button>
-  </div>
+  <main class="workspace">
+    <section class="panel monitor-panel">
+      <div class="panel-title">
+        <span>◈ PREVIEW / <strong>LIVE ANIME CANVAS</strong></span>
+        <span id="canvasMode">WAITING</span>
+      </div>
+      <div class="monitor-wrap">
+        <canvas id="stage" width="960" height="540"></canvas>
+        <div class="monitor-overlay">
+          <span id="overlayLeft">SC1 / BEGEGNUNG</span>
+          <span id="overlayRight">00:00.0 / HOLD</span>
+        </div>
+      </div>
+      <nav id="sceneTabs" class="scene-tabs" aria-label="Szenen-Navigation"></nav>
+      <div class="transport">
+        <button id="startBtn" class="primary">▶ START RUNTIME</button>
+        <button id="stepBack">− 5 S</button>
+        <button id="stepForward">+ 5 S</button>
+        <span class="grow"></span>
+        <label>TEMPO</label>
+        <div class="speed-group">
+          <button data-speed="0.5">0.5×</button>
+          <button data-speed="1" class="active">1.0×</button>
+          <button data-speed="2">2.0×</button>
+        </div>
+        <button id="cueBtn" class="active">CUE-BEEPS: ON</button>
+        <button id="breathBtn" class="active">◈ ATEM: AN</button>
+        <button id="fullscreenBtn">⛶ FULLSCREEN</button>
+      </div>
+      <div class="timeline">
+        <div class="timeline-head">
+          <span>MASTER TIMELINE / <strong id="timelineScene">SC1</strong></span>
+          <span id="timelineTime">00:00.0 / 02:41</span>
+        </div>
+        <div class="range-wrap">
+          <div id="markers" class="markers"></div>
+          <input id="timeline" type="range" min="0" max="161" step="0.1" value="0">
+        </div>
+        <div style="margin-top:8px;color:#4a6e72;font-size:9px;line-height:1.5;">
+          ATEM-GETRIEBENE RUNTIME · DAS WUNDER IST UNTER UNS · WAS SICH BEWEGT, IST
+        </div>
+      </div>
+    </section>
 
-  <!-- ═══ FOOTER ═══ -->
-  <footer>
-    <span><b>STORY:</b> IRFAN · SOMMER · CINEMATIC · MONSTER ID</span>
-    <span><b>CONTROL:</b> <span class="key">SPACE</span> PLAY <span class="key">← →</span> BLÄTTERN <span class="key">F</span> FULL <span class="key">A</span> AUTO</span>
-    <span><b>BUILD:</b> SINGLE HTML · 81 MOMENTE · RESPO</span>
+    <aside class="side-stack">
+
+      <section class="panel side-panel">
+        <div class="panel-title"><span>◈ DIRECTOR STATE</span><span id="runState">IDLE</span></div>
+        <div class="side-content">
+          <div class="cue-row">
+            <div class="scene-big"><span id="sceneCode">SC1</span><span id="sceneTitle">BEGEGNUNG</span></div>
+            <span id="sourceChip" class="source-chip">STORY</span>
+          </div>
+          <div class="progress-meter"><i id="sceneProgress"></i></div>
+          <div class="time-grid">
+            <div class="time-box"><small>SZENE</small><strong id="sceneTime">00:00.0</strong></div>
+            <div class="time-box"><small>MASTER</small><strong id="masterTime">00:00.0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel side-panel">
+        <div class="panel-title"><span>◈ ATEM · MOVE · SEIN · MAIN</span><span id="beatTag">SC1-01</span></div>
+        <div class="side-content">
+          <div id="axisBars"></div>
+        </div>
+      </section>
+
+      <section class="panel side-panel">
+        <div class="panel-title"><span>◈ LIVE PROMPTER</span><span>CUE</span></div>
+        <div class="side-content">
+          <h2 class="readout-title" id="promptHeading">TEXT / STORY-BEAT</h2>
+          <div id="prompter" class="readout"></div>
+        </div>
+      </section>
+
+      <section class="panel side-panel">
+        <div class="panel-title"><span>◈ REGIEANWEISUNG</span><span>CAM</span></div>
+        <div class="side-content">
+          <div id="directorText" class="readout"></div>
+          <ul id="cueList" class="cue-list"></ul>
+        </div>
+      </section>
+
+      <section class="panel side-panel">
+        <div class="panel-title"><span>◈ SFX-LOG</span><span>4-CH</span></div>
+        <div class="side-content"><div id="sfxLog" class="sfx-log"></div></div>
+      </section>
+
+    </aside>
+  </main>
+
+  <footer class="footer-strip">
+    <span><strong>STORY:</strong> 1960-FAN × ERZÄHLER × COMMUNICATOR</span>
+    <span><strong>CONTROL:</strong> <span class="key">SPACE</span> PLAY <span class="key">← →</span> SCRUB <span class="key">F</span> FULL <span class="key">B</span> ATEM</span>
+    <span><strong>BUILD:</strong> ANIME RUNTIME / OFFLINE</span>
   </footer>
 
 </div>
 
 <script>
+(() => {
 "use strict";
+
 // ═══════════════════════════════════════════════════════════════════
-// ◈ DER LETZTE SOMMER · 81 MOMENTE
-// Die Story wird erzählt. Die Bilder sind die Zeit.
-// 9 Kapitel × 9 Bilder = 81 Momente = RESPO.
+// ◈ ANIME RUNTIME · ATEM · ATOM · WONDER
 // ═══════════════════════════════════════════════════════════════════
 
-// ─── 81 BILDER (aus den 9 Ordnern) ──────────────────────
-const IMAGES = {
-  1: [
-    '1/th (45).webp','1/th (46).webp','1/th (47).webp',
-    '1/th (48).webp','1/th (49).webp','1/th (50).webp',
-    '1/th (51).webp','1/th (52).webp','1/th (53).webp',
-  ],
-  2: [
-    '2/th (35).webp','2/th (36).webp','2/th (37).webp',
-    '2/th (38).webp','2/th (39).webp','2/th (40).webp',
-    '2/th (41).webp','2/th (42).webp','2/th (43).webp',
-  ],
-  3: [
-    '3/th (26).webp','3/th (27).webp','3/th (28).webp',
-    '3/th (29).webp','3/th (30).webp','3/th (31).webp',
-    '3/th (32).webp','3/th (33).webp','3/th (34).webp',
-  ],
-  4: [
-    '4/th (21).webp','4/th (22).webp','4/th (23).webp',
-    '4/th (24).webp','4/th (25).webp',
-    '4/th - 2026-09-09T064707.874.webp',
-    '4/th - 2026-09-09T064712.878.webp',
-    '4/th - 2026-09-09T064716.836.webp',
-    '4/th - 2026-09-09T064730.939.webp',
-  ],
-  5: [
-    '5/th - 2026-09-09T090013.989.webp',
-    '5/th - 2026-09-09T090018.602.webp',
-    '5/th - 2026-09-09T090022.981.webp',
-    '5/th - 2026-09-09T090027.704.webp',
-    '5/th - 2026-09-09T090036.955.webp',
-    '5/th - 2026-09-09T090043.533.webp',
-    '5/th - 2026-09-09T090052.763.webp',
-    '5/th - 2026-09-09T090055.915.webp',
-    '5/th - 2026-09-09T090059.462.webp',
-  ],
-  6: [
-    '6/th (69).webp','6/th (70).webp','6/th (71).webp',
-    '6/th (72).webp','6/th (73).webp',
-    '6/th - 2026-09-09T090059.462.webp',
-    '6/th - 2026-09-09T090104.571.webp',
-    '6/th - 2026-09-09T094926.529.webp',
-    '6/th - 2026-09-09T094929.785.webp',
-  ],
-  7: [
-    '7/th (74).webp','7/th (75).webp','7/th (76).webp',
-    '7/th (77).webp','7/th (78).webp','7/th (79).webp',
-    '7/th (80).webp','7/th (81).webp','7/th (82).webp',
-  ],
-  8: [
-    '8/th (83).webp','8/th (84).webp','8/th (85).webp',
-    '8/th (86).webp','8/th (87).webp','8/th (88).webp',
-    '8/th (89).webp','8/th (90).webp','8/th (91).webp',
-  ],
-  9: [
-    '9/th (92).webp','9/th (93).webp','9/th (94).webp',
-    '9/th (95).webp','9/th (96).webp','9/th (97).webp',
-    '9/th (98).webp','9/th (99).webp','9/th (100).webp',
-  ],
-};
+const W = 960, H = 540, MASTER_DURATION = 161;
 
-// ─── 9 KAPITEL · STORY-TEXT ─────────────────────────────
-const CHAPTERS = [
+// ─── SZENEN ─────────────────────────────────────────────
+const scenes = [
   {
-    n:1,
-    title:'DER LETZTE SOMMER',
-    text:'Der letzte Sommer, wo mit Irfan noch alles in Ordnung war. Alles war einfach. Die Luft war warm, die Zeit stand still, und nichts musste stimmen.',
-    music:'Indila — Comme un bateau · dark orchestra version',
+    id:"SC1", title:"BEGEGNUNG", tabDuration:29, color:"amber", source:"STORY",
+    director:"Totale → halbnahe Zweieraufnahme. Später Nachmittag auf offenem Stadtplatz. Der 1960-Fan wartet rechts am Baum; der Erzähler tritt von links auf.",
+    prompt:"Der Fan denkt in Kategorien von Tricorder und Enterprise. Der Erzähler zieht das moderne, generische Communicator-Artefakt hervor.",
+    dialogue:"„Schau dir das an. Das hier ist mein persönlicher Communicator. Er ist kleiner als eurer, braucht keinen Klappmechanismus und funktioniert überall auf der Welt. Ich kann jeden Menschen sofort erreichen, ohne Subraum, ohne Relaisstation, ohne Schiff.“",
+    sfx:["WIND","SCHRITTE","PAPER FLIP","ARTIFACT HUM"],
+    cues:[["SC1-01","Totale / offener Stadtplatz"],["SC1-02","Halbnahe Zweieraufnahme / Warten am Baum"],["SC1-03","Artefakt kommt ins Bild"],["SC1-04","Nahaufnahme / Communicator"],["SC1-05","Reaktion / sprachloses Starren"]],
   },
   {
-    n:2,
-    title:'MONSTER IM ID',
-    text:'Damals hatte ich noch Monster in meinem ID. Roh, offen, ungebrochen. Jeder Ton war eine Welle, jeder Blick ein Raum. Ich war da, aber größer als ich.',
-    music:'Key The Magical Violin — Mozart Techno Reimagined',
+    id:"SC2", title:"TRICHTER & KAMERA", tabDuration:37, color:"blue", source:"STRUKTUR",
+    director:"Der Blick wird in einen visuellen Trichter gezogen. Die Kamera-Funktion wird isoliert; Fokus und Raster wandern über das Artefakt.",
+    prompt:"VISUELLER CUE: Der Blick der alten Zukunftserwartung trifft auf die Kamera des Communicators.",
+    dialogue:"[STRUKTUR-CUE] TRICHTER → KAMERA",
+    sfx:["FOCUS TICK","LENS CLICK","LOW SWEEP","CUE BEEP"],
+    cues:[["SC2-01","Trichter öffnet den Blick"],["SC2-02","Kamera-Raster / Fokus"],["SC2-03","Objekt im Zentrum halten"]],
   },
   {
-    n:3,
-    title:'CINEMATIC',
-    text:'i miss u cinematic. Diese Weite. Musik war kein Ton mehr — Musik war ein Ort, den ich betreten konnte. Und du warst da.',
-    music:'Indila — S.O.S · cinematic edit',
+    id:"SC3", title:"NAVIGATION & WISSEN", tabDuration:35, color:"violet", source:"STRUKTUR",
+    director:"Die statische Stadtfläche verwandelt sich in eine leuchtende Karte. Route, Kompass und Wissensfenster erscheinen als Overlay.",
+    prompt:"VISUELLER CUE: Navigation und Wissen erscheinen als digitale Antwort auf die analoge Fantasie des Fans.",
+    dialogue:"[STRUKTUR-CUE] NAVIGATION / WISSEN",
+    sfx:["MAP PING","ROUTE DRAW","DATA TICKS","SOFT HUM"],
+    cues:[["SC3-01","Kartengitter / Orientierung"],["SC3-02","Route zeichnet sich ein"],["SC3-03","Wissensfenster / Halt"]],
   },
   {
-    n:4,
-    title:'AINSI BAS LA VIDA',
-    text:'Da war ein Track, der hat mich aus mir rausgehoben. Ich war außer mir. Nicht weil ich schwach war. Sondern weil ich offen war.',
-    music:'Indila — Ainsi Bas La Vida · dark orchestral',
+    id:"SC4", title:"SPRACHSTEUERUNG", tabDuration:37, color:"pink", source:"STRUKTUR",
+    director:"Die Kamera bleibt nah am Artefakt. Eine Sprachwelle übernimmt den Bildraum; der Prompter reagiert rhythmisch.",
+    prompt:"VISUELLER CUE: Der Communicator reagiert auf Sprache. Der Dialog wird als akustischer und grafischer Impuls geführt.",
+    dialogue:"[STRUKTUR-CUE] SPRACHE → ANTWORT",
+    sfx:["VOICE GATE","WAVEFORM","RESPONSE PIP","CUE BEEP"],
+    cues:[["SC4-01","Mikrofon / Eingang"],["SC4-02","Sprachwelle / Verstehen"],["SC4-03","Antwortsignal"]],
   },
   {
-    n:5,
-    title:'DIE LADY VOM MEER',
-    text:'Eine Lady vom DARK. Der Clip war mehr vom Meer. Nicht real, aber Präsenz. So eine Stimme kann keine Stimme sein — das ist Zustand.',
-    music:'AURORA — Runaway · hybrid cinematic',
+    id:"SC5", title:"DAS ARTEFAKT", tabDuration:38, color:"gold", source:"STORY",
+    director:"Langsame seitliche Begleitung in die Nahaufnahme. Das Smartphone als Artefakt zwischen zwei Zeitebenen.",
+    prompt:"Das Notizbuch des Fans und der Communicator des Erzählers bilden den Kontrast: analoges Warten gegen unmittelbare Verbindung.",
+    dialogue:"ARTEFAKT IM ZENTRUM / REAKTION DES FANS: SPRACHLOSES STARREN",
+    sfx:["RISING HUM","STATIC DUST","HELD BREATH","LOW TONE"],
+    cues:[["SC5-01","Notizbuch / analoge Erwartung"],["SC5-02","Communicator / Nahaufnahme"],["SC5-03","Blick des Fans / Überforderung"]],
   },
   {
-    n:6,
-    title:'STROMAE-ENERGIE',
-    text:'Dann kam der Moment, wo sie Stromae eiferte. Markant, erzählend, fast sprechend. Aber orchestral unterstützt. Das war der Trigger.',
-    music:'Indila — Run Run · Stromae-energie',
+    id:"SC6", title:"DIE POINTE", tabDuration:18, color:"mint", source:"STRUKTUR",
+    director:"Das Bild fällt aus der Demonstration in einen kontrollierten Demoscene-Hold. Die Pointe wird als End-Cue gesetzt.",
+    prompt:"FINALER CUE: DIE POINTE. Der Story-Auszug benennt den Schlussbeat.",
+    dialogue:"[FINAL CUE] DIE POINTE / HOLD",
+    sfx:["DROP","GLITCH BURST","FINAL BEEP","SILENCE"],
+    cues:[["SC6-01","Pointe / Hold"],["SC6-02","Signal bricht in Pixel"],["SC6-03","Runtime-Ende"]],
   },
-  {
-    n:7,
-    title:'DAS ANDERE KALIBER',
-    text:'Und dann kam noch einer. Ein anderes Kaliber. Es war alles drin. Ein Diebstahl aus zwanzig Welten. Der beste Trigger, den ich hatte.',
-    music:'THE WITCH — Dark Orchestral Hybrid',
-  },
-  {
-    n:8,
-    title:'DIE ACHSEN',
-    text:'Bei solchen Extremen habe ich die Achsen dir genauso beschrieben wie ich sie gefühlt habe. Druck. Zug. Öffnung. Tiefe. Dunkelheit. Wahrheit. Sommer. Irfan.',
-    music:'— achsen · 8 ebenen gleichzeitig —',
-  },
-  {
-    n:9,
-    title:'DAS WUNDER IST UNTER UNS',
-    text:'Und jetzt? Jetzt halte ich nur einen Moment. Aber alles was war, ist noch da. Im Atem. Im Atom. In O₂, CO₂, H₂O. Das Wunder ist unter uns.',
-    music:'— atem · atom · leben · wonder —',
-  },
-};
-
-// ─── SOUNDTRACK-LISTE (für die Seitenleiste) ────────────
-const TRACKS = [
-  { ic:'♫', name:'Indila — Comme un bateau' },
-  { ic:'♫', name:'Indila — S.O.S' },
-  { ic:'♫', name:'Indila — Ainsi Bas La Vida' },
-  { ic:'♫', name:'Indila — Run Run' },
-  { ic:'♫', name:'Indila — Dernière Danse' },
-  { ic:'♫', name:'Indila — Tourner Dans Le Vide' },
-  { ic:'♫', name:'Key — Mozart Techno Reimagined' },
-  { ic:'♫', name:'AURORA — Runaway (dark)' },
-  { ic:'♫', name:'THE WITCH — Dark Orchestral Hybrid' },
 ];
 
-// ═══════════════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════════════
+// Zeit-Skalierung
+const cueSum = scenes.reduce((s, sc) => s + sc.tabDuration, 0);
+const cueScale = MASTER_DURATION / cueSum;
+let cursor = 0;
+scenes.forEach(sc => {
+  sc.runtimeDuration = sc.tabDuration * cueScale;
+  sc.start = cursor;
+  sc.end = cursor + sc.runtimeDuration;
+  cursor = sc.end;
+});
+scenes[scenes.length - 1].end = MASTER_DURATION;
+
+// ─── CANVAS ─────────────────────────────────────────────
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
+
+// ─── STATE ──────────────────────────────────────────────
 const S = {
-  chapIdx: 0,          // 0..8
-  imgIdx: 0,           // 0..8 innerhalb des Kapitels
-  playing: false,
-  auto: true,
-  speed: 7,            // Sekunden pro Bild
-  lastTick: 0,
-  lastFrame: 0,
-  frame: 0,
-  pulse: 0,
-  tick: 0,
-  respo: 0.42,
-  chapTime: 0,
-  totalTime: 0,
-  imgEl: null,
-  currentPath: '',
-  booting: true,
-  bootTime: 0,
-  logHistory: [],
+  time: 0, playing: false, booting: false, bootTime: 0,
+  speed: 1, cueBeeps: true, breathOn: true,
+  lastFrame: performance.now(), frame: 0,
+  audio: null,
+  breathPhase: 0, breathCount: 0, breathCycleMs: 4000,
+  atom: 0.72, o2: 0.84, co2: 0.68, h2o: 0.76,
+  mana: 0.66, aura: 0.74, zen: 0.88,
+  move: 0, moveValues: { rot:0.4, orb:0.6, wav:0.3, lin:0.5, spr:0.4 },
+  sein: 'ruhe',
+  main: { tick:0, cycle:0, beat:0 },
+  sparks: [],
+  shake: 0,
 };
 
-// ═══════════════════════════════════════════════════════════════════
-// LOG
-// ═══════════════════════════════════════════════════════════════════
-const logEl = document.getElementById('log');
-function log(msg, cls=''){
-  const t = new Date().toLocaleTimeString('de-DE');
-  const div = document.createElement('div');
-  div.className = 'ln';
-  div.innerHTML = `<span class="ts">[${t}]</span><span class="${cls}">${msg}</span>`;
-  logEl.appendChild(div);
-  logEl.scrollTop = logEl.scrollHeight;
-  while (logEl.children.length > 60) logEl.removeChild(logEl.firstChild);
-  S.logHistory.push({ t, msg, cls });
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// IMAGE LOADING
-// ═══════════════════════════════════════════════════════════════════
-const slideshowEl = document.getElementById('slideshow');
-const phEl = document.getElementById('ph');
-const phTextEl = document.getElementById('phText');
-
-function loadImage(path){
-  // Entferne alte
-  const old = slideshowEl.querySelectorAll('img');
-  old.forEach(img => {
-    img.classList.remove('show');
-    setTimeout(() => { try { img.remove(); } catch(_){} }, 1300);
-  });
-
-  // Placeholder zeigen
-  phTextEl.textContent = `◈ LADE MOMENT …`;
-  phEl.style.display = 'flex';
-
-  const img = new Image();
-  img.src = path;
-  img.alt = path;
-  img.onload = () => {
-    phEl.style.display = 'none';
-    img.classList.add('show');
-    S.imgEl = img;
-    log(`◈ MOMENT geladen · ${path.split('/').pop()}`, 'ok');
-  };
-  img.onerror = () => {
-    phTextEl.textContent = `◈ MOMENT ${S.chapIdx*9 + S.imgIdx + 1} / 81`;
-    log(`◈ MOMENT ${S.chapIdx*9 + S.imgIdx + 1} · (bild nicht gefunden)`, 'warn');
-  };
-  slideshowEl.appendChild(img);
-  S.currentPath = path;
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// CHAPTER / IMAGE NAVIGATION
-// ═══════════════════════════════════════════════════════════════════
-function updateUI(){
-  const chap = CHAPTERS[S.chapIdx];
-  const totalIdx = S.chapIdx * 9 + S.imgIdx + 1;
-
-  // Overlay
-  document.getElementById('ovChapLeft').textContent = `KAPITEL ${chap.n} · ${chap.title}`;
-  document.getElementById('ovTimeRight').textContent = formatTime(S.totalTime);
-  document.getElementById('ovImgLeft').textContent = `${String(totalIdx).padStart(2,'0')} / 81`;
-  document.getElementById('ovStatusRight').textContent = S.playing ? 'RUN' : 'HOLD';
-
-  // Chapter number
-  const chNumEl = document.getElementById('chapterNumber');
-  chNumEl.textContent = chap.n;
-  chNumEl.style.opacity = S.playing ? '1' : '0.4';
-
-  // Topbar
-  document.getElementById('chapIdx').textContent = chap.n;
-  document.getElementById('imgIdx').textContent = totalIdx;
-  document.getElementById('respoVal').textContent = S.respo.toFixed(3);
-  document.getElementById('pulseVal').textContent = S.pulse;
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
-
-  // Story
-  const sb = document.getElementById('storyBox');
-  document.getElementById('storyLabel').textContent = `KAPITEL ${chap.n} · ${chap.title}`;
-  document.getElementById('storyText').textContent = chap.text;
-  document.getElementById('storyMusic').innerHTML = `♫ <b>${chap.music}</b>`;
-  sb.classList.toggle('show', S.playing || totalIdx === 1);
-
-  // Chapters list
-  document.querySelectorAll('.chap').forEach((el, i) => {
-    el.classList.toggle('active', i === S.chapIdx);
-  });
-
-  // Tracks (nur aktuelle angezeigt)
-  renderTracks();
-}
-
-function renderChapters(){
-  const el = document.getElementById('chapters');
-  el.innerHTML = '';
-  CHAPTERS.forEach((chap, i) => {
-    const d = document.createElement('div');
-    d.className = 'chap';
-    d.dataset.idx = i;
-    d.innerHTML = `
-      <span class="num">${chap.n}</span>
-      <span class="title">${chap.title}</span>
-      <span class="count">9</span>
-    `;
-    d.addEventListener('click', () => jumpToChapter(i));
-    el.appendChild(d);
-  });
-}
-
-function renderTracks(){
-  const el = document.getElementById('tracks');
-  const chap = CHAPTERS[S.chapIdx];
-  el.innerHTML = '';
-  // Aktueller Track des Kapitels wird hervorgehoben
-  TRACKS.forEach((t, i) => {
-    const d = document.createElement('div');
-    d.className = 'track';
-    // Wenn der Name im Kapitel-music-Text vorkommt → playing
-    const isPlaying = chap.music.toLowerCase().includes(t.name.toLowerCase().split('—')[0].trim().toLowerCase());
-    if (isPlaying) d.classList.add('playing');
-    d.innerHTML = `<span class="ic">${t.ic}</span><span>${t.name}</span>`;
-    el.appendChild(d);
-  });
-}
-
-function jumpToChapter(i){
-  S.chapIdx = i;
-  S.imgIdx = 0;
-  S.chapTime = 0;
-  S.totalTime = i * 9 * S.speed;
-  const path = IMAGES[CHAPTERS[i].n][0];
-  loadImage(path);
-  log(`◈ KAPITEL ${i+1} · ${CHAPTERS[i].title}`, 'gold');
-  updateUI();
-}
-
-function nextImage(){
-  S.imgIdx++;
-  if (S.imgIdx >= 9){
-    S.imgIdx = 0;
-    S.chapIdx = (S.chapIdx + 1) % 9;
-  }
-  S.pulse++;
-  const chap = CHAPTERS[S.chapIdx];
-  const path = IMAGES[chap.n][S.imgIdx];
-  loadImage(path);
-  updateUI();
-}
-
-function prevImage(){
-  S.imgIdx--;
-  if (S.imgIdx < 0){
-    S.imgIdx = 8;
-    S.chapIdx = (S.chapIdx - 1 + 9) % 9;
-  }
-  S.pulse++;
-  const chap = CHAPTERS[S.chapIdx];
-  const path = IMAGES[chap.n][S.imgIdx];
-  loadImage(path);
-  updateUI();
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// FORMAT TIME
-// ═══════════════════════════════════════════════════════════════════
-function formatTime(sec){
+// ─── HILFSFUNKTIONEN ───────────────────────────────────
+function clamp(n, a=0, b=1){ return Math.max(a, Math.min(b, n)); }
+function lerp(a, b, t){ return a + (b - a) * t; }
+function ease(t){ t = clamp(t); return t*t*(3-2*t); }
+function fmt(sec, tenths=true){
   sec = Math.max(0, sec);
   const m = Math.floor(sec/60).toString().padStart(2,'0');
   const s = Math.floor(sec%60).toString().padStart(2,'0');
-  const d = Math.floor((sec%1)*10);
-  return `${m}:${s}.${d}`;
+  const d = tenths ? '.' + Math.floor((sec%1)*10) : '';
+  return `${m}:${s}${d}`;
+}
+function rect(x, y, w, h, fill){ ctx.fillStyle = fill; ctx.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+function text(txt, x, y, size=14, color='#d8f0e8', align='left', weight='400'){
+  ctx.font = `${weight} ${size}px "Courier New",monospace`;
+  ctx.fillStyle = color;
+  ctx.textBaseline = 'top';
+  ctx.textAlign = align;
+  ctx.fillText(txt, Math.round(x), Math.round(y));
+}
+function wrapText(txt, maxChars){
+  const words = String(txt).split(/\s+/);
+  const lines = []; let line = '';
+  words.forEach(w => {
+    const nxt = line ? line + ' ' + w : w;
+    if (nxt.length > maxChars && line){ lines.push(line); line = w; }
+    else line = nxt;
+  });
+  if (line) lines.push(line);
+  return lines;
+}
+function multiline(txt, x, y, mc, lh, size, color, maxLines=4){
+  const lines = wrapText(txt, mc).slice(0, maxLines);
+  lines.forEach((l, i) => text(l, x, y + i*lh, size, color));
+  return lines.length;
+}
+function roundRect(x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// LOOP
-// ═══════════════════════════════════════════════════════════════════
-let lastT = performance.now();
-let accum = 0;
+// ─── ELEMENTE-ZYKLUS ──────────────────────────────────
+function updateElements(dt){
+  S.breathPhase = ((performance.now() % S.breathCycleMs) / S.breathCycleMs);
+  const ph = S.breathPhase;
+  let intensity;
+  if (ph < 0.4) intensity = ph / 0.4;
+  else if (ph < 0.5) intensity = 1.0;
+  else if (ph < 0.9) intensity = 1 - (ph - 0.5) / 0.4;
+  else intensity = 0.0;
+
+  if (ph < 0.4){
+    S.o2 = Math.min(1, S.o2 + 0.0035);
+    S.co2 = Math.max(0, S.co2 - 0.0025);
+    S.h2o = Math.min(1, S.h2o + 0.0012);
+  } else if (ph >= 0.5 && ph < 0.9){
+    S.co2 = Math.min(1, S.co2 + 0.0030);
+    S.o2 = Math.max(0, S.o2 - 0.0020);
+    S.h2o = Math.min(1, S.h2o + 0.0020);
+  }
+  S.atom = Math.max(0, Math.min(1, S.atom + (Math.random()-0.5) * 0.003));
+  S.mana = Math.max(0, Math.min(1, S.mana + (intensity - 0.5) * 0.004 + (Math.random()-0.5)*0.002));
+  S.aura = Math.max(0, Math.min(1, S.aura + (intensity - 0.5) * 0.003));
+  S.zen  = Math.max(0, Math.min(1, S.zen  + (0.5 - Math.abs(intensity - 0.5)) * 0.002));
+
+  S.main.beat = intensity * 100;
+  S.main.tick += 1;
+  if (S.main.tick % 240 === 0) S.main.cycle++;
+
+  Object.keys(S.moveValues).forEach(k => {
+    S.moveValues[k] = Math.max(0, Math.min(1, S.moveValues[k] + (Math.random()-0.5)*0.02));
+  });
+  S.move = (S.moveValues.rot + S.moveValues.orb + S.moveValues.wav + S.moveValues.lin + S.moveValues.spr) / 5;
+
+  if (ph < 0.4) S.sein = 'atmet';
+  else if (ph < 0.5) S.sein = 'pulst';
+  else if (ph < 0.9) S.sein = 'lauft';
+  else S.sein = 'wacht';
+
+  const setChip = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setChip('chipAtom', (S.atom*100).toFixed(0)+'%');
+  setChip('chipO2', (S.o2*100).toFixed(0)+'%');
+  setChip('chipCO2', (S.co2*100).toFixed(0)+'%');
+  setChip('chipH2O', (S.h2o*100).toFixed(0)+'%');
+  setChip('chipMana', (S.mana*100).toFixed(0)+'%');
+  setChip('chipAura', (S.aura*100).toFixed(0)+'%');
+  setChip('chipZen', (S.zen*100).toFixed(0)+'%');
+
+  renderAxisBars();
+}
+
+function renderAxisBars(){
+  const el = document.getElementById('axisBars');
+  if (!el) return;
+  const rows = [
+    { k:'MOVE',  v:S.move,       color:'var(--amber)' },
+    { k:'SEIN',  v: 0.5 + 0.5*Math.sin(S.breathPhase*Math.PI*2), color:'var(--violet)' },
+    { k:'MAIN',  v: S.main.beat/100, color:'var(--blue)' },
+    { k:'ATEM',  v: S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2, color:'var(--mint)' },
+    { k:'LEBEN', v: (S.mana+S.aura+S.zen)/3, color:'var(--pink)' },
+  ];
+  el.innerHTML = rows.map(r => `
+    <div class="axis-row">
+      <span class="k">${r.k}</span>
+      <div class="bar"><div class="f" style="width:${(r.v*100).toFixed(0)}%;background:${r.color};box-shadow:0 0 8px ${r.color};"></div></div>
+      <span class="v" style="color:${r.color};">${(r.v*100).toFixed(0)}%</span>
+    </div>
+  `).join('');
+}
+
+// ─── SPARKS ────────────────────────────────────────────
+function spawnSpark(x, y, color, count=1, kind='spark'){
+  for (let i = 0; i < count; i++){
+    const a = Math.random() * Math.PI * 2;
+    const sp = 1 + Math.random() * 3;
+    S.sparks.push({
+      x, y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp,
+      life: 1, maxLife: 30 + Math.random()*40,
+      color, size: 1 + Math.random()*2, kind,
+    });
+  }
+}
+function updateSparks(dt){
+  for (let i = S.sparks.length - 1; i >= 0; i--){
+    const s = S.sparks[i];
+    s.x += s.vx * (dt*60);
+    s.y += s.vy * (dt*60);
+    s.vx *= 0.96;
+    s.vy *= 0.96;
+    s.vy += 0.02;
+    s.life -= dt / (s.maxLife/60);
+    if (s.life <= 0) S.sparks.splice(i, 1);
+  }
+}
+function drawSparks(){
+  for (const s of S.sparks){
+    ctx.globalAlpha = Math.max(0, s.life);
+    ctx.fillStyle = s.color;
+    ctx.beginPath();
+    if (s.kind === 'star'){
+      const r = s.size * 2 * s.life;
+      for (let i = 0; i < 4; i++){
+        const a = i * Math.PI/2 + Math.atan2(s.vy, s.vx);
+        const x1 = s.x + Math.cos(a) * r;
+        const y1 = s.y + Math.sin(a) * r;
+        const a2 = a + Math.PI/4;
+        const x2 = s.x + Math.cos(a2) * r*0.3;
+        const y2 = s.y + Math.sin(a2) * r*0.3;
+        if (i===0) ctx.moveTo(x1, y1); else ctx.lineTo(x1, y1);
+        ctx.lineTo(x2, y2);
+      }
+      ctx.closePath(); ctx.fill();
+    } else {
+      ctx.arc(s.x, s.y, s.size * s.life, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ─── SPEED LINES ───────────────────────────────────────
+function drawSpeedLines(cx, cy, count=24, innerR=180, outerR=520, color='rgba(255,189,92,.25)'){
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < count; i++){
+    const a = (i / count) * Math.PI * 2 + Math.random() * 0.1;
+    const r1 = innerR + Math.random() * 30;
+    const r2 = outerR + Math.random() * 60;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+    ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawEmotion(sym, x, y, alpha, size=52){
+  if (alpha <= 0) return;
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = '#ff6d9d';
+  ctx.font = `bold ${size}px "Yu Mincho","Hiragino Mincho ProN",serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = '#ff6d9d';
+  ctx.shadowBlur = 20;
+  ctx.fillText(sym, x, y);
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+// ─── FIGUREN ───────────────────────────────────────────
+function drawPerson(x, ground, opts){
+  opts = opts || {};
+  const jacket = opts.jacket || '#356d72';
+  const skin = opts.skin || '#d99a73';
+  const hair = opts.hair || '#1a1218';
+  const facing = opts.facing || 1;
+  const fan = opts.fan;
+  const walk = clamp(opts.walk || 0);
+  const breatheOn = opts.breathe !== false;
+
+  const walkCycle = Math.sin(S.frame * 0.22) * walk;
+  const idleSway = Math.sin(S.frame * 0.02 + x*0.01) * (1 - walk) * 1.4;
+  const breathe = breatheOn ? (S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2) : 0;
+  const chestLift = breathe * 1.6;
+  const hairSway = Math.sin(S.frame * 0.03 + x*0.02) * (1.5 + S.move*2);
+  const armSwing = walkCycle * 10;
+  const blinkCycle = (S.frame + Math.floor(x)) % 210;
+  const blinking = blinkCycle > 200;
+
+  ctx.save();
+  ctx.translate(x + idleSway, ground);
+  ctx.scale(facing, 1);
+
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.beginPath();
+  ctx.ellipse(0, 3, 34 - Math.abs(walkCycle)*3, 7, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  ctx.fillStyle = '#0a1015';
+  ctx.fillRect(-16 - walkCycle*4, -16, 12, 38);
+  ctx.fillRect(4 + walkCycle*4, -16, 12, 38);
+
+  ctx.fillStyle = jacket;
+  ctx.beginPath();
+  ctx.moveTo(-22, -70 - chestLift); ctx.lineTo(-25, -16); ctx.lineTo(25, -16); ctx.lineTo(22, -70 - chestLift); ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = skin;
+  ctx.fillRect(-6, -80 - chestLift, 12, 12);
+
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.ellipse(0, -100 - chestLift, 17, 21, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  ctx.save();
+  ctx.translate(0, -100 - chestLift);
+  ctx.rotate(hairSway * 0.01);
+  ctx.fillStyle = hair;
+  ctx.beginPath();
+  ctx.moveTo(-19, 0);
+  ctx.quadraticCurveTo(-22 + hairSway*0.3, -25, 0, -26);
+  ctx.quadraticCurveTo(22 + hairSway*0.3, -25, 19, 0);
+  ctx.lineTo(15, -8);
+  ctx.lineTo(8, 0);
+  ctx.lineTo(-8, -4);
+  ctx.lineTo(-15, 0);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  if (blinking){
+    ctx.strokeStyle = '#0a2030';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(1, -99 - chestLift); ctx.lineTo(10, -99 - chestLift);
+    ctx.stroke();
+  } else {
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.ellipse(5, -99 - chestLift, 5, 6, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#0a2030';
+    ctx.beginPath();
+    ctx.arc(6, -99 - chestLift, 2.5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(7, -100 - chestLift, 1, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  ctx.strokeStyle = '#7a4530';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  if (fan && opts.surprised){
+    ctx.arc(2, -92 - chestLift, 3, 0, Math.PI*2);
+  } else if (fan) {
+    ctx.moveTo(-1, -92 - chestLift); ctx.lineTo(4, -92 - chestLift);
+  } else {
+    ctx.moveTo(0, -92 - chestLift); ctx.lineTo(3, -92 - chestLift);
+  }
+  ctx.stroke();
+
+  ctx.strokeStyle = jacket;
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(-18, -66 - chestLift); ctx.lineTo(-28 - armSwing, -36 + Math.abs(armSwing)*0.3);
+  ctx.moveTo(18, -66 - chestLift); ctx.lineTo(28 + armSwing, -40 + Math.abs(armSwing)*0.3);
+  ctx.stroke();
+  ctx.fillStyle = skin;
+  ctx.beginPath(); ctx.arc(-28 - armSwing, -36 + Math.abs(armSwing)*0.3, 4, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(28 + armSwing, -40 + Math.abs(armSwing)*0.3, 4, 0, Math.PI*2); ctx.fill();
+
+  if (fan){
+    ctx.save();
+    ctx.translate(30, -38 - chestLift*0.5);
+    ctx.rotate(-0.2 + Math.sin(S.frame*0.05)*0.02);
+    ctx.fillStyle = '#d4bc80';
+    ctx.fillRect(0, 0, 28, 40);
+    ctx.strokeStyle = '#715d43';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0, 0, 28, 40);
+    ctx.strokeStyle = '#856f51';
+    for (let i = 1; i < 4; i++){
+      ctx.beginPath();
+      ctx.moveTo(4, i*9); ctx.lineTo(24, i*9);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+// ─── SMARTPHONE ────────────────────────────────────────
+function drawPhone(x, y, scale=1, glow=false, screen='phone'){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  if (glow){
+    const breathe = S.breathOn ? (S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2) : 0.5;
+    ctx.shadowColor = '#68f6c0';
+    ctx.shadowBlur = 20 + breathe * 16;
+  }
+  ctx.fillStyle = '#0a1018';
+  roundRect(-27, -50, 54, 100, 9);
+  ctx.fill();
+  ctx.strokeStyle = '#68f6c0';
+  ctx.lineWidth = 1.5;
+  roundRect(-27, -50, 54, 100, 9);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = screen === 'camera' ? '#1a0a2a' :
+                  screen === 'map' ? '#0a1a2a' :
+                  '#0d2530';
+  roundRect(-22, -43, 44, 80, 4);
+  ctx.fill();
+
+  if (screen === 'phone'){
+    ctx.fillStyle = '#7ce0a8'; ctx.fillRect(-14, -34, 28, 3);
+    ctx.fillStyle = '#5ce2c0'; ctx.fillRect(-14, -24, 22, 2); ctx.fillRect(-14, -16, 26, 2);
+    ctx.fillStyle = '#ffbd5c'; ctx.fillRect(-14, 4, 28, 2); ctx.fillRect(-14, 12, 18, 2); ctx.fillRect(-14, 20, 24, 2);
+  } else if (screen === 'camera'){
+    ctx.strokeStyle = '#b388ff';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(-16, -36, 32, 32);
+    ctx.strokeRect(-18, -38, 36, 36);
+    ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-4, -20); ctx.lineTo(4, -20); ctx.moveTo(0, -24); ctx.lineTo(0, -16); ctx.stroke();
+  } else if (screen === 'map'){
+    for (let i = 0; i < 4; i++){
+      ctx.strokeStyle = 'rgba(104,246,192,.4)';
+      ctx.beginPath();
+      ctx.moveTo(-20, -40 + i*18);
+      ctx.lineTo(20, -40 + i*18);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = '#ffbd5c';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-14, 20); ctx.lineTo(-4, 0); ctx.lineTo(8, -6); ctx.lineTo(16, -30);
+    ctx.stroke();
+    ctx.fillStyle = '#ff6d9d';
+    ctx.beginPath(); ctx.arc(16, -30, 3, 0, Math.PI*2); ctx.fill();
+  }
+
+  ctx.fillStyle = '#b9f3df';
+  ctx.beginPath(); ctx.arc(0, 43, 4, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+// ─── CRT ───────────────────────────────────────────────
+function drawCRT(){
+  ctx.save();
+  ctx.globalAlpha = 0.07;
+  for (let y = 28; y < H; y += 4) rect(0, y, W, 1, '#020810');
+  const v = ctx.createRadialGradient(W/2, H/2, 130, W/2, H/2, 580);
+  v.addColorStop(0, 'rgba(0,0,0,0)');
+  v.addColorStop(1, 'rgba(0,0,0,.6)');
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+  ctx.globalAlpha = 0.18;
+  for (let i = 0; i < 26; i++){
+    const x = (Math.sin(i*93.7 + S.frame*0.06)*0.5+0.5) * W;
+    const y = 28 + (Math.sin(i*17.3 + S.frame*0.10)*0.5+0.5) * (H-28);
+    rect(x, y, 1, 1, i%3 ? '#7df4c4' : '#ff6d9d');
+  }
+  ctx.restore();
+}
+
+// ─── HINTERGRUND ──────────────────────────────────────
+function drawAnimeSky(t){
+  const sky = ctx.createLinearGradient(0, 25, 0, 420);
+  sky.addColorStop(0, '#2a1245');
+  sky.addColorStop(0.35, '#7a3260');
+  sky.addColorStop(0.7, '#e0644a');
+  sky.addColorStop(1, '#ffb874');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 25, W, 400);
+
+  const sunPulse = 1 + Math.sin(t * 0.002 + S.breathPhase * 4) * 0.05;
+  ctx.save();
+  ctx.shadowColor = '#ffec9c';
+  ctx.shadowBlur = 60;
+  ctx.fillStyle = '#fff4c8';
+  ctx.beginPath();
+  ctx.arc(760, 140, 52 * sunPulse, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,236,156,.35)';
+  ctx.lineWidth = 2;
+  for (let i = 0; i < 12; i++){
+    const a = (i/12)*Math.PI*2 + t*0.0003;
+    const r1 = 62, r2 = 90 + Math.sin(t*0.002+i)*10;
+    ctx.beginPath();
+    ctx.moveTo(760 + Math.cos(a)*r1, 140 + Math.sin(a)*r1);
+    ctx.lineTo(760 + Math.cos(a)*r2, 140 + Math.sin(a)*r2);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  for (let i = 0; i < 5; i++){
+    const cx = (i * 220 + t * 0.008) % (W + 200) - 100;
+    const cy = 80 + i*22;
+    ctx.fillStyle = 'rgba(255,220,240,0.28)';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 62, 14, 0, 0, Math.PI*2);
+    ctx.ellipse(cx+40, cy-6, 44, 12, 0, 0, Math.PI*2);
+    ctx.ellipse(cx-38, cy+3, 38, 10, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function drawAnimeCity(){
+  const drift = Math.sin(S.frame * 0.0015) * S.move * 6;
+  const colors = ['#1a1f38', '#232845', '#181c30'];
+  const heights = [90, 130, 70, 160, 100, 120, 80, 145, 95, 110, 140, 75, 105];
+  for (let i = 0; i < heights.length; i++){
+    const x = i * 78 - 30 + drift;
+    const h = heights[i];
+    rect(x, 400 - h, 68, h, colors[i%3]);
+    for (let wy = 400 - h + 12; wy < 395; wy += 16){
+      for (let wx = x + 10; wx < x + 58; wx += 14){
+        const lit = Math.sin(wy*3 + wx + S.frame*0.05) > -0.3;
+        if (lit) rect(wx, wy, 5, 6, i%2 ? '#ffd966' : '#ffb374');
+      }
+    }
+  }
+  rect(0, 400, W, 140, '#2a3540');
+  ctx.strokeStyle = '#556370';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, 420); ctx.lineTo(W, 420);
+  ctx.stroke();
+  for (let x = 0; x < W; x += 60){
+    rect(x, 480, 40, 3, '#3a4650');
+  }
+}
+
+// ─── PARTIKEL (ATEM/ATOM/O2/H2O/CO2) ──────────────────
+function drawElementParticles(){
+  const t = S.frame;
+  const cx = W/2, cy = H/2;
+
+  const atomR = 40 + S.atom * 30;
+  ctx.save();
+  ctx.strokeStyle = `rgba(179,136,255,${0.3 + S.atom*0.3})`;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(cx, cy, atomR, 0, Math.PI*2);
+  ctx.stroke();
+  for (let i = 0; i < 3; i++){
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(t * 0.005 + i * Math.PI/3);
+    ctx.strokeStyle = `rgba(179,136,255,${0.15 + S.atom*0.15})`;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, atomR + 15, atomR * 0.35, 0, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  }
+  ctx.restore();
+
+  for (let i = 0; i < 8; i++){
+    const a = (i/8)*Math.PI*2 + t*0.008;
+    const r = 90 + S.o2 * 40;
+    const x = cx + Math.cos(a)*r;
+    const y = cy + Math.sin(a)*r - 40;
+    ctx.save();
+    ctx.globalAlpha = 0.4 + S.o2 * 0.3;
+    ctx.fillStyle = '#7ce0a8';
+    ctx.shadowColor = '#7ce0a8';
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.arc(x, y, 3 + S.o2*2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+  for (let i = 0; i < 8; i++){
+    const a = (i/8)*Math.PI*2 + Math.PI/8 + t*0.006;
+    const r = 100 + S.co2 * 40;
+    const x = cx + Math.cos(a)*r;
+    const y = cy + Math.sin(a)*r + 40;
+    ctx.save();
+    ctx.globalAlpha = 0.4 + S.co2 * 0.3;
+    ctx.fillStyle = '#ffcc44';
+    ctx.shadowColor = '#ffcc44';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(x, y, 2.5 + S.co2*2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+  for (let i = 0; i < 10; i++){
+    const a = (i/10)*Math.PI*2 + t*0.004;
+    const r = 130 + S.h2o * 30;
+    const wobble = Math.sin(t*0.02 + i) * 10;
+    const x = cx + Math.cos(a)*(r + wobble);
+    const y = cy + Math.sin(a)*(r + wobble) * 0.9;
+    ctx.save();
+    ctx.globalAlpha = 0.3 + S.h2o * 0.3;
+    ctx.fillStyle = '#5fc8ff';
+    ctx.shadowColor = '#5fc8ff';
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.ellipse(x, y, 2 + S.h2o*1.5, 4 + S.h2o*2, a, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  const bokehCount = Math.round(6 + S.move * 22);
+  for (let i = 0; i < bokehCount; i++){
+    const a = i * 2.399963 + t * (0.006 + (i%5)*0.002);
+    const r = 60 + ((i*53) % 260) + Math.sin(t*0.01+i)*18;
+    const x = cx + Math.cos(a) * r * 1.4;
+    const y = cy + Math.sin(a) * r * 0.75;
+    if (x < -20 || x > W+20 || y < 20 || y > H-20) continue;
+    ctx.save();
+    ctx.globalAlpha = 0.12 + 0.18 * S.move;
+    ctx.fillStyle = ['#68f6c0','#b388ff','#ffbd5c','#ff6d9d'][i%4];
+    ctx.beginPath();
+    ctx.arc(x, y, 1.2 + (i%3), 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// ─── SZENEN-RENDERER ──────────────────────────────────
+function drawSC1(t){
+  drawAnimeSky(t);
+  drawAnimeCity();
+
+  ctx.fillStyle = '#2a1a22';
+  ctx.beginPath();
+  ctx.moveTo(800, 400); ctx.lineTo(790, 240);
+  ctx.lineWidth = 20; ctx.strokeStyle = '#2a1a22'; ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(792, 300); ctx.lineTo(720, 220);
+  ctx.moveTo(795, 320); ctx.lineTo(860, 230);
+  ctx.lineWidth = 12; ctx.stroke();
+  const leafColors = ['#1e4a3c', '#2a6350', '#153529'];
+  [[720, 200, 70, 0], [855, 220, 80, 1], [790, 175, 75, 2], [680, 245, 58, 0], [880, 265, 55, 1]].forEach(([lx, ly, r, c]) => {
+    ctx.fillStyle = leafColors[c];
+    ctx.beginPath();
+    ctx.arc(lx, ly, r, 0, Math.PI*2);
+    ctx.fill();
+  });
+
+  const entry = ease(clamp(t / 0.22));
+  const reveal = ease(clamp((t - 0.34) / 0.25));
+  const react = ease(clamp((t - 0.92) / 0.08));
+  const narratorX = lerp(-90, 290, entry);
+  const fanSurprised = t > 0.92;
+
+  drawPerson(narratorX, 415, { jacket:'#356d72', skin:'#d99a73', hair:'#1a1218', facing:1, walk: t < 0.24 ? 1 : 0 });
+  drawPerson(690, 415, { jacket:'#6d4d71', skin:'#e5a178', hair:'#5a2a3a', facing:-1, fan:true, surprised:fanSurprised });
+
+  for (let i = 0; i < 6; i++){
+    const fx = ((i * 173 + S.frame * (1.1 + i*0.13)) % (W + 60)) - 30;
+    const fy = 60 + ((i * 240 + S.frame * (0.6 + i*0.1)) % 340);
+    const sway = Math.sin(S.frame*0.05 + i) * 10;
+    ctx.save();
+    ctx.globalAlpha = 0.55;
+    ctx.fillStyle = i%2 ? '#2a6350' : '#ffbd5c';
+    ctx.translate(fx + sway, fy);
+    ctx.rotate(S.frame*0.03 + i);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 4, 2, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  if (reveal > 0){
+    const px = narratorX + 65;
+    const py = 350;
+    drawPhone(px, py, 0.55 + reveal * 0.4, true, 'phone');
+    ctx.save();
+    ctx.strokeStyle = `rgba(104,246,192,${0.5 * reveal})`;
+    ctx.lineWidth = 1.5;
+    for (let i = 0; i < 16; i++){
+      const a = (i/16)*Math.PI*2 + S.frame*0.02;
+      const r1 = 34;
+      const r2 = 55 + Math.sin(S.frame*0.1+i)*8;
+      ctx.beginPath();
+      ctx.moveTo(px + Math.cos(a)*r1, py + Math.sin(a)*r1);
+      ctx.lineTo(px + Math.cos(a)*r2, py + Math.sin(a)*r2);
+      ctx.stroke();
+    }
+    ctx.restore();
+    text('COMMUNICATOR', px + 40, py - 76, 9, '#68f6c0', 'left', '700');
+  }
+
+  if (t > 0.14 && t < 0.48){
+    ctx.save();
+    ctx.globalAlpha = clamp((t - 0.14) / 0.1) * clamp((0.48 - t) / 0.1);
+    ctx.fillStyle = 'rgba(10,25,31,.9)';
+    ctx.strokeStyle = '#ffbd5c';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(690, 195, 105, 42, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.stroke();
+    text('TRICORDER?', 690, 180, 13, '#ffbd5c', 'center', '700');
+    text('ENTERPRISE?', 690, 200, 11, '#d8b0b0', 'center');
+    ctx.restore();
+  }
+
+  if (t > 0.48 && t < 0.92){
+    const a = clamp((t - 0.48)/0.08) * clamp((0.92 - t)/0.08);
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = 'rgba(6,16,22,.92)';
+    ctx.strokeStyle = '#68f6c0';
+    ctx.lineWidth = 2;
+    roundRect(42, 270, 480, 105, 8);
+    ctx.fill(); ctx.stroke();
+    text('ERZÄHLER', 60, 282, 10, '#68f6c0', 'left', '700');
+    multiline('Schau dir das an. Das hier ist mein persönlicher Communicator.', 60, 305, 60, 15, 11, '#d8f0e8', 3);
+    text('// NO SUBSPACE / NO RELAY / NO SHIP', 60, 350, 9, '#ffbd5c');
+    ctx.restore();
+  }
+
+  if (react > 0){
+    ctx.save();
+    ctx.globalAlpha = react;
+    rect(0, 390, W, 60, 'rgba(4,10,13,.75)');
+    text('REAKTION: SPRACHLOSES STARREN', W/2, 405, 15, '#ff6d9d', 'center', '700');
+    for (let i = 0; i < 5; i++){
+      drawEmotion('!', 560 + i*26, 375 - (i%2)*8, react * 0.9, 26);
+    }
+    ctx.restore();
+  }
+
+  if (t < 0.25) drawSpeedLines(narratorX, 380, 20, 100, 260, 'rgba(255,189,92,.2)');
+  drawElementParticles();
+  text('SC1 / BEGEGNUNG', 24, 486, 12, '#68f6c0', 'left', '700');
+  text('1960 FAN  ↔  ERZÄHLER', W - 24, 488, 10, '#ffbd5c', 'right');
+}
+
+function drawSC2(t){
+  rect(0, 0, W, H, '#06101c');
+  ctx.save();
+  for (let i = 0; i < 60; i++){
+    const a = (i/60)*Math.PI*2;
+    ctx.strokeStyle = `rgba(108,201,255,${0.06 + i*0.001})`;
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(480 + Math.cos(a)*80, 270 + Math.sin(a)*80);
+    ctx.lineTo(480 + Math.cos(a)*900, 270 + Math.sin(a)*900);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  const focusX = lerp(180, 780, ease((t * 1.2) % 1));
+  const focusY = lerp(250, 320, ease((t * 1.2) % 1));
+
+  ctx.save();
+  ctx.strokeStyle = '#b9f3df';
+  ctx.lineWidth = 2;
+  const boxSize = 190 + Math.sin(t*4) * 6;
+  ctx.strokeRect(focusX - boxSize/2, focusY - boxSize*0.35, boxSize, boxSize*0.7);
+  const cs = 18;
+  const bx = focusX - boxSize/2, by = focusY - boxSize*0.35, bw = boxSize, bh = boxSize*0.7;
+  ctx.strokeStyle = '#68f6c0';
+  ctx.lineWidth = 3;
+  [[bx,by,1,1],[bx+bw,by,-1,1],[bx,by+bh,1,-1],[bx+bw,by+bh,-1,-1]].forEach(([x,y,dx,dy])=>{
+    ctx.beginPath();
+    ctx.moveTo(x, y + dy*cs); ctx.lineTo(x, y); ctx.lineTo(x + dx*cs, y);
+    ctx.stroke();
+  });
+  ctx.restore();
+
+  ctx.strokeStyle = '#ffbd5c';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(focusX - 20, focusY); ctx.lineTo(focusX + 20, focusY);
+  ctx.moveTo(focusX, focusY - 20); ctx.lineTo(focusX, focusY + 20);
+  ctx.stroke();
+  ctx.beginPath(); ctx.arc(focusX, focusY, 26, 0, Math.PI*2); ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(104,246,192,.12)';
+  ctx.lineWidth = 1;
+  for (let x = 100; x < 860; x += 40){
+    ctx.beginPath(); ctx.moveTo(x, 100); ctx.lineTo(x, 440); ctx.stroke();
+  }
+  for (let y = 100; y < 440; y += 40){
+    ctx.beginPath(); ctx.moveTo(100, y); ctx.lineTo(860, y); ctx.stroke();
+  }
+
+  text('TRICHTER', 60, 60, 22, '#ffbd5c', 'left', '700');
+  text('FOKUS / KAMERA-RASTER', 60, 92, 11, '#6cc9ff');
+  text('SC2 / VISUELLER FUNKTIONS-CUE', 24, 486, 12, '#6cc9ff', 'left', '700');
+  text('LENS CLICK / FOCUS LOCK', W-24, 488, 10, '#ffbd5c', 'right');
+
+  if ((t * 1.2) % 1 < 0.2) drawSpeedLines(focusX, focusY, 30, 100, 340, 'rgba(108,201,255,.4)');
+  drawElementParticles();
+}
+
+function drawSC3(t){
+  rect(0, 0, W, H, '#061220');
+  ctx.save();
+  ctx.strokeStyle = 'rgba(104,246,192,.14)';
+  ctx.lineWidth = 1;
+  for (let x = 60; x < 620; x += 44){ ctx.beginPath(); ctx.moveTo(x, 70); ctx.lineTo(x, 440); ctx.stroke(); }
+  for (let y = 70; y < 440; y += 44){ ctx.beginPath(); ctx.moveTo(60, y); ctx.lineTo(620, y); ctx.stroke(); }
+  ctx.restore();
+
+  const blocks = [
+    [100, 140, 110, 50, '#1e4c4e'],
+    [260, 110, 90, 90, '#1b4148'],
+    [400, 180, 140, 60, '#1e4c4e'],
+    [140, 300, 90, 85, '#1b4148'],
+    [310, 290, 130, 95, '#1e4c4e'],
+    [480, 250, 70, 50, '#1b4148'],
+  ];
+  blocks.forEach(([x, y, w, h, c]) => {
+    rect(x, y, w, h, c);
+    ctx.strokeStyle = 'rgba(104,246,192,.4)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x, y, w, h);
+  });
+
+  const route = [[100, 400], [200, 355], [265, 370], [330, 275], [420, 270], [500, 190], [545, 155]];
+  const point = Math.floor(t * (route.length - 1));
+  ctx.save();
+  ctx.strokeStyle = '#ffbd5c';
+  ctx.lineWidth = 5;
+  ctx.shadowColor = '#ffbd5c';
+  ctx.shadowBlur = 14;
+  ctx.beginPath();
+  route.slice(0, point + 1).forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+  if (point < route.length - 1){
+    const a = route[point], b = route[point + 1];
+    const q = (t * (route.length - 1)) % 1;
+    ctx.lineTo(lerp(a[0], b[0], q), lerp(a[1], b[1], q));
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  const dot = route[Math.min(route.length - 1, Math.floor(t * (route.length - 1)))];
+  ctx.save();
+  ctx.fillStyle = '#ff6d9d';
+  ctx.shadowColor = '#ff6d9d';
+  ctx.shadowBlur = 16;
+  ctx.beginPath(); ctx.arc(dot[0], dot[1], 9, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(6,18,24,.92)';
+  ctx.strokeStyle = '#68f6c0';
+  ctx.lineWidth = 1.5;
+  roundRect(650, 100, 270, 140, 6); ctx.fill(); ctx.stroke();
+  text('◈ NAVIGATION', 670, 118, 12, '#68f6c0', 'left', '700');
+  text('ROUTE: CITY PLAZA', 670, 148, 10, '#d8f0e8');
+  text('KNOWLEDGE: ONLINE', 670, 170, 10, '#d8f0e8');
+  text('DISTANCE: 0.0 KM', 670, 192, 10, '#ffbd5c');
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(6,18,24,.9)';
+  ctx.strokeStyle = '#2a5660';
+  roundRect(650, 260, 270, 130, 6); ctx.fill(); ctx.stroke();
+  text('◈ WISSEN / OVERLAY', 670, 278, 11, '#ffbd5c', 'left', '700');
+  for (let i = 0; i < 5; i++){
+    rect(670, 308 + i*14, 180 - (i%2) * 30, 3, i === 2 ? '#68f6c0' : '#2c6664');
+  }
+  ctx.restore();
+
+  text('SC3 / NAVIGATION & WISSEN', 24, 486, 12, '#68f6c0', 'left', '700');
+  text('MAP PING / ROUTE DRAW', W - 24, 488, 10, '#ffbd5c', 'right');
+  drawElementParticles();
+}
+
+function drawSC4(t){
+  rect(0, 0, W, H, '#0a0e20');
+  const g = ctx.createLinearGradient(0, 0, W, 0);
+  g.addColorStop(0, '#0c1230');
+  g.addColorStop(0.5, '#1a1030');
+  g.addColorStop(1, '#0a0e20');
+  ctx.fillStyle = g; ctx.fillRect(0, 25, W, H - 25);
+
+  text('SPRACHSTEUERUNG', 56, 60, 24, '#ff6d9d', 'left', '700');
+  text('INPUT → VERSTEHEN → ANTWORT', 58, 94, 11, '#8aa0bd');
+
+  const mid = 272;
+  ctx.strokeStyle = '#2a4a6a';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(42, mid); ctx.lineTo(918, mid); ctx.stroke();
+
+  ctx.save();
+  ctx.strokeStyle = '#68f6c0';
+  ctx.lineWidth = 3;
+  ctx.shadowColor = '#68f6c0';
+  ctx.shadowBlur = 14;
+  ctx.beginPath();
+  for (let x = 50; x < 910; x += 3){
+    const amp = 12 + 55 * Math.exp(-Math.pow((x - 480)/240, 2));
+    const y = mid + Math.sin(x * 0.075 + t * 34) * amp * (0.25 + 0.75 * Math.abs(Math.sin(x * 0.017 + t * 4)));
+    x === 50 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,109,157,.4)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let x = 50; x < 910; x += 3){
+    const amp = 6 + 28 * Math.exp(-Math.pow((x - 480)/240, 2));
+    const y = mid + 60 + Math.sin(x * 0.075 + t * 34) * amp;
+    x === 50 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(15,28,45,.92)';
+  ctx.strokeStyle = '#3a6a80';
+  roundRect(64, 348, 256, 78, 6); ctx.fill(); ctx.stroke();
+  text('◈ MIC / INPUT', 84, 365, 10, '#6cc9ff', 'left', '700');
+  text('HELD', 84, 388, 20, '#d8f0e8', 'left', '700');
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(34,18,40,.92)';
+  ctx.strokeStyle = '#ff6d9d';
+  roundRect(640, 348, 256, 78, 6); ctx.fill(); ctx.stroke();
+  text('◈ RESPONSE / OUTPUT', 660, 365, 10, '#ff6d9d', 'left', '700');
+  text('READY', 660, 388, 20, '#ffbd5c', 'left', '700');
+  ctx.restore();
+
+  for (let i = 0; i < 12; i++){
+    const x = 340 + i * 24;
+    const h = 24 + Math.abs(Math.sin(t * 22 + i)) * 80;
+    ctx.fillStyle = i%2 ? '#6cc9ff' : '#ff6d9d';
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(x, 400 - h/2, 12, h);
+  }
+  ctx.globalAlpha = 1;
+
+  text('SC4 / SPRACHSTEUERUNG', 24, 486, 12, '#ff6d9d', 'left', '700');
+  text('VOICE GATE / RESPONSE PIP', W - 24, 488, 10, '#6cc9ff', 'right');
+  drawElementParticles();
+}
+
+function drawSC5(t){
+  rect(0, 0, W, H, '#040a14');
+  const pulse = 0.5 + 0.5 * Math.sin(t * 15);
+
+  for (let i = 0; i < 8; i++){
+    ctx.strokeStyle = `rgba(104,246,192,${0.10 + i * 0.025})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(480, 275, 95 + i * 32 + pulse * 8, 0, Math.PI*2);
+    ctx.stroke();
+  }
+
+  for (let i = 0; i < 60; i++){
+    const a = i * 0.5 + t * 2;
+    const r = 130 + (i % 8) * 32;
+    const x = 480 + Math.cos(a) * r;
+    const y = 275 + Math.sin(a) * r * 0.6;
+    ctx.fillStyle = i%4 ? '#3fa08e' : '#ffbd5c';
+    ctx.globalAlpha = 0.6 + 0.3 * Math.sin(t*3 + i);
+    ctx.beginPath();
+    ctx.arc(x, y, 2 + (i%2), 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.save();
+  ctx.translate(480, 275);
+  ctx.rotate(Math.sin(t * 2) * 0.03);
+  drawPhone(0, 0, 1.8, true, 'phone');
+  ctx.restore();
+
+  text('DAS ARTEFAKT', W/2, 50, 24, '#ffbd5c', 'center', '700');
+  text('PERSONAL COMMUNICATOR / KEIN KLAPPMECHANISMUS', W/2, 84, 10, '#8aa8a0', 'center');
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(6,18,24,.92)';
+  ctx.strokeStyle = '#8c6c60';
+  roundRect(60, 355, 250, 68, 6); ctx.fill(); ctx.stroke();
+  text('ANALOG', 80, 370, 10, '#d7ad88', 'left', '700');
+  text('NOTIZBUCH / WARTEN', 80, 392, 11, '#d8f0e8');
+  ctx.restore();
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(6,18,24,.92)';
+  ctx.strokeStyle = '#68f6c0';
+  roundRect(650, 355, 250, 68, 6); ctx.fill(); ctx.stroke();
+  text('DIGITAL', 670, 370, 10, '#68f6c0', 'left', '700');
+  text('SOFORT ERREICHBAR', 670, 392, 11, '#d8f0e8');
+  ctx.restore();
+
+  text('SC5 / DAS ARTEFAKT', 24, 486, 12, '#ffbd5c', 'left', '700');
+  text('RISING HUM / HELD BREATH', W - 24, 488, 10, '#68f6c0', 'right');
+  drawElementParticles();
+}
+
+function drawSC6(t){
+  rect(0, 0, W, H, '#0a0818');
+  const g = ctx.createRadialGradient(480, 250, 20, 480, 250, 500);
+  g.addColorStop(0, '#3a1840');
+  g.addColorStop(0.45, '#181430');
+  g.addColorStop(1, '#040810');
+  ctx.fillStyle = g; ctx.fillRect(0, 25, W, H - 25);
+
+  const glitchCount = Math.round(90 + S.move * 90);
+  for (let i = 0; i < glitchCount; i++){
+    const a = i * 0.7 + t * 0.6;
+    const r = 35 + (i%14) * 26;
+    const x = 480 + Math.cos(a) * r;
+    const y = 270 + Math.sin(a) * r * 0.55;
+    ctx.fillStyle = i%4 ? '#ff6d9d' : '#ffbd5c';
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(x, y, 2 + (i%3), 2);
+  }
+  ctx.globalAlpha = 1;
+
+  text('D I E   P O I N T E', W/2, 120, 34, '#ff6d9d', 'center', '700');
+  text('FINAL CUE / HOLD', W/2, 180, 12, '#ffbd5c', 'center', '700');
+
+  ctx.strokeStyle = '#714d78';
+  ctx.setLineDash([5, 7]);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(155, 250); ctx.lineTo(805, 250);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  text('…', W/2, 255, 42, '#d8f0e8', 'center', '700');
+  text('DIE RUNTIME HÄLT DEN LETZTEN BLICK OFFEN', W/2, 355, 12, '#8aa4a0', 'center');
+
+  text('SC6 / END OF DIRECTOR CUE', 24, 486, 12, '#ff6d9d', 'left', '700');
+  text('GLITCH BURST / SILENCE', W - 24, 488, 10, '#ffbd5c', 'right');
+  drawElementParticles();
+}
+
+// ─── KAMERA ────────────────────────────────────────────
+function cameraOffset(){
+  const f = S.frame;
+  const moveAmp = 2 + S.move * 7;
+  const breathAmp = 1 + (S.breathOn ? (S.breathPhase < 0.5 ? S.breathPhase*2 : (1-S.breathPhase)*2) * 3 : 0);
+  let ox = Math.sin(f*0.011) * moveAmp * 0.6 + Math.sin(f*0.003)*breathAmp*0.4;
+  let oy = Math.cos(f*0.014) * moveAmp * 0.4 + Math.sin(f*0.0065)*breathAmp*0.6;
+  const zoom = 1 + Math.sin(f*0.004) * 0.006 * (0.4 + S.move*0.8);
+  if (S.shake > 0){
+    ox += (Math.random()-0.5) * S.shake;
+    oy += (Math.random()-0.5) * S.shake;
+    S.shake *= 0.88;
+    if (S.shake < 0.05) S.shake = 0;
+  }
+  return {ox, oy, zoom};
+}
+
+function drawScene(index, local){
+  ctx.clearRect(0, 0, W, H);
+  if (S.booting){ drawBoot(); return; }
+
+  const cam = cameraOffset();
+  ctx.save();
+  ctx.translate(W/2, H/2);
+  ctx.scale(cam.zoom, cam.zoom);
+  ctx.translate(-W/2 + cam.ox, -H/2 + cam.oy);
+
+  switch(scenes[index].id){
+    case 'SC1': drawSC1(local); break;
+    case 'SC2': drawSC2(local); break;
+    case 'SC3': drawSC3(local); break;
+    case 'SC4': drawSC4(local); break;
+    case 'SC5': drawSC5(local); break;
+    case 'SC6': drawSC6(local); break;
+  }
+  drawSparks();
+  ctx.restore();
+  drawCRT();
+}
+
+// ─── BOOT ──────────────────────────────────────────────
+function drawBoot(){
+  rect(0, 0, W, H, '#040a12');
+  const phase = clamp(S.bootTime / 2.6);
+  text('AMIGA ANIME RUNTIME', 52, 52, 18, '#68f6c0', 'left', '700');
+  text('◈ ANIME · ATEM · WONDER · iki1uc', 52, 84, 22, '#ffbd5c', 'left', '700');
+  text('STORY: BEGEGNUNG MIT DER ZUKUNFT', 52, 122, 12, '#8aa8a0');
+
+  ctx.strokeStyle = '#2f6970';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(52, 167, 856, 19);
+  rect(52, 167, 856 * phase, 19, '#68f6c0');
+
+  text(`LOADING CUES ${(phase * 100).toFixed(0).padStart(3, ' ')} %`, 52, 200, 11, '#68f6c0');
+
+  const blocks = ['CANVAS', 'SCENE BUS', 'PROMPTER', 'CUE BEEPS', 'ATEM CORE'];
+  blocks.forEach((b, i) => {
+    const active = phase > i / blocks.length;
+    rect(52 + i * 170, 255, 143, 55, active ? '#123b3b' : '#0a1b22');
+    ctx.strokeStyle = active ? '#68f6c0' : '#1e3a44';
+    ctx.strokeRect(52 + i * 170, 255, 143, 55);
+    text(active ? 'OK' : 'WAIT', 65 + i * 170, 267, 10, active ? '#68f6c0' : '#4a6a6e', 'left', '700');
+    text(b, 65 + i * 170, 286, 9, '#d8f0e8');
+  });
+
+  text('PRESS START RUNTIME TO ENTER THE WONDER', W/2, 404, 14, phase > 0.7 ? '#ff6d9d' : '#4a777d', 'center', '700');
+  text('DAS WUNDER IST UNTER UNS', W/2, 445, 11, '#b388ff', 'center');
+  text('[ 1960 FAN ] × [ ERZÄHLER ] × [ COMMUNICATOR ]', W/2, 480, 11, '#6cc9ff', 'center');
+
+  const atomR = 30 + Math.sin(S.frame*0.05) * 8;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(179,136,255,.6)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(W - 120, 120, atomR, 0, Math.PI*2);
+  ctx.stroke();
+  ctx.restore();
+
+  drawCRT();
+}
+
+// ─── UI-UPDATE ─────────────────────────────────────────
+function sceneAt(time){
+  const t = Math.max(0, Math.min(time, MASTER_DURATION - 0.0001));
+  for (let i = 0; i < scenes.length; i++){
+    if (t >= scenes[i].start && t < scenes[i].end) return i;
+  }
+  return scenes.length - 1;
+}
+function localFor(index){
+  const sc = scenes[index];
+  return clamp((S.time - sc.start) / sc.runtimeDuration);
+}
+
+function updateUI(){
+  const index = sceneAt(S.time);
+  const scene = scenes[index];
+  const local = localFor(index);
+  const cueIdx = Math.min(scene.cues.length - 1, Math.floor(local * scene.cues.length));
+  const cue = scene.cues[cueIdx];
+  const sceneSecs = local * scene.tabDuration;
+
+  document.getElementById('sceneCode').textContent = scene.id;
+  document.getElementById('sceneTitle').textContent = scene.title;
+  document.getElementById('sourceChip').textContent = scene.source;
+  document.getElementById('sceneProgress').style.width = `${local*100}%`;
+  document.getElementById('sceneTime').textContent = fmt(sceneSecs);
+  document.getElementById('masterTime').textContent = fmt(S.time);
+  document.getElementById('timelineScene').textContent = scene.id;
+  document.getElementById('timelineTime').textContent = `${fmt(S.time)} / ${fmt(MASTER_DURATION, false)}`;
+  document.getElementById('beatTag').textContent = cue[0];
+  document.getElementById('promptHeading').textContent = cue[1].toUpperCase();
+
+  const pr = document.getElementById('prompter');
+  pr.innerHTML = '';
+  const p1 = document.createElement('div'); p1.textContent = scene.prompt; pr.appendChild(p1);
+  const p2 = document.createElement('div'); p2.className = 'quote'; p2.style.marginTop = '10px'; p2.textContent = scene.dialogue; pr.appendChild(p2);
+
+  document.getElementById('directorText').textContent = scene.director;
+  const cl = document.getElementById('cueList');
+  cl.innerHTML = '';
+  scene.cues.forEach((c, i) => {
+    const li = document.createElement('li');
+    if (i === cueIdx) li.className = 'active';
+    li.innerHTML = `<b>${c[0]}</b><span>${c[1]}</span>`;
+    cl.appendChild(li);
+  });
+
+  const sfx = document.getElementById('sfxLog');
+  sfx.innerHTML = '';
+  scene.sfx.forEach((s, i) => {
+    const d = document.createElement('div'); d.className = 'sfx-line';
+    d.innerHTML = `<b>${String(i+1).padStart(2,'0')}</b><span>${s}</span>`;
+    sfx.appendChild(d);
+  });
+
+  [...document.querySelectorAll('.scene-tab')].forEach((t, i) => t.classList.toggle('active', i === index));
+  document.getElementById('timeline').value = S.time.toFixed(1);
+  document.getElementById('overlayLeft').textContent = `${scene.id} / ${scene.title}`;
+  document.getElementById('overlayRight').textContent = `${fmt(S.time)} / ${S.playing ? 'RUN' : 'HOLD'}`;
+  document.getElementById('canvasMode').textContent = S.booting ? 'ATEM-BOOT' : (S.playing ? 'LIVE / PLAYING' : 'LIVE / HOLD');
+  document.getElementById('runState').textContent = S.booting ? 'BOOT' : (S.playing ? 'PLAYING' : 'IDLE');
+
+  drawScene(index, local);
+}
+
+function updateControls(){
+  const btn = document.getElementById('startBtn');
+  btn.textContent = S.playing ? 'Ⅱ PAUSE RUNTIME' : '▶ START RUNTIME';
+  btn.classList.toggle('active', S.playing);
+  document.getElementById('cueBtn').textContent = `CUE-BEEPS: ${S.cueBeeps ? 'ON' : 'OFF'}`;
+  document.getElementById('cueBtn').classList.toggle('active', S.cueBeeps);
+  document.getElementById('breathBtn').textContent = `◈ ATEM: ${S.breathOn ? 'AN' : 'AUS'}`;
+  document.getElementById('breathBtn').classList.toggle('active', S.breathOn);
+  document.querySelectorAll('[data-speed]').forEach(b => b.classList.toggle('active', Number(b.dataset.speed) === S.speed));
+}
+
+function beep(kind='cue'){
+  if (!S.cueBeeps) return;
+  try {
+    if (!S.audio) S.audio = new (window.AudioContext || window.webkitAudioContext)();
+    const audio = S.audio;
+    if (audio.state === 'suspended') audio.resume();
+    const osc = audio.createOscillator();
+    const gain = audio.createGain();
+    osc.type = kind === 'scene' ? 'square' : 'triangle';
+    osc.frequency.value = kind === 'scene' ? 660 : 920;
+    gain.gain.setValueAtTime(0.0001, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(kind === 'scene' ? 0.05 : 0.03, audio.currentTime + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + (kind === 'scene' ? 0.18 : 0.07));
+    osc.connect(gain); gain.connect(audio.destination);
+    osc.start(); osc.stop(audio.currentTime + 0.2);
+  } catch(_){}
+}
+
+// ─── TABS + MARKERS ───────────────────────────────────
+function makeTabs(){
+  const el = document.getElementById('sceneTabs');
+  el.innerHTML = '';
+  scenes.forEach((sc, i) => {
+    const b = document.createElement('button');
+    b.className = 'scene-tab';
+    b.dataset.index = i;
+    b.dataset.color = sc.color;
+    b.innerHTML = `<strong>${sc.id}</strong> ${sc.title}<small>${sc.tabDuration}s CUE</small>`;
+    b.addEventListener('click', () => {
+      S.time = sc.start;
+      S.playing = false; S.booting = false;
+      updateControls();
+      updateUI();
+    });
+    el.appendChild(b);
+  });
+}
+function makeMarkers(){
+  const el = document.getElementById('markers');
+  el.innerHTML = '';
+  scenes.forEach((sc, i) => {
+    const m = document.createElement('span');
+    m.className = 'marker';
+    m.style.left = `${(sc.start / MASTER_DURATION) * 100}%`;
+    m.title = `${sc.id} / ${sc.title}`;
+    m.innerHTML = i === 0 ? '' : `<em>${sc.id}</em>`;
+    el.appendChild(m);
+  });
+}
+
+// ─── EVENTS ───────────────────────────────────────────
+function bind(){
+  document.getElementById('startBtn').addEventListener('click', () => {
+    if (S.playing){ S.playing = false; S.booting = false; updateControls(); return; }
+    if (S.time >= MASTER_DURATION - 0.1) S.time = 0;
+    S.playing = true; S.booting = true; S.bootTime = 0;
+    S.lastFrame = performance.now();
+    beep('scene');
+    updateControls();
+  });
+  document.getElementById('stepBack').addEventListener('click', () => {
+    S.playing = false; S.booting = false;
+    S.time = Math.max(0, S.time - 5);
+    updateControls(); updateUI();
+  });
+  document.getElementById('stepForward').addEventListener('click', () => {
+    S.playing = false; S.booting = false;
+    S.time = Math.min(MASTER_DURATION, S.time + 5);
+    updateControls(); updateUI();
+  });
+  document.getElementById('cueBtn').addEventListener('click', () => { S.cueBeeps = !S.cueBeeps; updateControls(); });
+  document.getElementById('breathBtn').addEventListener('click', () => { S.breathOn = !S.breathOn; updateControls(); });
+  document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => { S.speed = Number(b.dataset.speed); updateControls(); }));
+  document.getElementById('timeline').addEventListener('input', e => {
+    S.playing = false; S.booting = false;
+    S.time = Number(e.target.value);
+    updateUI();
+  });
+  document.getElementById('fullscreenBtn').addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input,button')) return;
+    if (e.code === 'Space'){ e.preventDefault(); document.getElementById('startBtn').click(); }
+    if (e.key === 'ArrowLeft'){ S.playing = false; S.time = Math.max(0, S.time - 5); updateControls(); updateUI(); }
+    if (e.key === 'ArrowRight'){ S.playing = false; S.time = Math.min(MASTER_DURATION, S.time + 5); updateControls(); updateUI(); }
+    if (e.key.toLowerCase() === 'f') document.getElementById('fullscreenBtn').click();
+    if (e.key.toLowerCase() === 'b') document.getElementById('breathBtn').click();
+    if (e.key === 'Home'){ S.playing = false; S.time = 0; updateControls(); updateUI(); }
+    if (e.key === 'End'){ S.playing = false; S.time = MASTER_DURATION - 0.1; updateControls(); updateUI(); }
+  });
+}
+
+// ─── MAIN LOOP ────────────────────────────────────────
 function loop(now){
-  const dt = Math.min(0.1, (now - lastT)/1000);
-  lastT = now;
+  const dt = Math.min(0.08, (now - S.lastFrame) / 1000);
+  S.lastFrame = now;
   S.frame++;
 
-  // Boot
-  if (S.booting){
-    S.bootTime += dt;
-    if (S.bootTime >= 3.0){
-      S.booting = false;
-      document.getElementById('boot').classList.add('done');
-      S.playing = true;
-      log('◈ STORY gestartet · 81 Momente', 'ok');
-      log('◈ Kapitel 1 · Der letzte Sommer', 'gold');
-    }
-    requestAnimationFrame(loop);
-    return;
+  if (S.breathOn) updateElements(dt);
+  else S.main.tick++;
+
+  updateSparks(dt);
+
+  if (Math.random() < 0.015 + S.move * 0.03){
+    const colors = ['#ffcc66','#68f6c0','#b388ff','#6cc9ff','#ff6d9d'];
+    spawnSpark(
+      Math.random() * W, Math.random() * H * 0.8 + 40,
+      colors[Math.floor(Math.random() * colors.length)],
+      1, Math.random() < 0.4 ? 'star' : 'spark'
+    );
   }
 
   if (S.playing){
-    S.chapTime += dt;
-    S.totalTime += dt;
-    accum += dt;
-
-    // Auto-Advance nach S.speed Sekunden
-    if (S.auto && accum >= S.speed){
-      accum = 0;
-      nextImage();
-    }
-
-    // Respo-Wert leicht fluktuieren
-    S.respo = 0.42 + Math.sin(S.frame * 0.008) * 0.12;
-    document.getElementById('respoVal').textContent = S.respo.toFixed(3);
-
-    // Clock
-    if (S.frame % 30 === 0){
-      document.getElementById('clock').textContent = new Date().toLocaleTimeString('de-DE');
-      document.getElementById('ovTimeRight').textContent = formatTime(S.totalTime);
-    }
-  }
-
-  requestAnimationFrame(loop);
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// CONTROLS / BINDINGS
-// ═══════════════════════════════════════════════════════════════════
-function bind(){
-  document.getElementById('btnPlay').addEventListener('click', () => {
-    S.playing = !S.playing;
-    document.getElementById('btnPlay').textContent = S.playing ? '⏸ PAUSE' : '▶ START STORY';
-    document.getElementById('btnPlay').classList.toggle('active', S.playing);
-    log(S.playing ? '▶ STORY läuft' : '⏸ STORY pausiert', S.playing ? 'ok' : 'warn');
-    updateUI();
-  });
-  document.getElementById('btnBack').addEventListener('click', () => {
-    S.playing = false;
-    document.getElementById('btnPlay').textContent = '▶ START STORY';
-    prevImage();
-  });
-  document.getElementById('btnForward').addEventListener('click', () => {
-    S.playing = false;
-    document.getElementById('btnPlay').textContent = '▶ START STORY';
-    nextImage();
-  });
-  document.getElementById('btnFullscreen').addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen?.();
+    if (S.booting){
+      S.bootTime += dt * S.speed;
+      if (S.bootTime >= 2.6){ S.booting = false; beep('scene'); }
     } else {
-      document.exitFullscreen?.();
+      const before = sceneAt(S.time);
+      S.time += dt * S.speed;
+      if (S.time >= MASTER_DURATION){
+        S.time = MASTER_DURATION - 0.001;
+        S.playing = false;
+        beep('scene');
+      }
+      const after = sceneAt(S.time);
+      if (after !== before){
+        beep('scene');
+        S.shake = 10;
+        for (let i = 0; i < 30; i++){
+          spawnSpark(W/2, H/2, ['#68f6c0','#b388ff','#ffbd5c'][i%3], 1, 'star');
+        }
+      }
     }
-  });
-  document.getElementById('btnAuto').addEventListener('click', (e) => {
-    S.auto = !S.auto;
-    e.currentTarget.classList.toggle('active', S.auto);
-    log(`⟳ AUTO ${S.auto ? 'an' : 'aus'}`, 'warn');
-  });
-  document.getElementById('btnReset').addEventListener('click', () => {
-    S.chapIdx = 0;
-    S.imgIdx = 0;
-    S.totalTime = 0;
-    S.chapTime = 0;
-    accum = 0;
-    S.playing = false;
-    document.getElementById('btnPlay').textContent = '▶ START STORY';
-    loadImage(IMAGES[1][0]);
-    log('⟲ RESET · zurück zum letzten Sommer', 'warn');
-    updateUI();
-  });
-  document.getElementById('speedRange').addEventListener('input', (e) => {
-    S.speed = parseInt(e.target.value, 10);
-    document.getElementById('speedLbl').textContent = S.speed + ' s';
-  });
-
-  // Keyboard
-  document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT') return;
-    if (e.code === 'Space'){
-      e.preventDefault();
-      document.getElementById('btnPlay').click();
-    }
-    if (e.key === 'ArrowLeft'){
-      document.getElementById('btnBack').click();
-    }
-    if (e.key === 'ArrowRight'){
-      document.getElementById('btnForward').click();
-    }
-    if (e.key === 'f' || e.key === 'F'){
-      document.getElementById('btnFullscreen').click();
-    }
-    if (e.key === 'a' || e.key === 'A'){
-      document.getElementById('btnAuto').click();
-    }
-    if (e.key === 'r' || e.key === 'R'){
-      document.getElementById('btnReset').click();
-    }
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════════════════════════════════
-const BOOT_LINES = [
-  ['▸ RESPO · 81 MOMENTE <b>gefunden</b> <span class="dim">· 9 × 9</span>', 180],
-  ['▸ IRFAN · SOMMER <b>gemountet</b> <span class="dim">· der letzte sommer</span>', 200],
-  ['▸ MONSTER ID <b>lädt</b> <span class="dim">· roh · offen · ungebrochen</span>', 200],
-  ['▸ CINEMATIC <b>aktiv</b> <span class="dim">· weite · raum · erinnerung</span>', 200],
-  ['▸ <span class="pink">INDIJA</span> · Comme un bateau <b>verbunden</b>', 180],
-  ['▸ <span class="pink">INDIJA</span> · S.O.S <b>verbunden</b>', 180],
-  ['▸ <span class="pink">INDIJA</span> · Ainsi Bas La Vida <b>verbunden</b>', 180],
-  ['▸ <span class="vio">KEY</span> · Mozart Techno Reimagined <b>verbunden</b>', 200],
-  ['▸ <span class="vio">AURORA</span> · Runaway <b>verbunden</b>', 180],
-  ['▸ <span class="vio">THE WITCH</span> · Dark Orchestral <b>verbunden</b>', 180],
-  ['▸ ACHSEN <b>kalibriert</b> <span class="dim">· druck · zug · tiefe · wahrheit</span>', 200],
-  ['▸ <b>DAS WUNDER IST UNTER UNS</b>', 280],
-];
-
-function bootSequence(){
-  const linesEl = document.getElementById('bootLines');
-  const barEl = document.getElementById('bootBar');
-  linesEl.innerHTML = '';
-  let i = 0, total = 0;
-  const totalDur = BOOT_LINES.reduce((a,b) => a+b[1], 0);
-
-  function next(){
-    if (i >= BOOT_LINES.length){
-      barEl.style.width = '100%';
-      return;
-    }
-    const [txt, delay] = BOOT_LINES[i];
-    const div = document.createElement('div');
-    div.innerHTML = txt;
-    linesEl.appendChild(div);
-    total += delay;
-    barEl.style.width = ((total/totalDur)*100).toFixed(1)+'%';
-    i++;
-    setTimeout(next, delay);
   }
-  next();
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════════════
-function init(){
-  bootSequence();
-  renderChapters();
-  renderTracks();
-  bind();
-
-  // Erstes Bild vorladen
-  loadImage(IMAGES[1][0]);
   updateUI();
-
-  log('◈ DER LETZTE SOMMER · 81 MOMENTE', 'gold');
-  log('▸ 9 Kapitel × 9 Momente = 81', 'vio');
-  log('▸ story · irfan · cinematic · monster id', 'pink');
-  log('▸ tasten: space=play · ←→=blättern · f=full · a=auto · r=reset', 'ok');
-
   requestAnimationFrame(loop);
 }
 
-if (document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+// ─── INIT ─────────────────────────────────────────────
+makeTabs();
+makeMarkers();
+bind();
+updateControls();
+updateUI();
+requestAnimationFrame(loop);
 
-// ═══════════════════════════════════════════════════════════════════
-// PUBLIC API
-// ═══════════════════════════════════════════════════════════════════
-window.STORY = {
-  play:  () => document.getElementById('btnPlay').click(),
-  next:  () => nextImage(),
-  prev:  () => prevImage(),
-  jump:  (i) => jumpToChapter(i),
-  state: () => ({
-    chapter: S.chapIdx + 1,
-    image: S.imgIdx + 1,
-    total: S.chapIdx * 9 + S.imgIdx + 1,
-    playing: S.playing,
-    auto: S.auto,
-    speed: S.speed,
-    respo: S.respo,
-    pulse: S.pulse,
-    currentPath: S.currentPath,
-  }),
-  chapters: () => CHAPTERS.map(c => ({ ...c })),
-  images: () => JSON.parse(JSON.stringify(IMAGES)),
-};
-window.S = window.STORY;
-
-console.log('%c◈ DER LETZTE SOMMER · 81 MOMENTE geladen',
-  'color:#ffbd5c;font-weight:bold;font-size:14px;');
-console.log('→ window.STORY.play() · .next() · .prev() · .jump(0-8) · .state()');
-console.log('→ IRFAN · CINEMATIC · MONSTER ID · DAS WUNDER IST UNTER UNS');
+})();
 </script>
 </body>
 </html>
